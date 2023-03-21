@@ -1,0 +1,2 @@
+class RepairEquipment < ApplicationRecord
+end
