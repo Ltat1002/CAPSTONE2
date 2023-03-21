@@ -1,24 +1,14 @@
-# README
+* Ruby version: 3.2.0
+* Rails version: 7.0.4
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* Get start:
 
-Things you may want to cover:
+  - Setup:
+    + bundle install (always run after pull code)
 
-* Ruby version
+  - Database:
+    + Change mysql password at: config/database.yml
+    + Create database run: rails db:create db:migrate
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+  - Start server:
+    + To start server (at localhost:3000) run: rails s
