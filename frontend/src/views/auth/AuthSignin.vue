@@ -1,242 +1,138 @@
-<template lang="">
-  <div class="auth">
-    <div class="container" id="container">
-      <div class="form-container sign-in-container">
-        <form action="#">
-          <h1>Sign in</h1>
-          <div class="social-container">
-            <a href="#" class="social"><span class="pi pi-facebook"></span></a>
-            <a href="#" class="social"><span class="pi pi-google"></span></a>
-            <a href="#" class="social"><span class="pi pi-linkedin"></span></a>
-          </div>
-          <span>or use your account</span>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <a href="#">Forgot your password?</a>
-          <button>Sign In</button>
-        </form>
-      </div>
-      <div class="overlay-container">
-        <div class="overlay">
-          <div class="overlay-panel overlay-left">
-            <h1>Welcome Back!</h1>
-            <p>
-              To keep connected with us please login with your personal info
-            </p>
-            <button class="ghost" id="signIn">Sign In</button>
-          </div>
-          <div class="overlay-panel overlay-right">
-            <h1>Hello, Friend!</h1>
-            <p>Enter your personal details and start journey with us</p>
-            <button class="ghost" id="signUp" @click="handleClickSignUp">
-              Sign Up
-            </button>
-          </div>
+<template>
+  <div class="login">
+    <div class="center">
+      <h1>Login</h1>
+      <form @submit.prevent="handleSubmitLogin">
+        <div class="txt_field">
+          <input v-model="email" type="text" required />
+          <span></span>
+          <label>Username</label>
         </div>
-      </div>
+        <div class="txt_field">
+          <input v-model="password" type="password" required />
+          <span></span>
+          <label>Password</label>
+        </div>
+        <div class="pass">Forgot Password?</div>
+        <input type="submit" value="Login" />
+        <div class="signup_link">
+          Not a member? <router-link to="/auth/register">Signup</router-link>
+        </div>
+      </form>
     </div>
   </div>
 </template>
+
 <script setup>
 import { useRouter } from "vue-router";
 const router = useRouter();
-function handleClickSignUp() {
+function handleSubmitLogin() {
   router.push("/auth/register");
 }
 </script>
 <style lang="scss" scoped>
-.auth {
-  background: #f6f5f7;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-family: "Montserrat", sans-serif;
+.login {
+  background: linear-gradient(120deg, #2980b9, #8e44ad);
   height: 100vh;
+  overflow: hidden;
 }
-h1 {
-  font-weight: bold;
-  margin: 0;
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.05);
 }
-h2 {
+.center h1 {
   text-align: center;
+  padding: 20px 0;
+  border-bottom: 1px solid silver;
 }
-p {
-  font-size: 14px;
-  font-weight: 100;
-  line-height: 20px;
-  letter-spacing: 0.5px;
-  margin: 20px 0 30px;
+.center form {
+  padding: 0 40px;
+  box-sizing: border-box;
 }
-span {
-  font-size: 12px;
+form .txt_field {
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin: 30px 0;
 }
-a {
-  color: #333;
-  font-size: 14px;
-  text-decoration: none;
-  margin: 15px 0;
-}
-button {
-  border-radius: 20px;
-  border: 1px solid #ff4b2b;
-  background-color: #ff4b2b;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 12px 45px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 80ms ease-in;
-}
-button:active {
-  transform: scale(0.95);
-}
-button:focus {
+.txt_field input {
+  width: 100%;
+  padding: 0 5px;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  background: none;
   outline: none;
 }
-button.ghost {
-  background-color: transparent;
-  border-color: #ffffff;
+.txt_field label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  color: #adadad;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.5s;
 }
-form {
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0 50px;
-  height: 100%;
-  text-align: center;
+.txt_field span::before {
+  content: "";
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #2691d9;
+  transition: 0.5s;
 }
-input {
-  background-color: #eee;
-  border: none;
-  padding: 12px 15px;
-  margin: 8px 0;
+.txt_field input:focus ~ label,
+.txt_field input:valid ~ label {
+  top: -5px;
+  color: #2691d9;
+}
+.txt_field input:focus ~ span::before,
+.txt_field input:valid ~ span::before {
   width: 100%;
 }
-.container {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  position: relative;
-  overflow: hidden;
-  width: 768px;
-  max-width: 100%;
-  min-height: 480px;
+.pass {
+  margin: -5px 0 20px 5px;
+  color: #a6a6a6;
+  cursor: pointer;
 }
-.form-container {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  transition: all 0.6s ease-in-out;
+.pass:hover {
+  text-decoration: underline;
 }
-.sign-in-container {
-  left: 0;
-  width: 50%;
-  z-index: 2;
+input[type="submit"] {
+  width: 100%;
+  height: 50px;
+  border: 1px solid;
+  background: #2691d9;
+  border-radius: 25px;
+  font-size: 18px;
+  color: #e9f4fb;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
 }
-.container.right-panel-active .sign-in-container {
-  transform: translateX(100%);
+input[type="submit"]:hover {
+  border-color: #2691d9;
+  transition: 0.5s;
 }
-.sign-up-container {
-  left: 0;
-  width: 50%;
-  opacity: 0;
-  z-index: 1;
-}
-.container.right-panel-active .sign-up-container {
-  transform: translateX(100%);
-  opacity: 1;
-  z-index: 5;
-  animation: show 0.6s;
-}
-@keyframes show {
-  0%,
-  49.99% {
-    opacity: 0;
-    z-index: 1;
-  }
-  50%,
-  100% {
-    opacity: 1;
-    z-index: 5;
-  }
-}
-.overlay-container {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  transition: transform 0.6s ease-in-out;
-  z-index: 100;
-}
-.container.right-panel-active .overlay-container {
-  transform: translateX(-100%);
-}
-.overlay {
-  background: #ff416c;
-  background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-  background: linear-gradient(to right, #ff4b2b, #ff416c);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 0 0;
-  color: #ffffff;
-  position: relative;
-  left: -100%;
-  height: 100%;
-  width: 200%;
-  transform: translateX(0);
-  transition: transform 0.6s ease-in-out;
-}
-.container.right-panel-active .overlay {
-  transform: translateX(50%);
-}
-.overlay-panel {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0 40px;
+.signup_link {
+  margin: 30px 0;
   text-align: center;
-  top: 0;
-  height: 100%;
-  width: 50%;
-  transform: translateX(0);
-  transition: transform 0.6s ease-in-out;
+  font-size: 16px;
+  color: #666666;
 }
-.overlay-left {
-  transform: translateX(-20%);
+.signup_link a {
+  color: #2691d9;
+  text-decoration: none;
 }
-.container.right-panel-active .overlay-left {
-  transform: translateX(0);
-}
-.overlay-right {
-  right: 0;
-  transform: translateX(0);
-}
-.container.right-panel-active .overlay-right {
-  transform: translateX(20%);
-}
-.social-container {
-  margin: 20px 0;
-}
-.social-container a {
-  border: 1px solid #dddddd;
-  border-radius: 50%;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 5px;
-  height: 40px;
-  width: 40px;
-}
-.social-container a span {
-  font-size: 1.6rem;
+.signup_link a:hover {
+  text-decoration: underline;
 }
 </style>
