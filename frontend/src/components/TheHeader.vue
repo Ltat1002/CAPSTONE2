@@ -2,8 +2,7 @@
   <section id="content">
     <nav>
       <i class="bx bx-menu" @click="handleClickSidebar"></i>
-      <a href="#" class="nav-link">Dashboard</a>
-      <form action="#">
+      <form>
         <div class="form-input">
           <input type="search" placeholder="Search..." />
           <button type="submit" class="search-btn">
@@ -79,7 +78,7 @@ function handleClickSidebar() {
 #content nav form {
   max-width: 400px;
   width: 100%;
-  margin-right: auto;
+  margin: auto;
 }
 #content nav form .form-input {
   display: flex;

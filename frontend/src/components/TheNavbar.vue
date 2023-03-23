@@ -2,25 +2,19 @@
   <section id="sidebar" :class="{ hide: props.sidebar }">
     <router-link to="/" class="brand">
       <i class="bx bxs-smile"></i>
-      <span class="text">AdminHub</span>
+      <span class="text">Repair service</span>
     </router-link>
     <ul class="side-menu top">
-      <li :class="{ active: currentPage.includes('/') }">
-        <router-link to="/">
+      <li :class="{ active: currentPage.includes('/report-problem') }">
+        <router-link to="/report-problem">
           <i class="bx bxs-user"></i>
-          <span class="text">Team members</span>
+          <span class="text">Report Problem</span>
         </router-link>
       </li>
-      <li :class="{ active: currentPage.includes('/') }">
-        <router-link to="/">
+      <li :class="{ active: currentPage.includes('/voucher') }">
+        <router-link to="/voucher">
           <i class="bx bxs-shopping-bag-alt"></i>
-          <span class="text">Đơn vị công tác</span>
-        </router-link>
-      </li>
-      <li :class="{ active: currentPage.includes('') }">
-        <router-link to="/">
-          <i class="bx bxs-doughnut-chart"></i>
-          <span class="text">Vị trí công việc</span>
+          <span class="text">Voucher giveaway</span>
         </router-link>
       </li>
     </ul>
