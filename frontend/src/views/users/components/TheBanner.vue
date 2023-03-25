@@ -17,10 +17,10 @@ const image = ref([
   "https://internetviettel.vn/wp-content/uploads/2017/05/1-2.jpg",
   "https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg",
 ]);
-console.log(1);
 </script>
 <style lang="scss" scoped>
 .carousel__item {
+  margin-top: 58px;
   width: 100%;
   height: calc(100vh - 60px);
   img {

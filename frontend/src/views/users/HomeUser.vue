@@ -1,12 +1,11 @@
 <template lang="">
-  <div>
+  <div class="user">
     <header-user />
-    <TheBanner />
+    <the-banner />
   </div>
 </template>
 <script setup>
 import HeaderUser from "./components/HeaderUser.vue";
 import TheBanner from "./components/TheBanner.vue";
-console.log(2);
 </script>
 <style lang="scss" scoped></style>

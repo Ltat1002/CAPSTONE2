@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeLayout from "../views/HomeLayout.vue";
 import { routerAuth } from "@/router/modules/router-auth";
 import { routerUsers } from "./modules/router-users/index";
-import HomeUser from "@/views/users/components/HeaderUser.vue";
+import HomeUser from "@/views/users/HomeUser.vue";
 const routes = [
   {
     path: "/",
