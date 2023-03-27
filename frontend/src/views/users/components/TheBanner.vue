@@ -12,17 +12,15 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide } from "vue3-carousel";
 import { ref } from "vue";
 const image = ref([
-  "https://haycafe.vn/wp-content/uploads/2022/02/Anh-gai-xinh-de-thuong.jpg",
-  "https://thuthuatnhanh.com/wp-content/uploads/2019/10/hinh-anh-gai-xinh-ha-noi.jpg",
-  "https://internetviettel.vn/wp-content/uploads/2017/05/1-2.jpg",
-  "https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg",
+  "https://as1.ftcdn.net/v2/jpg/02/32/15/20/1000_F_232152041_MteUXPM1X4arQHQSCPPFFGE4I44SOCFb.jpg",
+  "https://homerepairservicessite.files.wordpress.com/2017/03/cropped-home-repair-banner2.jpg",
+  "https://homerepairservicessite.files.wordpress.com/2017/03/cropped-home-repair-banner2.jpg",
 ]);
 </script>
 <style lang="scss" scoped>
 .carousel__item {
-  margin-top: 58px;
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 160px);
   img {
     height: 100%;
     width: 100%;
