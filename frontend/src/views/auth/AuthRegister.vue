@@ -1,35 +1,78 @@
 <template lang="">
-  <div class="auth">
-    <div class="container" id="container">
-      <div class="form-container sign-in-container">
-        <form action="#">
-          <h1>Sign Up</h1>
-          <div class="social-container">
-            <a href="#" class="social"><span class="pi pi-facebook"></span></a>
-            <a href="#" class="social"><span class="pi pi-google"></span></a>
-            <a href="#" class="social"><span class="pi pi-linkedin"></span></a>
-          </div>
-          <span>or use your account</span>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <button>Sign Up</button>
-        </form>
-      </div>
-      <div class="overlay-container">
-        <div class="overlay">
-          <div class="overlay-panel overlay-left">
-            <h1>Welcome Back!</h1>
-            <p>
-              To keep connected with us please login with your personal info
-            </p>
-            <button class="ghost" id="signIn">Sign In</button>
-          </div>
-          <div class="overlay-panel overlay-right">
-            <h1>Hello, Friend!</h1>
-            <p>Enter your personal details and start journey with us</p>
-            <button class="ghost" id="signUp" @click="handleClickSignUp">
-              Sign In
-            </button>
+  <div class="register">
+    <div class="form_wrapper">
+      <div class="form_container">
+        <div class="title_container">
+          <h2>Responsive Registration Form</h2>
+        </div>
+        <div class="row clearfix">
+          <div class="">
+            <form @submit.prevent="handleClickSignUp">
+              <div class="input_field">
+                <span><i aria-hidden="true" class="bx bx-envelope"></i></span>
+                <input type="email" name="email" placeholder="Email" required />
+              </div>
+              <div class="input_field">
+                <span><i aria-hidden="true" class="bx bx-lock"></i></span>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  required
+                />
+              </div>
+              <div class="input_field">
+                <span><i aria-hidden="true" class="bx bx-lock"></i></span>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Re-type Password"
+                  required
+                />
+              </div>
+              <div class="row clearfix">
+                <div class="col_half">
+                  <div class="input_field">
+                    <span><i aria-hidden="true" class="bx bxs-user"></i></span>
+                    <input type="text" name="name" placeholder="First Name" />
+                  </div>
+                </div>
+                <div class="col_half">
+                  <div class="input_field">
+                    <span><i aria-hidden="true" class="bx bxs-user"></i></span>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Last Name"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="input_field radio_option">
+                <input type="radio" name="radiogroup1" id="rd1" />
+                <label for="rd1">Male</label>
+                <input type="radio" name="radiogroup1" id="rd2" />
+                <label for="rd2">Female</label>
+              </div>
+              <div class="input_field select_option">
+                <select>
+                  <option>Select a country</option>
+                  <option>Option 1</option>
+                  <option>Option 2</option>
+                </select>
+                <div class="select_arrow"></div>
+              </div>
+              <div class="input_field checkbox_option">
+                <input type="checkbox" id="cb1" />
+                <label for="cb1">I agree with terms and conditions</label>
+              </div>
+              <div class="input_field checkbox_option">
+                <input type="checkbox" id="cb2" />
+                <label for="cb2">I want to receive the newsletter</label>
+              </div>
+              <input class="button" type="submit" value="Register" />
+            </form>
           </div>
         </div>
       </div>
@@ -44,198 +87,442 @@ function handleClickSignUp() {
 }
 </script>
 <style lang="scss" scoped>
-.auth {
-  background: #f6f5f7;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-family: "Montserrat", sans-serif;
+.register {
+  background: linear-gradient(120deg, #2980b9, #8e44ad);
+  overflow: hidden;
   height: 100vh;
 }
-h1 {
-  font-weight: bold;
-  margin: 0;
+.clearfix {
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+  }
 }
-h2 {
-  text-align: center;
-}
-p {
-  font-size: 14px;
-  font-weight: 100;
-  line-height: 20px;
-  letter-spacing: 0.5px;
-  margin: 20px 0 30px;
-}
-span {
-  font-size: 12px;
-}
-a {
-  color: #333;
-  font-size: 14px;
-  text-decoration: none;
-  margin: 15px 0;
-}
-button {
-  border-radius: 20px;
-  border: 1px solid #ff4b2b;
-  background-color: #ff4b2b;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 12px 45px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 80ms ease-in;
-}
-button:active {
-  transform: scale(0.95);
-}
-button:focus {
-  outline: none;
-}
-button.ghost {
-  background-color: transparent;
-  border-color: #ffffff;
-}
-form {
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0 50px;
-  height: 100%;
-  text-align: center;
-}
-input {
-  background-color: #eee;
-  border: none;
-  padding: 12px 15px;
-  margin: 8px 0;
-  width: 100%;
-}
-.container {
+.form_wrapper {
+  overflow-y: auto;
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  position: relative;
-  overflow: hidden;
-  width: 768px;
+  width: 400px;
   max-width: 100%;
-  min-height: 480px;
-}
-.form-container {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  transition: all 0.6s ease-in-out;
-}
-.sign-in-container {
-  left: 0;
-  width: 50%;
-  z-index: 2;
-}
-.container.right-panel-active .sign-in-container {
-  transform: translateX(100%);
-}
-.sign-up-container {
-  left: 0;
-  width: 50%;
-  opacity: 0;
-  z-index: 1;
-}
-.container.right-panel-active .sign-up-container {
-  transform: translateX(100%);
-  opacity: 1;
-  z-index: 5;
-  animation: show 0.6s;
-}
-@keyframes show {
-  0%,
-  49.99% {
-    opacity: 0;
-    z-index: 1;
-  }
-  50%,
-  100% {
-    opacity: 1;
-    z-index: 5;
-  }
-}
-.overlay-container {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  transition: transform 0.6s ease-in-out;
-  z-index: 100;
-}
-.container.right-panel-active .overlay-container {
-  transform: translateX(-100%);
-}
-.overlay {
-  background: #ff416c;
-  background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-  background: linear-gradient(to right, #ff4b2b, #ff416c);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 0 0;
-  color: #ffffff;
+  box-sizing: border-box;
+  padding: 25px;
+  margin: auto;
   position: relative;
-  left: -100%;
-  height: 100%;
-  width: 200%;
-  transform: translateX(0);
-  transition: transform 0.6s ease-in-out;
+  z-index: 1;
+  border-top: 5px solid #f5ba1a;
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  -webkit-transform-origin: 50% 0%;
+  transform-origin: 50% 0%;
+  -webkit-transform: scale3d(1, 1, 1);
+  transform: scale3d(1, 1, 1);
+  -webkit-transition: none;
+  transition: none;
+  -webkit-animation: expand 0.8s 0.6s ease-out forwards;
+  animation: expand 0.8s 0.6s ease-out forwards;
+  opacity: 0;
+  h2 {
+    font-size: 1.5em;
+    line-height: 1.5em;
+    margin: 0;
+  }
+  .title_container {
+    text-align: center;
+    padding-bottom: 15px;
+  }
+  h3 {
+    font-size: 1.1em;
+    font-weight: normal;
+    line-height: 1.5em;
+    margin: 0;
+  }
+  label {
+    font-size: 12px;
+  }
+  .row {
+    margin: 10px -15px;
+    > div {
+      padding: 0 15px;
+      box-sizing: border-box;
+    }
+  }
+  .col_half {
+    width: 50%;
+    float: left;
+  }
+  .input_field {
+    position: relative;
+    margin-bottom: 20px;
+    -webkit-animation: bounce 0.6s ease-out;
+    animation: bounce 0.6s ease-out;
+    > span {
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #333;
+      height: 100%;
+      border-right: 1px solid #cccccc;
+      text-align: center;
+      width: 30px;
+      > i {
+        padding-top: 10px;
+        font-size: 1.6rem;
+      }
+    }
+  }
+  .textarea_field {
+    > span {
+      > i {
+        padding-top: 10px;
+        font-size: 1.6rem;
+      }
+    }
+  }
+  input {
+    &[type="text"],
+    &[type="email"],
+    &[type="password"] {
+      width: 100%;
+      padding: 8px 10px 9px 35px;
+      height: 35px;
+      border: 1px solid #cccccc;
+      box-sizing: border-box;
+      outline: none;
+      -webkit-transition: all 0.3s ease-in-out;
+      -moz-transition: all 0.3s ease-in-out;
+      -ms-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+    }
+    &[type="text"]:hover,
+    &[type="email"]:hover,
+    &[type="password"]:hover {
+      background: #fafafa;
+    }
+    &[type="text"]:focus,
+    &[type="email"]:focus,
+    &[type="password"]:focus {
+      -webkit-box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
+      -moz-box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
+      box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
+      border: 1px solid #f5ba1a;
+      background: #fafafa;
+    }
+    &[type="submit"] {
+      background: #f5ba1a;
+      height: 35px;
+      line-height: 35px;
+      width: 100%;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      color: #fff;
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      -webkit-transition: all 0.3s ease-in-out;
+      -moz-transition: all 0.3s ease-in-out;
+      -ms-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        background: darken(#f5ba1a, 7%);
+      }
+      &:focus {
+        background: darken(#f5ba1a, 7%);
+      }
+    }
+    &[type="checkbox"],
+    &[type="radio"] {
+      border: 0;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+  }
 }
-.container.right-panel-active .overlay {
-  transform: translateX(50%);
+.form_container {
+  .row {
+    .col_half.last {
+      border-left: 1px solid #cccccc;
+    }
+  }
 }
-.overlay-panel {
+.checkbox_option {
+  label {
+    margin-right: 1em;
+    position: relative;
+    &:before {
+      content: "";
+      display: inline-block;
+      width: 0.5em;
+      height: 0.5em;
+      margin-right: 0.5em;
+      vertical-align: -2px;
+      border: 2px solid #cccccc;
+      padding: 0.12em;
+      background-color: transparent;
+      background-clip: content-box;
+      transition: all 0.2s ease;
+    }
+    &:after {
+      border-right: 2px solid #000000;
+      border-top: 2px solid #000000;
+      content: "";
+      height: 20px;
+      left: 2px;
+      position: absolute;
+      top: 7px;
+      transform: scaleX(-1) rotate(135deg);
+      transform-origin: left top;
+      width: 7px;
+      display: none;
+    }
+  }
+  input {
+    &:hover + label:before {
+      border-color: #000000;
+    }
+    &:checked + label {
+      &:before {
+        border-color: #000000;
+      }
+      &:after {
+        -moz-animation: check 0.8s ease 0s running;
+        -webkit-animation: check 0.8s ease 0s running;
+        animation: check 0.8s ease 0s running;
+        display: block;
+        width: 7px;
+        height: 20px;
+        border-color: #000000;
+      }
+    }
+  }
+}
+.radio_option {
+  label {
+    margin-right: 1em;
+    &:before {
+      content: "";
+      display: inline-block;
+      width: 0.5em;
+      height: 0.5em;
+      margin-right: 0.5em;
+      border-radius: 100%;
+      vertical-align: -3px;
+      border: 2px solid #cccccc;
+      padding: 0.15em;
+      background-color: transparent;
+      background-clip: content-box;
+      transition: all 0.2s ease;
+    }
+  }
+  input {
+    &:hover + label:before {
+      border-color: #000000;
+    }
+    &:checked + label:before {
+      background-color: #000000;
+      border-color: #000000;
+    }
+  }
+}
+.select_option {
+  position: relative;
+  width: 100%;
+  select {
+    display: inline-block;
+    width: 100%;
+    height: 35px;
+    padding: 0px 15px;
+    cursor: pointer;
+    color: #7b7b7b;
+    border: 1px solid #cccccc;
+    border-radius: 0;
+    background: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: all 0.2s ease;
+    &::-ms-expand {
+      display: none;
+    }
+    &:hover,
+    &:focus {
+      color: #000000;
+      background: #fafafa;
+      border-color: #000000;
+      outline: none;
+    }
+  }
+}
+.select_arrow {
   position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0 40px;
+  top: calc(50% - 4px);
+  right: 15px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  border-width: 8px 5px 0 5px;
+  border-style: solid;
+  border-color: #7b7b7b transparent transparent transparent;
+}
+.select_option select {
+  &:hover + .select_arrow,
+  &:focus + .select_arrow {
+    border-top-color: #000000;
+  }
+}
+.credit {
+  position: relative;
+  z-index: 1;
   text-align: center;
-  top: 0;
-  height: 100%;
-  width: 50%;
-  transform: translateX(0);
-  transition: transform 0.6s ease-in-out;
+  padding: 15px;
+  color: #f5ba1a;
+  a {
+    color: darken(#f5ba1a, 7%);
+  }
 }
-.overlay-left {
-  transform: translateX(-20%);
+@-webkit-keyframes check {
+  0% {
+    height: 0;
+    width: 0;
+  }
+  25% {
+    height: 0;
+    width: 7px;
+  }
+  50% {
+    height: 20px;
+    width: 7px;
+  }
 }
-.container.right-panel-active .overlay-left {
-  transform: translateX(0);
+@keyframes check {
+  0% {
+    height: 0;
+    width: 0;
+  }
+  25% {
+    height: 0;
+    width: 7px;
+  }
+  50% {
+    height: 20px;
+    width: 7px;
+  }
 }
-.overlay-right {
-  right: 0;
-  transform: translateX(0);
+@-webkit-keyframes expand {
+  0% {
+    -webkit-transform: scale3d(1, 0, 1);
+    opacity: 0;
+  }
+  25% {
+    -webkit-transform: scale3d(1, 1.2, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1, 0.85, 1);
+  }
+  75% {
+    -webkit-transform: scale3d(1, 1.05, 1);
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    opacity: 1;
+  }
 }
-.container.right-panel-active .overlay-right {
-  transform: translateX(20%);
+@keyframes expand {
+  0% {
+    -webkit-transform: scale3d(1, 0, 1);
+    transform: scale3d(1, 0, 1);
+    opacity: 0;
+  }
+  25% {
+    -webkit-transform: scale3d(1, 1.2, 1);
+    transform: scale3d(1, 1.2, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1, 0.85, 1);
+    transform: scale3d(1, 0.85, 1);
+  }
+  75% {
+    -webkit-transform: scale3d(1, 1.05, 1);
+    transform: scale3d(1, 1.05, 1);
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+    opacity: 1;
+  }
 }
-.social-container {
-  margin: 20px 0;
+@-webkit-keyframes bounce {
+  0% {
+    -webkit-transform: translate3d(0, -25px, 0);
+    opacity: 0;
+  }
+  25% {
+    -webkit-transform: translate3d(0, 10px, 0);
+  }
+  50% {
+    -webkit-transform: translate3d(0, -6px, 0);
+  }
+  75% {
+    -webkit-transform: translate3d(0, 2px, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
 }
-.social-container a {
-  border: 1px solid #dddddd;
-  border-radius: 50%;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 5px;
-  height: 40px;
-  width: 40px;
+@keyframes bounce {
+  0% {
+    -webkit-transform: translate3d(0, -25px, 0);
+    transform: translate3d(0, -25px, 0);
+    opacity: 0;
+  }
+  25% {
+    -webkit-transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 10px, 0);
+  }
+  50% {
+    -webkit-transform: translate3d(0, -6px, 0);
+    transform: translate3d(0, -6px, 0);
+  }
+  75% {
+    -webkit-transform: translate3d(0, 2px, 0);
+    transform: translate3d(0, 2px, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
 }
-.social-container a span {
-  font-size: 1.6rem;
+@media (max-width: 600px) {
+  .form_wrapper {
+    .col_half {
+      width: 100%;
+      float: none;
+    }
+  }
+  .bottom_row {
+    .col_half {
+      width: 50%;
+      float: left;
+    }
+  }
+  .form_container {
+    .row {
+      .col_half.last {
+        border-left: none;
+      }
+    }
+  }
+  .remember_me {
+    padding-bottom: 20px;
+  }
 }
 </style>
