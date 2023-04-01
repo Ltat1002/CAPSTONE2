@@ -20,7 +20,7 @@ const image = ref([
 <style lang="scss" scoped>
 .carousel__item {
   width: 100%;
-  height: calc(100vh - 160px);
+  height: calc(100vh);
   img {
     height: 100%;
     width: 100%;
