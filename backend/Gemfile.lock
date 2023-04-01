@@ -76,11 +76,7 @@ GEM
     debug (1.7.1)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
-<<<<<<< HEAD
-    devise (4.9.0)
-=======
     devise (4.9.1)
->>>>>>> 9089f07 (add devise for users and active storage for reports)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -185,11 +181,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   debug
-<<<<<<< HEAD
-  devise (~> 4.9)
-=======
   devise
->>>>>>> 9089f07 (add devise for users and active storage for reports)
   image_processing (~> 1.2)
   mysql2 (~> 0.5)
   puma (~> 5.0)
