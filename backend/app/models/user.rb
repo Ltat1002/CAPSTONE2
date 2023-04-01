@@ -9,4 +9,6 @@ class User < ApplicationRecord
   has_many :vouchers
 
   enum role: %i[ user admin ]
+
+  alias_method :authenticate, :valid_password?
 end

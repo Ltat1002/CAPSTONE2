@@ -7,6 +7,9 @@ Rails.application.routes.draw do
       resources :reports
       resources :users
       resources :repair_equipments
+
+      post 'auth/register' , to: 'users#create'
+      post 'auth/login' , to: 'users#login'
     end
   end
 end
