@@ -3,7 +3,7 @@
     <header class="header wrap">
       <router-link to="/" href="" class="logo"
         ><img
-          src="http://mauweb.monamedia.net/painting/wp-content/uploads/2019/01/logo1.png"
+          src="https://static.wixstatic.com/media/96b204_3f208a5237f2474f8e5d8c44adf2845f~mv2.png/v1/fill/w_560,h_228,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/96b204_3f208a5237f2474f8e5d8c44adf2845f~mv2.png"
           alt=""
       /></router-link>
       <ul class="menu">
@@ -20,10 +20,10 @@
 <style lang="scss" scoped>
 img {
   width: 150px;
-  object-fit: contain;
+  object-fit: cover;
 }
 #header {
-  background-color: #1e1e1e;
+  background-color: #2e89ff;
   position: sticky;
   max-height: 68px;
   height: 6.8rem;

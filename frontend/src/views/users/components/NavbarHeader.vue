@@ -1,11 +1,8 @@
 <template lang="">
   <div class="wrap">
     <div class="nav">
-      <div>
-        <img
-          src="https://smartdata.tonytemplates.com/computer-repairs/demo3/wp-content/uploads/sites/5/2018/09/Logo.png"
-          alt=""
-        />
+      <div class="logo">
+        <router-link to="/"> HOME REPAIR SERVICES </router-link>
       </div>
       <div>
         <i class="bx bx-location-plus"></i>
@@ -28,6 +25,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 20px 0;
+  .logo {
+    a {
+      font-size: 3.3rem;
+      color: black;
+    }
+  }
   div {
     text-align: center;
     padding-right: 10px;
