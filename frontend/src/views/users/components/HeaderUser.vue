@@ -3,7 +3,7 @@
     <header class="header wrap">
       <router-link to="/" href="" class="logo"
         ><img
-          src="http://mauweb.monamedia.net/painting/wp-content/uploads/2019/01/logo1.png"
+          src="https://mehedi.asiandevelopers.com/demo/roofan-html/assets/images/resources/logo-1.png"
           alt=""
       /></router-link>
       <ul class="menu">
@@ -12,6 +12,7 @@
         <li><router-link to="/" href="#careers">Dịch vụ</router-link></li>
         <li><router-link to="/" href="#contact">Liên hệ</router-link></li>
         <li><router-link to="/" href="#contact">Đăng nhập</router-link></li>
+        <li><router-link to="/" href="#contact">Đăng ký</router-link></li>
       </ul>
     </header>
   </div>
@@ -20,10 +21,10 @@
 <style lang="scss" scoped>
 img {
   width: 150px;
-  object-fit: contain;
+  object-fit: cover;
 }
 #header {
-  background-color: #1e1e1e;
+  background-color: #fff;
   position: sticky;
   max-height: 68px;
   height: 6.8rem;
@@ -47,10 +48,12 @@ img {
   display: block;
   padding: 25px 20px;
   text-decoration: none;
-  color: #fff;
-  font-size: 1.6rem;
+  color: #111e37;
+  font-size: 1.8rem;
+  line-height: 20px;
+  font-weight: 600;
   &:hover {
-    color: orangered;
+    color: var(--red);
   }
 }
 
