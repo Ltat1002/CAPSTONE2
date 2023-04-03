@@ -1,4 +1,4 @@
-class VouchersController < ApplicationController
+class Api::V1::VouchersController < ApplicationController
   before_action :set_voucher, only: %i[ show update destroy ]
 
   # GET /vouchers

@@ -1,4 +1,4 @@
-class RepairEquipmentsController < ApplicationController
+class Api::V1::RepairEquipmentsController < ApplicationController
   before_action :set_repair_equipment, only: %i[ show update destroy ]
 
   # GET /repair_equipments
