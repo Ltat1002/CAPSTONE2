@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  voucher_code: MyString
+  sale: 9.99
+  using_date: 2023-04-01
+  giving_date: 2023-04-01
+  expired_date: 2023-04-01
+  user: one
+  report: one
+
+two:
+  voucher_code: MyString
+  sale: 9.99
+  using_date: 2023-04-01
+  giving_date: 2023-04-01
+  expired_date: 2023-04-01
+  user: two
+  report: two

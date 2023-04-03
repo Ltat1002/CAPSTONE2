@@ -24,7 +24,11 @@ img {
   object-fit: cover;
 }
 #header {
+<<<<<<< HEAD
   background-color: #fff;
+=======
+  background-color: #2e89ff;
+>>>>>>> 334d8ab7a8b0a6ed9450e057ab20a1cb36ad3633
   position: sticky;
   max-height: 68px;
   height: 6.8rem;
