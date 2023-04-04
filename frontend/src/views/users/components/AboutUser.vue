@@ -44,20 +44,26 @@
 <style lang="scss" scoped>
 .about {
   display: flex;
-  margin: -20px;
+  margin: -50px;
   .about--image {
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 50px;
     margin: -20px;
-    div {
+    > div {
+      height: 500px;
       &:first-child {
         margin-top: 105px;
         padding: 20px;
+        height: 440px;
       }
       &:last-child {
         position: relative;
+        img {
+          height: 80%;
+        }
         .service {
+          height: 20%;
           width: 140%;
           background-color: gold;
           padding: 20px 20px;
@@ -71,10 +77,14 @@
           }
         }
       }
+      img {
+        height: 100%;
+        object-fit: cover;
+      }
     }
   }
   .about--description {
-    padding: 20px;
+    padding: 50px;
     display: flex;
     flex-direction: column;
     div {
@@ -110,5 +120,8 @@ h5 {
   text-transform: uppercase;
   letter-spacing: 0;
   color: var(--red);
+}
+p {
+  font-size: 18px;
 }
 </style>
