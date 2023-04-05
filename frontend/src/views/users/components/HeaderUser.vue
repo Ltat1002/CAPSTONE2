@@ -28,7 +28,7 @@ img {
   position: sticky;
   max-height: 68px;
   height: 6.8rem;
-  z-index: 3;
+  z-index: 999;
   left: 0;
   right: 0;
   top: 0;

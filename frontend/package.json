@@ -16,12 +16,11 @@
     "pinia": "^2.0.33",
     "primeicons": "^6.0.1",
     "primevue": "^3.26.0",
+    "swiper": "^9.2.0",
     "vue": "^3.2.13",
     "vue-axios": "^3.5.2",
-    "vue-owl-carousel": "^2.0.3",
     "vue-router": "^4.0.3",
-    "vue-ssr-carousel": "^2.1.0",
-    "vue3-carousel": "^0.2.14"
+    "vue3-carousel": "^0.2.16"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

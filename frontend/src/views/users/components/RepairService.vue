@@ -1,16 +1,18 @@
 <template lang="">
   <div class="container">
     <div class="wrap">
-      <div class="head_repair">
-        <div class="border-left"></div>
-        <h5>OUR SERVICES</h5>
+      <div class="content">
+        <div class="head_repair">
+          <div class="border-left"></div>
+          <h5>OUR SERVICES</h5>
+        </div>
+        <h2>What We Do</h2>
+        <p>
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+          accusantium doloremque laudantium totam rem aperiam, eaque ipsa quae
+          ab illo inventore veritatis et quasi.
+        </p>
       </div>
-      <h2>What We Do</h2>
-      <p>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-        accusantium doloremque laudantium totam rem aperiam, eaque ipsa quae ab
-        illo inventore veritatis et quasi.
-      </p>
       <div class="service">
         <service-item v-for="index in 5" :key="index" />
       </div>
@@ -21,6 +23,12 @@
 import ServiceItem from "./ServiceItem.vue";
 </script>
 <style lang="scss" scoped>
+.content {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .service {
   cursor: pointer;
   margin-top: 40px;
@@ -32,7 +40,7 @@ import ServiceItem from "./ServiceItem.vue";
 }
 .container {
   background-color: #222431;
-  padding: 120px 0 120px;
+  padding: 40px 0 40px;
 }
 .head_repair {
   display: flex;

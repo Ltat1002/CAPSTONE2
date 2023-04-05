@@ -1,11 +1,6 @@
 <template lang="">
   <div class="item">
-    <box-icon
-      name="laptop"
-      animation="tada"
-      rotate="180"
-      size="70px"
-    ></box-icon>
+    <box-icon name="laptop" class="active" size="70px"></box-icon>
     <h3>Lap Top</h3>
   </div>
 </template>
@@ -13,29 +8,56 @@
 <style lang="scss" scoped>
 .item {
   border-radius: 7px;
-  width: 200px;
+  width: 16%;
   background-color: #fff;
   margin-right: 10px;
   margin-left: 10px;
-  padding: 10px;
+  padding: 26px;
   font-size: 2rem;
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  z-index: 10;
+  h3 {
+    position: relative;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    height: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #d90429;
+    transition: height 200ms linear;
+    z-index: -1;
+    border-radius: 7px;
+  }
   &::before {
     content: "";
-    display: none;
     position: absolute;
-    top: 0;
+    width: 0px;
+    height: 0px;
     left: 0;
-    bottom: 0;
+    bottom: -15px;
     right: 0;
-    background-color: rgba($color: #000000, $alpha: 0.5);
+    margin: 0 auto;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid #d90429;
+    z-index: 1;
+    transition: transform 0.4s ease, -webkit-transform 0.4s ease;
+    display: none;
   }
-  &:hover > ::before {
+  &:hover::after {
+    height: 100%;
+  }
+  &:hover::after + h3 {
+    color: #fff;
+  }
+  &:hover::before {
     display: block;
   }
 }
