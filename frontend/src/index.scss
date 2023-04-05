@@ -6,11 +6,17 @@
   box-sizing: border-box;
 }
 html {
-  font-size: 10px;
+  font-size: 16px;
 }
 
 a {
   text-decoration: none;
+}
+
+h3.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 40px 0;
 }
 
 li {
@@ -19,11 +25,11 @@ li {
 :root {
   --poppins: "Poppins", sans-serif;
   --lato: "Lato", sans-serif;
-
+  --primary-color: #d90429 !important;
   --light: #f9f9f9;
   --blue: #3c91e6;
   --light-blue: #cfe8ff;
-  --grey: #eee;
+  --grey: #f7f6f6;
   --dark-grey: #aaaaaa;
   --dark: #342e37;
   --red: #d90429;
@@ -32,17 +38,13 @@ li {
   --orange: #fd7238;
   --light-orange: #ffe0d3;
   --color-title: #0969f8;
+  --width-container: 1200px;
 }
 
-.border-left {
-  position: relative;
-  display: block;
-  top: -1px;
-  background-color: var(--red);
-  width: 20px;
-  height: 2px;
-  margin-right: 10px;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   background: var(--grey);
   overflow-x: hidden;
@@ -59,6 +61,6 @@ body {
 }
 
 .wrap {
-  max-width: 1200px;
+  max-width: var(--width-container);
   margin: auto;
 }

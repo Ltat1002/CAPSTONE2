@@ -32,6 +32,7 @@ img {
   left: 0;
   right: 0;
   top: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .header {
   height: 100%;
@@ -49,7 +50,6 @@ img {
   padding: 25px 20px;
   text-decoration: none;
   color: #111e37;
-  font-size: 1.8rem;
   line-height: 20px;
   font-weight: 600;
   &:hover {
