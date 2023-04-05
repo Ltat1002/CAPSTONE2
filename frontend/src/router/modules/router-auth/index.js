@@ -1,6 +1,5 @@
 import AuthenticationManager from "@/views/auth/AuthenticationManager.vue";
 import AuthLogin from "@/views/auth/AuthSignin.vue";
-import AuthRegister from "@/views/auth/AuthRegister";
 export const routerAuth = {
   path: "/auth",
   name: "auth",
@@ -14,7 +13,7 @@ export const routerAuth = {
     {
       path: "register",
       name: "register",
-      component: AuthRegister,
+      component: AuthLogin,
     },
   ],
 };
