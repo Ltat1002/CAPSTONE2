@@ -82,6 +82,7 @@
 .about {
   display: flex;
   margin: -50px;
+  margin-top: 50px;
   .about--image {
     display: flex;
     align-items: center;
