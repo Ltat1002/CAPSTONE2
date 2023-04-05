@@ -81,8 +81,7 @@
 }
 .about {
   display: flex;
-  margin: -50px;
-  margin-top: 50px;
+  margin: 30px -50px;
   .about--image {
     display: flex;
     align-items: center;
@@ -132,15 +131,7 @@
     }
   }
 }
-.border-left {
-  position: relative;
-  display: block;
-  top: -1px;
-  background-color: var(--red);
-  width: 20px;
-  height: 2px;
-  margin-right: 10px;
-}
+
 h3 {
   font-size: 22px;
   line-height: 30px;

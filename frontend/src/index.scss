@@ -34,7 +34,15 @@ li {
   --color-title: #0969f8;
 }
 
-
+.border-left {
+  position: relative;
+  display: block;
+  top: -1px;
+  background-color: var(--red);
+  width: 20px;
+  height: 2px;
+  margin-right: 10px;
+}
 body {
   background: var(--grey);
   overflow-x: hidden;
