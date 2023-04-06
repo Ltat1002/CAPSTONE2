@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="container">
+  <div class="repair">
     <div class="wrap">
       <div class="content">
         <div class="head_repair">
@@ -38,7 +38,7 @@ import ServiceItem from "./ServiceItem.vue";
   margin-left: -10px;
   justify-content: space-between;
 }
-.container {
+.repair {
   background-color: #222431;
   padding: 40px 0 40px;
 }

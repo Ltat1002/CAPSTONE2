@@ -73,6 +73,7 @@ const images = ref([
   transition: 0.4s;
 }
 .info {
+  width: 100%;
   padding: 35px;
   background: linear-gradient(
     to bottom,
