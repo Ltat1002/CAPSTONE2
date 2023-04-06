@@ -1,10 +1,66 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
 * {
-    padding: 0;
-    margin: 0;
-    border: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
 }
 html {
-    font-size: 10px;
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+}
+
+h3.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 40px 0;
+}
+
+li {
+  list-style: none;
+}
+:root {
+  --poppins: "Poppins", sans-serif;
+  --lato: "Lato", sans-serif;
+  --primary-color: #d90429 !important;
+  --light: #f9f9f9;
+  --blue: #3c91e6;
+  --light-blue: #cfe8ff;
+  --grey: #f7f6f6;
+  --dark-grey: #aaaaaa;
+  --dark: #342e37;
+  --red: #d90429;
+  --yellow: #ffce26;
+  --light-yellow: #fff2c6;
+  --orange: #fd7238;
+  --light-orange: #ffe0d3;
+  --color-title: #0969f8;
+  --width-container: 1200px;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: var(--grey);
+  overflow-x: hidden;
+}
+#content {
+  position: relative;
+  width: calc(100% - 280px);
+  left: 280px;
+  transition: 0.3s ease;
+}
+#sidebar.hide ~ #content {
+  width: calc(100% - 60px);
+  left: 60px;
+}
+
+.wrap {
+  max-width: var(--width-container);
+  margin: auto;
 }
