@@ -8,8 +8,10 @@ Rails.application.routes.draw do
       resources :users
       resources :repair_equipments
 
-      post 'auth/register' , to: 'users#create'
+      post 'auth/register' , to: 'users#register'
       post 'auth/login' , to: 'users#login'
+
+      put 'edit_profile', to: 'users#edit_profile'
     end
   end
 end
