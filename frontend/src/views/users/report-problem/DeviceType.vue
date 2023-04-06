@@ -1,79 +1,75 @@
 <template lang="">
   <h3 class="title">Chọn loại thiết bị của bạn</h3>
   <div class="device_type_list">
-    <div class="device_type_item">
-      <img src="https://cdn-icons-png.flaticon.com/512/806/806281.png" alt="" />
+    <div
+      v-for="(type, index) of deviceTypeList"
+      :key="index"
+      class="device_type_item"
+      :class="indexActive === index ? 'device_type_active' : ''"
+      @click="handleActive(index)"
+      ref="deviceType"
+    >
+      <img :src="type.imageUrl" alt="" />
       <div class="device_type_name">
-        <h4>Thiết bị điện tử</h4>
+        <h4>{{ type.type }}</h4>
       </div>
       <p class="device_type_desc">
-        Have you been always searching for the trustful company that can do all
-        the electrician deals for you?
-      </p>
-    </div>
-    <div class="device_type_item">
-      <img src="https://cdn-icons-png.flaticon.com/512/432/432797.png" alt="" />
-      <div class="device_type_name">
-        <h4>Thiết bị điện tử</h4>
-      </div>
-      <p class="device_type_desc">
-        Have you been always searching for the trustful company that can do all
-        the electrician deals for you?
-      </p>
-    </div>
-    <div class="device_type_item">
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/1028/1028907.png"
-        alt=""
-      />
-      <div class="device_type_name">
-        <h4>Thiết bị điện tử</h4>
-      </div>
-      <p class="device_type_desc">
-        Have you been always searching for the trustful company that can do all
-        the electrician deals for you?
-      </p>
-    </div>
-    <div class="device_type_item">
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/2824/2824790.png"
-        alt=""
-      />
-      <div class="device_type_name">
-        <h4>Thiết bị điện tử</h4>
-      </div>
-      <p class="device_type_desc">
-        Have you been always searching for the trustful company that can do all
-        the electrician deals for you?
-      </p>
-    </div>
-    <div class="device_type_item">
-      <img src="https://cdn-icons-png.flaticon.com/512/603/603157.png" alt="" />
-      <div class="device_type_name">
-        <h4>Thiết bị điện tử</h4>
-      </div>
-      <p class="device_type_desc">
-        Have you been always searching for the trustful company that can do all
-        the electrician deals for you?
-      </p>
-    </div>
-    <div class="device_type_item device_type_active">
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/1205/1205495.png"
-        alt=""
-      />
-      <div class="device_type_name">
-        <h4>Thiết bị điện tử</h4>
-      </div>
-      <p class="device_type_desc">
-        Have you been always searching for the trustful company that can do all
-        the electrician deals for you?
+        {{ type.description }}
       </p>
     </div>
   </div>
 </template>
-<script>
-export default {};
+<script setup>
+import { ref, onMounted } from "vue";
+let indexActive = ref(null);
+const deviceTypeList = [
+  {
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/806/806281.png",
+    type: "Thiết bị điện tử",
+    description:
+      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
+  },
+  {
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/432/432797.png",
+    type: "Thiết bị điện tử",
+    description:
+      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
+  },
+  {
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/1028/1028907.png",
+    type: "Thiết bị điện tử",
+    description:
+      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
+  },
+  {
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/2824/2824790.png",
+    type: "Thiết bị điện tử",
+    description:
+      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
+  },
+  {
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/603/603157.png",
+    type: "Thiết bị điện tử",
+    description:
+      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
+  },
+  {
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/1205/1205495.png",
+    type: "Thiết bị điện tử",
+    description:
+      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
+  },
+];
+
+const deviceType = ref(null);
+
+onMounted(() => {
+  // console.log(deviceType.value);
+});
+
+function handleActive(index) {
+  indexActive.value = index;
+}
 </script>
 <style lang="scss" scoped>
 .device_type_list {
