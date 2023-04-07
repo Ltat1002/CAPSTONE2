@@ -3,9 +3,9 @@ class Api::V1::ReportsController < ApplicationController
 
   # GET /reports
   def index
-    @reports = Report.all
+    @reports = current_user.reports.includes(:repair_equipment)
 
-    render json: @reports
+    render json: @reports.to_json(include: %i[ repair_equipment user ])
   end
 
   # GET /reports/1
@@ -15,10 +15,10 @@ class Api::V1::ReportsController < ApplicationController
 
   # POST /reports
   def create
-    @report = Report.new(report_params)
+    @report = current_user.reports.build(report_params)
 
     if @report.save
-      render json: @report, status: :created, location: @report
+      render json: @report.to_json(include: %i[ repair_equipment user ]), status: :created
     else
       render json: @report.errors, status: :unprocessable_entity
     end
@@ -55,6 +55,7 @@ class Api::V1::ReportsController < ApplicationController
                     :amount_pay,
                     :status,
                     :repair_equipment_id,
-                    :user_id)
+                    :user_id,
+                    images: [])
     end
 end
