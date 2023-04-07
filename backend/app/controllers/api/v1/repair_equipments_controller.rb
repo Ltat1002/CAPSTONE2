@@ -3,7 +3,11 @@ class Api::V1::RepairEquipmentsController < ApplicationController
 
   # GET /repair_equipments
   def index
-    @repair_equipments = RepairEquipment.all
+    if params[:eq_type] == "hot" || params[:eq_type] == 1
+      @repair_equipments = RepairEquipment.hot
+    else
+      @repair_equipments = RepairEquipment.cold
+    end
 
     render json: @repair_equipments
   end

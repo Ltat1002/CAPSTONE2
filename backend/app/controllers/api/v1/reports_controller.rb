@@ -46,6 +46,15 @@ class Api::V1::ReportsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def report_params
-      params.require(:report).permit(:report_mobile, :report_address, :description, :amount_pay, :status, :repair_equipment_id, :user_id)
+      params.permit(:report_mobile,
+                    :report_address,
+                    :report_ward,
+                    :report_district,
+                    :report_city,
+                    :description,
+                    :amount_pay,
+                    :status,
+                    :repair_equipment_id,
+                    :user_id)
     end
 end
