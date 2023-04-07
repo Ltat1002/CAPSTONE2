@@ -50,6 +50,6 @@ class Api::V1::RepairEquipmentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def repair_equipment_params
-      params.require(:repair_equipment).permit(:name, :eq_type, :price)
+      params.permit(:name, :eq_type, :price)
     end
 end
