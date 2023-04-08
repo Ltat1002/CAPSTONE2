@@ -3,7 +3,7 @@
     <header class="header wrap">
       <router-link to="/" href="" class="logo"
         ><img
-          src="https://static.wixstatic.com/media/96b204_3f208a5237f2474f8e5d8c44adf2845f~mv2.png/v1/fill/w_560,h_228,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/96b204_3f208a5237f2474f8e5d8c44adf2845f~mv2.png"
+          src="https://mehedi.asiandevelopers.com/demo/roofan-html/assets/images/resources/logo-1.png"
           alt=""
       /></router-link>
       <ul class="menu">
@@ -12,6 +12,7 @@
         <li><router-link to="/" href="#careers">Dịch vụ</router-link></li>
         <li><router-link to="/" href="#contact">Liên hệ</router-link></li>
         <li><router-link to="/" href="#contact">Đăng nhập</router-link></li>
+        <li><router-link to="/" href="#contact">Đăng ký</router-link></li>
       </ul>
     </header>
   </div>
@@ -23,14 +24,15 @@ img {
   object-fit: cover;
 }
 #header {
-  background-color: #2e89ff;
+  background-color: #fff;
   position: sticky;
   max-height: 68px;
-  height: 6.8rem;
-  z-index: 3;
+  height: 68px;
+  z-index: 999;
   left: 0;
   right: 0;
   top: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .header {
   height: 100%;
@@ -47,10 +49,11 @@ img {
   display: block;
   padding: 25px 20px;
   text-decoration: none;
-  color: #fff;
-  font-size: 1.6rem;
+  color: #111e37;
+  line-height: 20px;
+  font-weight: 600;
   &:hover {
-    color: orangered;
+    color: var(--red);
   }
 }
 
