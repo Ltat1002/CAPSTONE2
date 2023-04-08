@@ -1,5 +1,5 @@
 class Api::V1::ReviewsController < ApplicationController
-  before_action :set_review, only: %i[ show update destroy ]
+  before_action :set_review, only: %i[show update destroy]
 
   # GET /reviews
   def index
@@ -16,9 +16,10 @@ class Api::V1::ReviewsController < ApplicationController
   # POST /reviews
   def create
     @review = Review.new(review_params)
+    @review.user_send = current_user
 
     if @review.save
-      render json: @review, status: :created, location: @review
+      render json: @review, status: :created
     else
       render json: @review.errors, status: :unprocessable_entity
     end
@@ -39,13 +40,12 @@ class Api::V1::ReviewsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_review
-      @review = Review.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def review_params
-      params.require(:review).permit(:rating, :comment, :user_send_id, :user_receive_id)
-    end
+  def set_review
+    @review = Review.find(params[:id])
+  end
+
+  def review_params
+    params.require(:review).permit(:rating, :comment, :user_send_id, :user_receive_id)
+  end
 end
