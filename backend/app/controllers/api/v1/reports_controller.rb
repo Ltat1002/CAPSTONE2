@@ -55,7 +55,7 @@ class Api::V1::ReportsController < ApplicationController
                     :amount_pay,
                     :status,
                     :repair_equipment_id,
-                    :user_id,
+                    :user_send_id,
                     images: [])
     end
 end

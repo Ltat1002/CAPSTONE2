@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :reviews
-  has_many :reports
+  has_many :reports, class_name: 'Report', foreign_key: 'user_send_id'
   has_many :vouchers
 
   enum role: %i[ user admin ]
