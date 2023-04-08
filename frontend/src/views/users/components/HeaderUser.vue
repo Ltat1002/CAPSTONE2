@@ -27,7 +27,7 @@ img {
   background-color: #fff;
   position: sticky;
   max-height: 68px;
-  height: 6.8rem;
+  height: 68px;
   z-index: 999;
   left: 0;
   right: 0;

@@ -98,6 +98,7 @@
         position: relative;
         img {
           height: 80%;
+          width: auto;
         }
         .service {
           height: 20%;
@@ -116,6 +117,8 @@
       }
       img {
         height: 100%;
+        width: auto;
+        max-width: none;
         object-fit: cover;
       }
     }

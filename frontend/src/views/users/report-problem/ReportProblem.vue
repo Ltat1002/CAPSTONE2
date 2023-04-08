@@ -77,7 +77,6 @@ function handleBackByStep() {
 <style lang="scss" scoped>
 .report {
   width: 100%;
-  height: 100vh;
   background-color: #fff;
   padding-top: 30px;
 }

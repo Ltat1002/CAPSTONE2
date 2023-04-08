@@ -13,7 +13,7 @@
   margin-right: 10px;
   margin-left: 10px;
   padding: 26px;
-  font-size: 2rem;
+  font-size: 20px;
   display: flex;
   align-items: center;
   flex-direction: column;
