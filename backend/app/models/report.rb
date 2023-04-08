@@ -1,6 +1,6 @@
 class Report < ApplicationRecord
   belongs_to :repair_equipment
-  belongs_to :user
+  belongs_to :user, optional: true
   has_many :vouchers
   has_many_attached :images
 end
