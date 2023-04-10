@@ -40,7 +40,7 @@ import ServiceItem from "./ServiceItem.vue";
 }
 .repair {
   background-color: #222431;
-  padding: 40px 0 40px;
+  padding: 100px 0 100px;
 }
 .head_repair {
   display: flex;

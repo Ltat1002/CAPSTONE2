@@ -123,7 +123,7 @@ function handleActive(index) {
   }
 }
 .device_type_active {
-  background-color: var(--primary-color) !important;
+  background-color: var(--sub-color) !important;
   color: #fff;
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="pt-5 report">
     <div class="wrap">
       <div class="device">
-        <div class="card">
+        <div>
           <Steps :model="items" :readonly="false" aria-label="Form Steps" />
         </div>
         <router-view></router-view>
@@ -75,6 +75,9 @@ function handleBackByStep() {
 }
 </script>
 <style lang="scss" scoped>
+.p-button {
+  background: var(--sub-color);
+}
 .report {
   width: 100%;
   background-color: #fff;
@@ -87,7 +90,7 @@ function handleBackByStep() {
 }
 
 :deep(.p-steps .p-steps-item.p-highlight .p-steps-number) {
-  background: #4338ca;
+  background: var(--sub-color);
   color: #fff;
 }
 
