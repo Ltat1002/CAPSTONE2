@@ -141,7 +141,9 @@ onMounted(() => {
   box-sizing: border-box;
   user-select: none;
 }
-
+.form__icons {
+  display: flex;
+}
 /* Generic */
 .wrap_main {
   width: 100%;

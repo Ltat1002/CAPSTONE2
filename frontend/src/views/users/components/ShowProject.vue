@@ -69,7 +69,7 @@ const images = ref([
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
+  z-index: 0;
   transition: 0.4s;
 }
 .info {
