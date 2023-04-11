@@ -8,11 +8,19 @@
       /></router-link>
       <ul class="menu">
         <li><router-link to="/">Trang chủ</router-link></li>
-        <li><router-link to="/" href="#about">Giới thiệu</router-link></li>
-        <li><router-link to="/" href="#careers">Dịch vụ</router-link></li>
-        <li><router-link to="/" href="#contact">Liên hệ</router-link></li>
-        <li><router-link to="/" href="#contact">Đăng nhập</router-link></li>
-        <li><router-link to="/" href="#contact">Đăng ký</router-link></li>
+        <li><router-link to="/notify" href="#about">Thông báo</router-link></li>
+        <li>
+          <router-link to="/report-problem" href="#about">Báo cáo</router-link>
+        </li>
+        <li>
+          <router-link to="/history" href="#contact">Lịch sử</router-link>
+        </li>
+        <li>
+          <router-link to="/auth/login" href="#contact">Đăng nhập</router-link>
+        </li>
+        <li>
+          <router-link to="/auth/register" href="#contact">Đăng ký</router-link>
+        </li>
       </ul>
     </header>
   </div>

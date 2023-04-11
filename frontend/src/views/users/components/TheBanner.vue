@@ -244,13 +244,33 @@ $controlSize: 60px;
     }
   }
 
-  @for $i from 1 through $numOfSlides {
-    &:nth-child(#{$i}) {
-      .slide__inner {
-        background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-#{$i+1}.jpg");
-      }
+  // @for $i from 1 through $numOfSlides {
+  &:nth-child(1) {
+    .slide__inner {
+      background-image: url("https://images.macrumors.com/t/snwdJtwBfBxr1BE-AhB11Nblk3k=/1600x900/smart/article-new/2022/12/Apple-EU-Self-Service-repair-iPhone_big.jpg.large_.jpg");
     }
   }
+  &:nth-child(2) {
+    .slide__inner {
+      background-image: url("https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/featured-image-garage-door.jpeg.jpg");
+    }
+  }
+  &:nth-child(3) {
+    .slide__inner {
+      background-image: url("https://www.lifewire.com/thmb/IvdPvULCpGpGtCIqNDZE4wOoEUw=/768x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-489081568-582f59295f9b58d5b1b367b5.jpg");
+    }
+  }
+  &:nth-child(4) {
+    .slide__inner {
+      background-image: url("https://www.dienlanhminhtin.com/wp-content/uploads/2021/11/3-13-602x400.jpg");
+    }
+  }
+  &:nth-child(5) {
+    .slide__inner {
+      background-image: url("https://www.maylanhdongnai.vn/wp-content/uploads/2022/07/sua-dieu-hoa-tai-ha-noi.png");
+    }
+  }
+  // }
 
   &__inner {
     position: absolute;

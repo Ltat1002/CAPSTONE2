@@ -2,7 +2,7 @@
   <div class="wrap_main">
     <div class="main">
       <div
-        :class="checkPath ? 'is-txl' : ''"
+        :class="handleSubmitLogin ? 'is-txl' : ''"
         class="container a-container"
         id="a-container"
       >
@@ -32,7 +32,7 @@
         </form>
       </div>
       <div
-        :class="checkPath ? 'is-txl is-z200' : ''"
+        :class="handleSubmitLogin ? 'is-txl is-z200' : ''"
         class="container b-container"
         id="b-container"
       >
@@ -60,7 +60,11 @@
           <button class="form__button button submit">SIGN IN</button>
         </form>
       </div>
-      <div :class="checkPath ? 'is-txr' : ''" class="switch" id="switch-cnt">
+      <div
+        :class="handleSubmitLogin ? 'is-txr' : ''"
+        class="switch"
+        id="switch-cnt"
+      >
         <div class="switch__circle"></div>
         <div class="switch__circle switch__circle--t"></div>
         <div class="switch__container is-hidden" id="switch-c1">
@@ -83,17 +87,13 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 const router = useRoute();
-const checkPath = handleSubmitLogin();
-function handleSubmitLogin() {
-  console.log(router.path);
+const handleSubmitLogin = computed(() => {
   return router.path.includes("login");
-}
-
+});
 onMounted(() => {
-  handleSubmitLogin();
   let switchCtn = document.querySelector("#switch-cnt");
   let switchC1 = document.querySelector("#switch-c1");
   let switchC2 = document.querySelector("#switch-c2");
@@ -141,7 +141,9 @@ onMounted(() => {
   box-sizing: border-box;
   user-select: none;
 }
-
+.form__icons {
+  display: flex;
+}
 /* Generic */
 .wrap_main {
   width: 100%;

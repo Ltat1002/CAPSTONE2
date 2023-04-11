@@ -14,8 +14,7 @@ default: &default
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password: 30042001
-  port: 3306
+  password: 240501
   socket: /var/run/mysqld/mysqld.sock
 
 development:
@@ -54,3 +53,4 @@ development:
 #   database: backend_production
 #   username: backend
 #   password: <%= ENV["BACKEND_DATABASE_PASSWORD"] %>
+
