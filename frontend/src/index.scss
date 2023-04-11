@@ -38,7 +38,7 @@ li {
   --orange: #fd7238;
   --light-orange: #ffe0d3;
   --color-title: #0969f8;
-  --width-container: 1200px;
+  --width-container: 1100px;
   --sub-color: #348f6c;
 }
 
@@ -49,9 +49,6 @@ li {
 body {
   background: var(--grey);
   overflow-x: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol";
 }
 #content {
   position: relative;
