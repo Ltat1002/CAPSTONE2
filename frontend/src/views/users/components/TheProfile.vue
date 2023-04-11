@@ -39,34 +39,71 @@
       <div class="content">
         <TabView>
           <TabPanel header="Profile">
-            <div class="panel">
-              <div class="bio-graph-heading">Hello Lee DINH TRUONg</div>
-              <div class="panel-body bio-graph-info">
-                <h1>Bio Graph</h1>
-                <div class="row">
-                  <div class="bio-row">
-                    <p><span>First Name </span>: Camila</p>
+            <div class="flex flex-col justify-center items-center h-[100vh]">
+              <div
+                class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:!shadow-none p-3"
+              >
+                <div class="mt-2 mb-8 w-full">
+                  <h4 class="px-2 text-xl font-bold text-navy-700">
+                    Thông tin chung
+                  </h4>
+                  <p class="mt-2 px-2 text-base text-gray-600">
+                    Repair Services xin được trở thành người sửa chữa nhà của
+                    bạn chuyên gia cho tất cả các hạng mục sửa chữa nhà của bạn
+                    và kiểm tra. Chúng tôi sở hữu tại địa phương, được cấp phép,
+                    liên kết và bảo hiểm. Hãy để chúng tôi giúp bạn chăm sóc
+                    khoản đầu tư lớn nhất của mình trong nhiều năm tới đến!
+                  </p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 px-2 w-full">
+                  <div
+                    class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
+                  >
+                    <p class="text-sm text-gray-600">Họ và tên</p>
+                    <p class="text-base font-medium text-navy-700">
+                      Lê Anh Khánh
+                    </p>
                   </div>
-                  <div class="bio-row">
-                    <p><span>Last Name </span>: Smith</p>
+
+                  <div
+                    class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
+                  >
+                    <p class="text-sm text-gray-600">Giới tính</p>
+                    <p class="text-base font-medium text-navy-700">Nam</p>
                   </div>
-                  <div class="bio-row">
-                    <p><span>Country </span>: Australia</p>
+
+                  <div
+                    class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
+                  >
+                    <p class="text-sm text-gray-600">Địa chỉ</p>
+                    <p class="text-base font-medium text-navy-700">Huế</p>
                   </div>
-                  <div class="bio-row">
-                    <p><span>Birthday</span>: 13 July 1983</p>
+
+                  <div
+                    class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
+                  >
+                    <p class="text-sm text-gray-600">Số điện thoại</p>
+                    <p class="text-base font-medium text-navy-700">
+                      0000000000
+                    </p>
                   </div>
-                  <div class="bio-row">
-                    <p><span>Occupation </span>: UI Designer</p>
+
+                  <div
+                    class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
+                  >
+                    <p class="text-sm text-gray-600">Ngày sinh</p>
+                    <p class="text-base font-medium text-navy-700">
+                      24/05/2001
+                    </p>
                   </div>
-                  <div class="bio-row">
-                    <p><span>Email </span>: jsmith@flatlab.com</p>
-                  </div>
-                  <div class="bio-row">
-                    <p><span>Mobile </span>: (12) 03 4567890</p>
-                  </div>
-                  <div class="bio-row">
-                    <p><span>Phone </span>: 88 (02) 123456</p>
+
+                  <div
+                    class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
+                  >
+                    <p class="text-sm text-gray-600">Email</p>
+                    <p class="text-base font-medium text-navy-700">
+                      leanhkhanh6540@gmail.com
+                    </p>
                   </div>
                 </div>
               </div>
@@ -99,125 +136,124 @@
             </Message>
           </TabPanel>
           <TabPanel header="Edit profile">
-            <div class="tab-pane" id="edit">
-              <form>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label"
+            <form>
+              <div class="relative z-0 w-full mb-6 group">
+                <input
+                  type="email"
+                  name="floating_email"
+                  id="floating_email"
+                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  for="floating_email"
+                  class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >Email address</label
+                >
+              </div>
+              <div class="relative z-0 w-full mb-6 group">
+                <input
+                  type="password"
+                  name="floating_password"
+                  id="floating_password"
+                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  for="floating_password"
+                  class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >Password</label
+                >
+              </div>
+              <div class="relative z-0 w-full mb-6 group">
+                <input
+                  type="password"
+                  name="repeat_password"
+                  id="floating_repeat_password"
+                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  for="floating_repeat_password"
+                  class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >Confirm password</label
+                >
+              </div>
+              <div class="grid md:grid-cols-2 md:gap-6">
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    name="floating_first_name"
+                    id="floating_first_name"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    for="floating_first_name"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >First name</label
                   >
-                  <div class="col-lg-9">
-                    <input class="form-control" type="text" value="Mark" />
-                  </div>
                 </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label"
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    name="floating_last_name"
+                    id="floating_last_name"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    for="floating_last_name"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >Last name</label
                   >
-                  <div class="col-lg-9">
-                    <input class="form-control" type="text" value="Jhonsan" />
-                  </div>
                 </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label"
-                    >Email</label
-                  >
-                  <div class="col-lg-9">
-                    <input
-                      class="form-control"
-                      type="email"
-                      value="mark@example.com"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label"
-                    >Website</label
-                  >
-                  <div class="col-lg-9">
-                    <input class="form-control" type="url" value="" />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label"
-                    >Address</label
-                  >
-                  <div class="col-lg-9">
-                    <input
-                      class="form-control"
-                      type="text"
-                      value=""
-                      placeholder="Street"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
+              </div>
+              <div class="grid md:grid-cols-2 md:gap-6">
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="tel"
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                    name="floating_phone"
+                    id="floating_phone"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
                   <label
-                    class="col-lg-3 col-form-label form-control-label"
-                  ></label>
-                  <div class="col-lg-6">
-                    <input
-                      class="form-control"
-                      type="text"
-                      value=""
-                      placeholder="City"
-                    />
-                  </div>
-                  <div class="col-lg-3">
-                    <input
-                      class="form-control"
-                      type="text"
-                      value=""
-                      placeholder="State"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label"
-                    >Username</label
+                    for="floating_phone"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >Phone number (123-456-7890)</label
                   >
-                  <div class="col-lg-9">
-                    <input
-                      class="form-control"
-                      type="text"
-                      value="jhonsanmark"
-                    />
-                  </div>
                 </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label"
-                    >Password</label
-                  >
-                  <div class="col-lg-9">
-                    <input
-                      class="form-control"
-                      type="password"
-                      value="11111122333"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label"
-                    >Confirm password</label
-                  >
-                  <div class="col-lg-9">
-                    <input
-                      class="form-control"
-                      type="password"
-                      value="11111122333"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    name="floating_company"
+                    id="floating_company"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
                   <label
-                    class="col-lg-3 col-form-label form-control-label"
-                  ></label>
-                  <div class="col-lg-9">
-                    <Button label="cancel" class="mr-2" severity="secondary" />
-                    <Button label="save" class="ml-2" />
-                  </div>
+                    for="floating_company"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >Company (Ex. Google)</label
+                  >
                 </div>
-              </form>
-            </div>
+              </div>
+              <button
+                type="submit"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Submit
+              </button>
+            </form>
           </TabPanel>
         </TabView>
       </div>
@@ -225,12 +261,26 @@
   </div>
 </template>
 <script setup>
+// <Button label="cancel" class="mr-2" severity="secondary" />
+// <Button label="save" class="ml-2" />
+
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import Message from "primevue/message";
-import Button from "primevue/button";
+// import Button from "primevue/button";
 </script>
 <style lang="scss" scoped>
+.bg-main-color {
+  background-color: var(--main-color);
+}
+
+.text-main-color {
+  color: var(--main-color);
+}
+
+.border-main-color {
+  border-color: var(--main-color);
+}
 .nav-bar {
   margin-right: 15px;
   width: 300px;
@@ -320,64 +370,21 @@ import Button from "primevue/button";
 :deep(.p-button) {
   height: 40px;
 }
-
-.bio-graph-heading {
-  background: var(--sub-color);
-  color: #fff;
-  text-align: center;
-  font-style: italic;
-  padding: 40px 110px;
-  border-radius: 4px 4px 0 0;
-  -webkit-border-radius: 4px 4px 0 0;
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 10px;
+.icon::after {
+  content: "";
+  display: block;
+  position: absolute;
+  border-top: 23px solid transparent;
+  border-bottom: 17px solid transparent;
+  border-left: 12px solid var(--sub-color);
+  left: 100%;
+  top: 0;
 }
-.bio-graph-info {
-  color: #89817e;
-}
-.bio-graph-info h1 {
-  font-size: 22px;
-  font-weight: 300;
-  margin: 0 0 20px;
-}
-.bio-row {
-  width: 50%;
-  float: left;
-  margin-bottom: 10px;
-  padding: 0 15px;
-}
-.bio-row p span {
-  width: 100px;
-  display: inline-block;
-}
-.bio-chart,
-.bio-desk {
-  float: left;
-}
-.bio-chart {
-  width: 40%;
-}
-.bio-desk {
-  width: 60%;
-}
-.bio-desk h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-.bio-desk h4.terques {
-  color: #4cc5cd;
-}
-.bio-desk h4.red {
-  color: #e26b7f;
-}
-.bio-desk h4.green {
-  color: #97be4b;
-}
-.bio-desk h4.purple {
-  color: #caa3da;
-}
-.file-pos {
-  margin: 6px 0 10px 0;
+.submit-form {
+  background-color: var(--sub-color);
+  cursor: pointer;
+  &:hover {
+    background-color: rgba($color: #2be773, $alpha: 0.9);
+  }
 }
 </style>
