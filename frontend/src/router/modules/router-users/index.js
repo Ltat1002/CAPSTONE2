@@ -11,6 +11,7 @@ import TimeLine from "@/views/users/components/TimeLine.vue";
 import TheHistory from "@/views/users/components/TheHistory.vue";
 
 import TheNotify from "@/components/TheNotify.vue";
+import ReportPreview from "@/views/users/ReportPreview";
 export const routerUsers = [
   {
     path: "/",
@@ -61,5 +62,9 @@ export const routerUsers = [
         component: DeviceDescription,
       },
     ],
+  },
+  {
+    path: "/preview",
+    component: ReportPreview,
   },
 ];
