@@ -7,6 +7,7 @@ import DeviceLocation from "@/views/users/report-problem/DeviceLocation.vue";
 import DeviceDescription from "@/views/users/report-problem/DeviceDescription.vue";
 import TheProfile from "@/views/users/components/TheProfile.vue";
 import EditProfile from "@/views/users/components/EditProfile.vue";
+import ReportPreview from "@/views/users/ReportPreview";
 export const routerUsers = [
   {
     path: "/",
@@ -45,5 +46,9 @@ export const routerUsers = [
         component: DeviceDescription,
       },
     ],
+  },
+  {
+    path: "/preview",
+    component: ReportPreview,
   },
 ];
