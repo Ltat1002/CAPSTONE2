@@ -58,20 +58,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
     t.string "reason"
     t.integer "status", default: 0
     t.bigint "repair_equipment_id", null: false
-    t.bigint "user_id", null: false
+    t.bigint "user_send_id", null: false
+    t.bigint "user_receive_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["repair_equipment_id"], name: "index_reports_on_repair_equipment_id"
-    t.index ["user_id"], name: "index_reports_on_user_id"
+    t.index ["user_receive_id"], name: "index_reports_on_user_receive_id"
+    t.index ["user_send_id"], name: "index_reports_on_user_send_id"
   end
 
   create_table "reviews", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "rating"
     t.string "comment"
-    t.bigint "user_id", null: false
+    t.bigint "user_send_id", null: false
+    t.bigint "user_receive_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_reviews_on_user_id"
+    t.index ["user_receive_id"], name: "index_reviews_on_user_receive_id"
+    t.index ["user_send_id"], name: "index_reviews_on_user_send_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -113,8 +117,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "reports", "repair_equipments"
-  add_foreign_key "reports", "users"
-  add_foreign_key "reviews", "users"
+  add_foreign_key "reports", "users", column: "user_receive_id"
+  add_foreign_key "reports", "users", column: "user_send_id"
+  add_foreign_key "reviews", "users", column: "user_receive_id"
+  add_foreign_key "reviews", "users", column: "user_send_id"
   add_foreign_key "vouchers", "reports"
   add_foreign_key "vouchers", "users"
 end
