@@ -1,14 +1,14 @@
-import ReportProblem from "@/views/users/report-problem/ReportProblem.vue";
-import VoucherProblem from "@/views/users/voucher-giveaway/VoucherProblem.vue";
-export const routerUsers = [
+import ReportPreview from "@/views/users/report-preview/ReportPreview.vue";
+import TheHistory from "@/views/users/components/TheHistory.vue";
+export const routerEngineer = [
   {
-    path: "/report-problem",
-    name: "/report-problem",
-    component: ReportProblem,
+    path: "preview",
+    name: "preview",
+    component: ReportPreview,
   },
   {
-    path: "/voucher",
-    name: "/voucher",
-    component: VoucherProblem,
+    path: "history",
+    name: "history",
+    component: TheHistory,
   },
 ];

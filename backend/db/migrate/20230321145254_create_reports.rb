@@ -11,7 +11,8 @@ class CreateReports < ActiveRecord::Migration[7.0]
       t.string :reason
       t.integer :status, default: 0
       t.references :repair_equipment, null: false, foreign_key: true
-      t.references :user, null: false, foreign_key: true
+      t.references :user_send, null: false, foreign_key: { to_table: :users }
+      t.references :user_receive, default: nil, foreign_key: { to_table: :users }
 
       t.timestamps
     end

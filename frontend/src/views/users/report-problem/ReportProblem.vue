@@ -43,10 +43,6 @@ const items = ref([
     to: "/report-problem/device",
   },
   {
-    label: "Vấn đề",
-    to: "/report-problem/problem",
-  },
-  {
     label: "Mô tả",
     to: "/report-problem/description",
   },
