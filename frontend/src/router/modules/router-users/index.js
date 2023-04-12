@@ -10,7 +10,7 @@ import TimeLine from "@/views/users/components/TimeLine.vue";
 import TheHistory from "@/views/users/components/TheHistory.vue";
 
 import TheNotify from "@/components/TheNotify.vue";
-import ReportPreview from "@/views/users/ReportPreview";
+import ReportPreview from "@/views/users/report-preview/ReportPreview.vue";
 export const routerUsers = [
   {
     path: "/",

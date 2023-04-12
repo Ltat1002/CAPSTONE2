@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: %i[ create login ]
+  skip_before_action :authenticate_request, only: %i[ register login ]
   before_action :set_user, only: %i[ show destroy ]
 
   # GET /users
@@ -38,6 +38,7 @@ class Api::V1::UsersController < ApplicationController
         message: 'Login Successful',
         data: {
           accessToken: command.result,
+          user: User.find_by(email: params[:email])
         }
       }
     else

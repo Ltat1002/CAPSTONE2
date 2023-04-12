@@ -3,7 +3,7 @@
     <div class="container">
       <carousel
         :items-to-show="5"
-        :autoplay="2000"
+        :autoplay="10000000"
         :wrap-around="true"
         :transition="500"
       >
@@ -74,7 +74,7 @@ const images = ref([
 }
 .info {
   width: 100%;
-  padding: 35px;
+  padding: 10px 5px;
   background: linear-gradient(
     to bottom,
     transparent,
@@ -86,7 +86,7 @@ const images = ref([
   transition: 0.4s;
 }
 .info h3 {
-  font-size: 30px;
+  font-size: 20px;
   line-height: 110%;
 }
 .info p {
