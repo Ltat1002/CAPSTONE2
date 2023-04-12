@@ -144,7 +144,7 @@
 </template>
 <style lang="scss" scoped>
 .active {
-  background-color: var(--sub-color);
+  background-color: #565e5b !important;
   p {
     color: #fff !important;
   }

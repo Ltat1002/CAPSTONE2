@@ -21,7 +21,7 @@
     "vue-axios": "^3.5.2",
     "vue-router": "^4.0.3",
     "vue3-carousel": "^0.2.16",
-    @googlemaps/js-api-loader
+    "@googlemaps/js-api-loader": "^1.15.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
