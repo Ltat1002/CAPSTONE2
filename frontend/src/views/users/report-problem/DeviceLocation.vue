@@ -19,7 +19,7 @@
         </span>
       </div>
       <div
-        :style="{ 'margin-top': positionList.length > 0 ? '22px' : '0px' }"
+        :style="{ 'margin-top': positionList.length > 0 ? '6px' : '0px' }"
         class="position"
       >
         <div class="position_list">
@@ -258,7 +258,6 @@ function createMarker(place) {
   top: 20%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba($color: #000000, $alpha: 0.5);
   padding: 22px;
   // border-radius: 5px;
   .wrap_form_search {
