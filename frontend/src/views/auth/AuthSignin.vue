@@ -89,10 +89,11 @@
 <script setup>
 import { onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
-const router = useRoute();
+const route = useRoute();
 const handleSubmitLogin = computed(() => {
-  return router.path.includes("login");
+  return route.path.includes("login");
 });
+
 onMounted(() => {
   let switchCtn = document.querySelector("#switch-cnt");
   let switchC1 = document.querySelector("#switch-c1");
@@ -129,7 +130,7 @@ onMounted(() => {
       switchBtn[j].addEventListener("click", changeForm);
   };
 
-  window.addEventListener("load", mainF);
+  mainF();
 });
 </script>
 <style lang="scss" scoped>
