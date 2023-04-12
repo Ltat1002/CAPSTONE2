@@ -22,13 +22,49 @@
             />
           </div>
           <span class="form__span">or use email for registration</span>
-          <input class="form__input" type="text" placeholder="First Name" />
-          <input class="form__input" type="text" placeholder="Last Name" />
-          <input class="form__input" type="text" placeholder="Mobile" />
-          <input class="form__input" type="text" placeholder="Address" />
-          <input class="form__input" type="text" placeholder="Email" />
-          <input class="form__input" type="password" placeholder="Password" />
-          <button class="form__button button submit">SIGN UP</button>
+          <input
+            v-model="register.first_name"
+            class="form__input"
+            type="text"
+            placeholder="First Name"
+          />
+          <input
+            v-model="register.last_name"
+            class="form__input"
+            type="text"
+            placeholder="Last Name"
+          />
+          <input
+            v-model="register.mobile"
+            class="form__input"
+            type="text"
+            placeholder="Mobile"
+          />
+          <input
+            v-model="register.email"
+            class="form__input"
+            type="text"
+            placeholder="Email"
+          />
+          <input
+            v-model="register.password"
+            class="form__input"
+            type="password"
+            placeholder="Password"
+          />
+          <input
+            v-model="register.password_confirmation"
+            class="form__input"
+            type="password"
+            placeholder="Confirm password"
+          />
+          <button
+            @click="handleRegister"
+            type="submit"
+            class="form__button button submit"
+          >
+            SIGN UP
+          </button>
         </form>
       </div>
       <div
@@ -87,12 +123,27 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from "vue";
+import { onMounted, computed, reactive } from "vue";
 import { useRoute } from "vue-router";
+import { useRegisterStore } from "@/store/register.js";
+const registerStore = useRegisterStore();
 const route = useRoute();
+const register = reactive({
+  mobile: "",
+  first_name: "",
+  last_name: "",
+  email: "",
+  password: "",
+  password_confirmation: "",
+});
 const handleSubmitLogin = computed(() => {
   return route.path.includes("login");
 });
+
+function handleRegister() {
+  console.log(register);
+  registerStore.register(register);
+}
 
 onMounted(() => {
   let switchCtn = document.querySelector("#switch-cnt");
