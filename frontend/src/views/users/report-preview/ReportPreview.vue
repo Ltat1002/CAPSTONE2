@@ -96,6 +96,7 @@
               ><i class="bx bx-check-circle mr-1"></i>Xác nhận</span
             >
             <span
+              @click="visible = !visible"
               class="bg-[#36e241] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
               ><i class="bx bxs-message-rounded-dots mr-1"></i>Đánh giá</span
             >
@@ -108,12 +109,20 @@
       </div>
     </div>
   </div>
+  <Dialog v-model:visible="visible" modal header="Đánh giá">
+    <TheRating />
+  </Dialog>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import Dialog from "primevue/dialog";
+
+import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
 import Button from "primevue/button";
+const visible = ref(false);
+
 onMounted(() => {
   bindDocumentListeners();
 });
@@ -228,6 +237,13 @@ const fullScreenIcon = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+.p-dialog .p-dialog-content {
+  padding: 0;
+}
+:deep(.p-dialog .p-dialog-header) {
+  display: 2px;
+}
+
 .preview {
   margin-right: -10px;
   margin-left: -10px;
