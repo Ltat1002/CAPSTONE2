@@ -168,6 +168,6 @@ function handleClickSidebar() {
   font-family: var(--poppins);
   min-height: calc(100vh - 56px);
   overflow-y: auto;
-  background: var(--grey);
+  background: #d7d5d5;
 }
 </style>
