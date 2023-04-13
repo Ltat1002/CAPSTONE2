@@ -9,9 +9,16 @@ export const useRegisterStore = defineStore("register", {
       return http.post("auth/register", data);
     },
     login(data) {
-      return http.post("auth/login", data).then((data) => {
-        this.account = data;
+      return http.post("auth/login", data);
+    },
+    profile() {
+      return http.get("profile").then((data) => {
+        this.account = data.data;
+        console.log(data);
       });
+    },
+    setAccount(account) {
+      this.account = account;
     },
   },
 });

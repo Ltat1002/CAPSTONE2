@@ -3,6 +3,7 @@ import HomeLayout from "../views/engineer/HomeLayout.vue";
 import { routerAuth } from "@/router/modules/router-auth";
 import { routerUsers } from "./modules/router-users/index.js";
 import HomeUser from "@/views/users/HomeUser.vue";
+import { routerEngineer } from "./modules/router-engineer/index";
 const routes = [
   {
     path: "/",
@@ -14,6 +15,7 @@ const routes = [
     path: "/engineer",
     name: "engineer",
     component: HomeLayout,
+    children: [...routerEngineer],
   },
   { ...routerAuth },
 ];

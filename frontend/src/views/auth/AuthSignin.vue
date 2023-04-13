@@ -95,11 +95,18 @@
             />
           </div>
           <span class="form__span">or use your email account</span>
-          <input class="form__input" type="text" placeholder="Email" />
-          <input class="form__input" type="password" placeholder="Mật khẩu" /><a
-            class="form__link"
-            >Forgot your password?</a
-          >
+          <input
+            v-model="login.email"
+            class="form__input"
+            type="text"
+            placeholder="Email"
+          />
+          <input
+            v-model="login.password"
+            class="form__input"
+            type="password"
+            placeholder="Mật khẩu"
+          /><a class="form__link">Forgot your password?</a>
           <Button
             class="mt-3 sign_up"
             type="button"
@@ -139,11 +146,12 @@
 <script setup>
 import Button from "primevue/button";
 import { onMounted, computed, reactive, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useRegisterStore } from "@/store/register.js";
 import { toastMessage } from "@/helper/toastMessage.js";
 const registerStore = useRegisterStore();
 const route = useRoute();
+const router = useRouter();
 const register = reactive({
   mobile: "",
   first_name: "",
@@ -153,9 +161,32 @@ const register = reactive({
   password: "",
   password_confirmation: "",
 });
+
+const login = reactive({
+  email: "",
+  password: "",
+});
 const loading = ref(false);
 
-function handleLogin() {}
+async function handleLogin() {
+  console.log("click");
+  // registerStore.login(login);
+  loading.value = true;
+  setTimeout(async () => {
+    registerStore
+      .login(login)
+      .then((data) => {
+        localStorage.setItem("token", data.data.data.accessToken);
+        registerStore.setAccount(data.data.data.user);
+        router.push("/");
+        toastMessage("success", "Thành công", "Đăng nhập thành công");
+      })
+      .catch(() => {
+        toastMessage("error", "Thất bại", "Đăng thất bại");
+      });
+    loading.value = false;
+  }, 2000);
+}
 
 const handleSubmitLogin = computed(() => {
   return route.path.includes("login");
