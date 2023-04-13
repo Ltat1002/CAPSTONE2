@@ -6,7 +6,7 @@
         class="container a-container"
         id="a-container"
       >
-        <form class="form" id="a-form" method="" action="">
+        <form class="form form_sign_up" id="a-form" method="" action="">
           <h2 class="form_title title">Create Account</h2>
           <div class="form__icons">
             <img
@@ -26,19 +26,25 @@
             v-model="register.first_name"
             class="form__input"
             type="text"
-            placeholder="First Name"
+            placeholder="Tên"
           />
           <input
             v-model="register.last_name"
             class="form__input"
             type="text"
-            placeholder="Last Name"
+            placeholder="Họ"
+          />
+          <input
+            v-model="register.address"
+            class="form__input"
+            type="text"
+            placeholder="Địa chỉ"
           />
           <input
             v-model="register.mobile"
             class="form__input"
             type="text"
-            placeholder="Mobile"
+            placeholder="Sdt"
           />
           <input
             v-model="register.email"
@@ -50,21 +56,22 @@
             v-model="register.password"
             class="form__input"
             type="password"
-            placeholder="Password"
+            placeholder="Mật khẩu"
           />
           <input
             v-model="register.password_confirmation"
             class="form__input"
             type="password"
-            placeholder="Confirm password"
+            placeholder="Xác nhận mật khẩu"
           />
-          <button
+          <Button
+            class="mt-3 sign_up"
+            type="button"
+            rounded
+            label="ĐĂNG KÝ"
+            :loading="loading"
             @click="handleRegister"
-            type="submit"
-            class="form__button button submit"
-          >
-            SIGN UP
-          </button>
+          />
         </form>
       </div>
       <div
@@ -89,11 +96,18 @@
           </div>
           <span class="form__span">or use your email account</span>
           <input class="form__input" type="text" placeholder="Email" />
-          <input class="form__input" type="password" placeholder="Password" /><a
+          <input class="form__input" type="password" placeholder="Mật khẩu" /><a
             class="form__link"
             >Forgot your password?</a
           >
-          <button class="form__button button submit">SIGN IN</button>
+          <Button
+            class="mt-3 sign_up"
+            type="button"
+            rounded
+            label="ĐĂNG NHẬP"
+            :loading="loading"
+            @click="handleLogin"
+          />
         </form>
       </div>
       <div
@@ -108,14 +122,14 @@
           <p class="switch__description description">
             To keep connected with us please login with your personal info
           </p>
-          <button class="switch__button button switch-btn">SIGN IN</button>
+          <button class="switch__button button switch-btn">ĐĂNG NHẬP</button>
         </div>
         <div class="switch__container" id="switch-c2">
           <h2 class="switch__title title">Hello Friend !</h2>
           <p class="switch__description description">
             Enter your personal details and start journey with us
           </p>
-          <button class="switch__button button switch-btn">SIGN UP</button>
+          <button class="switch__button button switch-btn">ĐĂNG KÝ</button>
         </div>
       </div>
     </div>
@@ -123,9 +137,11 @@
 </template>
 
 <script setup>
-import { onMounted, computed, reactive } from "vue";
+import Button from "primevue/button";
+import { onMounted, computed, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useRegisterStore } from "@/store/register.js";
+import { toastMessage } from "@/helper/toastMessage.js";
 const registerStore = useRegisterStore();
 const route = useRoute();
 const register = reactive({
@@ -133,19 +149,48 @@ const register = reactive({
   first_name: "",
   last_name: "",
   email: "",
+  address: "",
   password: "",
   password_confirmation: "",
 });
+const loading = ref(false);
+
+function handleLogin() {}
+
 const handleSubmitLogin = computed(() => {
   return route.path.includes("login");
 });
 
 function handleRegister() {
-  console.log(register);
-  registerStore.register(register);
+  loading.value = true;
+  setTimeout(() => {
+    registerStore
+      .register(register)
+      .then((data) => {
+        console.log(data);
+        toastMessage("success", "Thành công", "Đăng Ký thành công");
+        addClass();
+      })
+      .catch(() => {
+        toastMessage("error", "Thất bại", "Email đã được sử dụng");
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }, 2000);
 }
 
-onMounted(() => {
+function addClass() {
+  let switchCtn = document.querySelector("#switch-cnt");
+  let aContainer = document.querySelector("#a-container");
+  let bContainer = document.querySelector("#b-container");
+  aContainer.classList.add("is-txl");
+  bContainer.classList.add("is-txl");
+  switchCtn.classList.add("is-txr");
+  bContainer.classList.add("is-z200");
+}
+
+function mouted() {
   let switchCtn = document.querySelector("#switch-cnt");
   let switchC1 = document.querySelector("#switch-c1");
   let switchC2 = document.querySelector("#switch-c2");
@@ -164,6 +209,7 @@ onMounted(() => {
     }, 1500);
 
     switchCtn.classList.toggle("is-txr");
+    console.log(switchCtn);
     switchCircle[0].classList.toggle("is-txr");
     switchCircle[1].classList.toggle("is-txr");
 
@@ -182,6 +228,13 @@ onMounted(() => {
   };
 
   mainF();
+  return () => {
+    return changeForm();
+  };
+}
+
+onMounted(() => {
+  mouted();
 });
 </script>
 <style lang="scss" scoped>
@@ -192,6 +245,15 @@ onMounted(() => {
   padding: 0;
   box-sizing: border-box;
   user-select: none;
+}
+
+// :deep(.p-button) {
+//   padding-left: 20px;
+//   padding-right: 20px;
+// }
+.sign_up {
+  padding-left: 60px !important;
+  padding-right: 60px !important;
 }
 .form__icons {
   display: flex;

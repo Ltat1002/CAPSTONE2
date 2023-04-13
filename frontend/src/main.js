@@ -10,9 +10,11 @@ import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 import "boxicons";
 import { pinia } from "./store";
+import ToastService from "primevue/toastservice";
 
-const app = createApp(App);
+export const app = createApp(App);
 app.use(pinia);
+app.use(ToastService);
 app.use(router);
 app.use(PrimeVue);
 app.use(ConfirmationService);
