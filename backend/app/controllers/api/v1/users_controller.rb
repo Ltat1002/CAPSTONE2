@@ -36,14 +36,10 @@ class Api::V1::UsersController < ApplicationController
     if command.success?
       render json: {
         message: 'Login Successful',
-<<<<<<< HEAD
         data: {
           accessToken: command.result,
           user: User.find_by(email: params[:email])
         }
-=======
-        data: { accessToken: command.result }
->>>>>>> 1e9c8577dc22b3e86ae3cbd0d668c8f581490ae9
       }
     else
       render json: { error: command.errors }, status: :unauthorized

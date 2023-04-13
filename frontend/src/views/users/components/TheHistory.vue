@@ -41,7 +41,7 @@
                     Đánh giá
                   </p>
                   <div>
-                    <Rating v-model="rating" :cancel="false" />
+                    <Rating v-model="rating2" :cancel="false" />
                   </div>
                 </div>
                 <div>
@@ -101,7 +101,7 @@
                     Đánh giá
                   </p>
                   <div>
-                    <Rating v-model="rating" :cancel="false" />
+                    <Rating v-model="rating" :cancel="false" readonly />
                   </div>
                 </div>
                 <div>
@@ -129,7 +129,8 @@
 <script setup>
 import Rating from "primevue/rating";
 import { ref } from "vue";
-const rating = ref();
+const rating = ref(4);
+const rating2 = ref();
 </script>
 <style lang="scss" scoped>
 .item {
