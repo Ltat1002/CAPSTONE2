@@ -246,7 +246,7 @@ function createMarker(place) {
 </script>
 <style lang="scss" scoped>
 :deep(.p-inputtext):focus ~ label {
-  color: #fff;
+  color: #000;
 }
 :deep(.p-dialog .p-dialog-content .p-confirm-dialog-message) {
   font-size: 16px !important;
@@ -306,7 +306,7 @@ function createMarker(place) {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba($color: #348f6c, $alpha: 1);
+  background: rgba($color: #6366f1, $alpha: 1);
   border-radius: 6px;
 }
 

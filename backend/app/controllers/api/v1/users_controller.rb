@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request, only: %i[ register login ]
-  before_action :set_user, only: %i[ show destroy ]
+  before_action :set_user, only: %i[ profile destroy ]
 
   # GET /users
   def index
@@ -10,7 +10,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   # GET /users/1
-  def show
+  def profile
     render json: @user
   end
 
@@ -62,7 +62,7 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find_by(id: current_user.id)
   end
 
   def user_params
