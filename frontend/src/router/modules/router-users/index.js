@@ -9,7 +9,6 @@ import EditProfile from "@/views/users/components/EditProfile.vue";
 import TimeLine from "@/views/users/components/TimeLine.vue";
 import TheHistory from "@/views/users/components/TheHistory.vue";
 
-import TheNotify from "@/components/TheNotify.vue";
 import ReportPreview from "@/views/users/report-preview/ReportPreview.vue";
 export const routerUsers = [
   {
@@ -25,12 +24,14 @@ export const routerUsers = [
     component: TimeLine,
   },
   {
-    path: "/history",
-    component: TheHistory,
-  },
-  {
     path: "/notify",
-    component: TheNotify,
+    component: TheHistory,
+    children: [
+      {
+        path: "preview",
+        component: ReportPreview,
+      },
+    ],
   },
   {
     path: "/edit-profile",
