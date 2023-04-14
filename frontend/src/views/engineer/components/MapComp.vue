@@ -7,6 +7,8 @@
         <span class="form_search p-float-label p-input-icon-left">
           <i class="pi pi-search" />
           <InputText
+            ref="input"
+            @focus="showPopup = true"
             @input="handleSearch"
             id="value"
             v-model="searchRef"
@@ -19,6 +21,7 @@
         </span>
       </div>
       <div
+        v-if="showPopup"
         :style="{ 'margin-top': positionList.length > 0 ? '6px' : '0px' }"
         class="position"
       >
@@ -42,20 +45,30 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, onUnmounted, watch, computed } from "vue";
+import {
+  ref,
+  onMounted,
+  onUnmounted,
+  watch,
+  defineEmits,
+  computed,
+  //   defineExpose,
+} from "vue";
 import { useConfirm } from "primevue/useconfirm";
 import ConfirmDialog from "primevue/confirmdialog";
-import { useRouter } from "vue-router";
 import { useGeolocation } from "@/helper/useGeolocation.js";
 import { Loader } from "@googlemaps/js-api-loader";
 import InputText from "primevue/inputtext";
 const GOOGLE_MAPS_API_KEY = "AIzaSyADl3t1Xrjtwf58sZsq4wzqSuyWI1zySbM";
+const emit = defineEmits(["setAddress"]);
+let showPopup = ref(false);
+// const a = defineExpose({ input });
+// console.log(a);
 const searchRef = ref("");
 let positionList = ref([]);
 var markers = [];
 const confirm = useConfirm();
-const router = useRouter();
-// const input = ref("");
+const input = ref("");
 const { coords } = useGeolocation();
 const currPos = computed(() => ({
   lat: coords.value.latitude,
@@ -96,6 +109,7 @@ onMounted(async () => {
     return (otherPos.value = { lat: lat(), lng: lng() });
   });
 });
+
 onUnmounted(async () => {
   if (clickListener) clickListener.remove();
 });
@@ -214,12 +228,13 @@ function handleSearch() {
 }
 
 const handleShowInfo = (address, name) => {
+  showPopup.value = false;
   confirm.require({
     message: `Địa chỉ của bạn: ${name ? `${name},` : ""} ${address}`,
     header: "Xác nhận",
     icon: "pi pi-exclamation-triangle",
     accept: () => {
-      router.push("/preview");
+      emit("setAddress", `${name ? `${name},` : ""} ${address}`);
     },
     reject: () => {
       console.log("no");
@@ -255,7 +270,7 @@ function createMarker(place) {
   border-radius: 6px;
   position: absolute;
   width: 80%;
-  top: 20%;
+  top: 15%;
   left: 50%;
   transform: translateX(-50%);
   padding: 22px;

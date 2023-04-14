@@ -14,12 +14,13 @@
         <Editor v-model="value" class="flex-1" editorStyle="height: 320px" />
       </div>
       <div class="flex-1 h-[500px]">
-        <div class="h-[416px] overflow-hidden"><map-comp></map-comp></div>
+        <div class="h-[416px] overflow-hidden">
+          <map-comp @setAddress="setAddress"></map-comp>
+        </div>
         <div
-          class="h-[60px] mt-4 border border-solid border-[#fff] w-full bg-[#3e6363] text-white rounded-md px-3 overflow-y-auto flex items-center"
+          class="h-[60px] address mt-4 border border-solid border-[#fff] w-full text-white rounded-md px-3 overflow-y-auto flex items-center"
         >
-          Địa chỉ của bạn: Tổ 4, thôn quan nam 2, Xã hoà liên, huyện hoà vang,
-          TP Đà Nẵng
+          Địa chỉ của bạn: {{ address }}
         </div>
       </div>
     </div>
@@ -43,6 +44,7 @@ import Button from "primevue/button";
 import { ref, watch } from "vue";
 const value = ref("");
 const loading = ref(false);
+const address = ref("");
 const deviceList = ref([
   { name: "New York", code: "NY" },
   { name: "Rome", code: "RM" },
@@ -52,6 +54,10 @@ const deviceList = ref([
 ]);
 const selectedDevices = ref([]);
 
+function setAddress(addressProps) {
+  address.value = addressProps;
+}
+
 function handleRegisterEngineer() {
   loading.value = true;
   setTimeout(() => {
@@ -59,8 +65,8 @@ function handleRegisterEngineer() {
   }, 2000);
 }
 
-watch(selectedDevices, () => {
-  console.log(selectedDevices.value[0].name);
+watch(value, () => {
+  console.log(value);
 });
 </script>
 <style lang="scss" scoped>
@@ -70,5 +76,16 @@ watch(selectedDevices, () => {
   :deep(.p-editor-content) {
     flex: 1;
   }
+}
+
+:deep(.p-multiselect) {
+  background-color: #567e7e;
+  .p-multiselect-label.p-placeholder,
+  .p-multiselect-trigger {
+    color: #fff;
+  }
+}
+.address {
+  background-color: #3e6363;
 }
 </style>
