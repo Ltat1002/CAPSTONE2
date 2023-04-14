@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useRouter } from "vue-router";
 import { http } from "@/configs/httpCommon";
 export const useRegisterStore = defineStore("register", {
   state: () => {
@@ -12,10 +13,17 @@ export const useRegisterStore = defineStore("register", {
       return http.post("auth/login", data);
     },
     profile() {
-      return http.get("profile").then((data) => {
-        this.account = data.data;
-        console.log(data);
-      });
+      const router = useRouter();
+      return http
+        .get("profile")
+        .then((data) => {
+          this.account = data.data;
+          console.log(data);
+        })
+        .catch(() => {
+          router.push("/");
+          localStorage.removeItem("token");
+        });
     },
     setAccount(account) {
       this.account = account;

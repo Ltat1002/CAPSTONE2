@@ -15,6 +15,12 @@
         <li>
           <router-link to="/history" href="#contact">Lịch sử</router-link>
         </li>
+        <li v-if="checkLogin">
+          <router-link to="/engineer/upload-information" href="#contact">
+            <!-- <Button label="Trở thành đối tác của HRS" /> -->
+            Trở thành đối tác của HRS
+          </router-link>
+        </li>
         <li v-if="!checkLogin">
           <router-link to="/auth/login" href="#contact">Đăng nhập</router-link>
         </li>
@@ -56,6 +62,7 @@
 <script setup>
 import { useRegisterStore } from "@/store/register.js";
 import { ref, computed } from "vue";
+// import Button from "primevue/button";
 const registerStore = useRegisterStore();
 const checkLogin = computed(() => (registerStore.account?.id ? true : false));
 const showDropdown = ref(false);
