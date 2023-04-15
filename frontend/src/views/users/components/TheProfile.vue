@@ -109,32 +109,7 @@
               </div>
             </div>
           </TabPanel>
-          <TabPanel header="Messages">
-            <Message severity="success">
-              <div>
-                <h2>Info Message Content</h2>
-                <p>20/04/2022</p>
-              </div>
-            </Message>
-            <Message severity="success">
-              <div>
-                <h2>Info Message Content</h2>
-                <p>20/04/2022</p>
-              </div>
-            </Message>
-            <Message severity="success">
-              <div>
-                <h2>Info Message Content</h2>
-                <p>20/04/2022</p>
-              </div>
-            </Message>
-            <Message severity="success">
-              <div>
-                <h2>Info Message Content</h2>
-                <p>20/04/2022</p>
-              </div>
-            </Message>
-          </TabPanel>
+          <TabPanel header="Messages"> <TheNotify /> </TabPanel>
           <TabPanel header="Edit profile">
             <form>
               <div class="relative z-0 w-full mb-6 group">
@@ -263,10 +238,9 @@
 <script setup>
 // <Button label="cancel" class="mr-2" severity="secondary" />
 // <Button label="save" class="ml-2" />
-
+import TheNotify from "@/components/TheNotify.vue";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
-import Message from "primevue/message";
 // import Button from "primevue/button";
 </script>
 <style lang="scss" scoped>
