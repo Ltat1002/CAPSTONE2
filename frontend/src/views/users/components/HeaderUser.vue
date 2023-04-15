@@ -65,6 +65,7 @@ import { ref, computed } from "vue";
 // import Button from "primevue/button";
 const registerStore = useRegisterStore();
 const checkLogin = computed(() => (registerStore.account?.id ? true : false));
+console.log(registerStore.account);
 const showDropdown = ref(false);
 </script>
 <style lang="scss" scoped>
