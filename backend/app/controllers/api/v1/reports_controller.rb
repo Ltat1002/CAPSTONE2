@@ -42,7 +42,7 @@ class Api::V1::ReportsController < ApplicationController
   end
 
   def report_params
-    params.permit(:report_mobile, :report_address, :report_ward, :report_district, :report_city,
-                  :description, :amount_pay, :status, :repair_equipment_id, :user_send_id, images: [])
+    params.permit(:name, :mobile, :address, :longitude, :latitude, :description, :amount_pay,
+                  :reason, :status, :repair_equipment_id, :user_send_id, images: [])
   end
 end
