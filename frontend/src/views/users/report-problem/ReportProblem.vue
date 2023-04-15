@@ -84,6 +84,11 @@ function handleBackByStep() {
   padding-top: 30px;
 }
 
+:deep(.p-steps .p-steps-item .p-menuitem-link .p-steps-number) {
+  min-width: 1rem;
+  height: 1rem;
+}
+
 :deep(.p-timeline-event-content) {
   font-weight: bold;
   white-space: nowrap;
@@ -94,6 +99,26 @@ function handleBackByStep() {
   color: #fff;
 }
 
+:deep(.p-steps .p-steps-item.p-highlight .p-steps-number) {
+  color: var(--sub-color);
+}
+
+:deep(.p-steps-title) {
+  font-size: 12px;
+}
+:deep(.p-steps .p-steps-item .p-menuitem-link .p-steps-number) {
+  color: #fff;
+  border: 2px solid var(--sub-color);
+  font-size: 1px;
+  &:hover {
+    background-color: var(--sub-color);
+    color: var(--sub-color);
+  }
+}
+:deep(.p-steps .p-steps-item:before) {
+  border: 1px solid var(--sub-color);
+  top: 57%;
+}
 .action {
   display: flex;
   justify-content: space-between;
