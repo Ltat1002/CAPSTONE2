@@ -35,7 +35,7 @@ module ExceptionHandler
 
   # JSON response with message; Status code 401 - Unauthorized
   def four_ninety_eight(e)
-    render json: { message: e.message }
+    render json: { message: e.message }, status: 401
   end
 
   # JSON response with message; Status code 401 - Unauthorized

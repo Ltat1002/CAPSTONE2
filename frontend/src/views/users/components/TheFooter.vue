@@ -91,9 +91,9 @@
 
       <!-- Main container div: holds the entire content of the footer, including four sections (Tailwind Elements, Products, Useful links, and Contact), with responsive styling and appropriate padding/margins. -->
       <div class="mx-6 py-10 text-center md:text-left wrap">
-        <div class="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div class="flex justify-between px-[-16px]">
           <!-- Tailwind Elements section -->
-          <div class="">
+          <div class="flex-1 px-4">
             <h6
               class="mb-4 flex items-center justify-center font-semibold uppercase md:justify-start"
             >
@@ -117,10 +117,8 @@
             <p>Chúng tôi rất mong được phục vụ bạn.</p>
           </div>
           <!-- Products section -->
-          <div class="">
-            <h6
-              class="mb-4 flex justify-center font-semibold uppercase md:justify-start"
-            >
+          <div class="flex-1 px-4">
+            <h6 class="mb-4 flex justify-center font-semibold uppercase">
               DỊCH VỤ
             </h6>
             <p class="mb-4">
@@ -138,42 +136,9 @@
                 >Mua</a
               >
             </p>
-            <p>
-              <a href="#!" class="text-neutral-600 dark:text-neutral-200"
-                >Bán</a
-              >
-            </p>
-          </div>
-          <!-- Useful links section -->
-          <div class="">
-            <h6
-              class="mb-4 flex justify-center font-semibold uppercase md:justify-start"
-            >
-              CÁC LIÊN KẾT
-            </h6>
-            <p class="mb-4">
-              <a href="#!" class="text-neutral-600 dark:text-neutral-200"
-                >Grab</a
-              >
-            </p>
-            <p class="mb-4">
-              <a href="#!" class="text-neutral-600 dark:text-neutral-200"
-                >Shoppee</a
-              >
-            </p>
-            <p class="mb-4">
-              <a href="#!" class="text-neutral-600 dark:text-neutral-200"
-                >Tiki</a
-              >
-            </p>
-            <p>
-              <a href="#!" class="text-neutral-600 dark:text-neutral-200"
-                >Lazada</a
-              >
-            </p>
           </div>
           <!-- Contact section -->
-          <div>
+          <div class="flex-1 px-4">
             <h6
               class="mb-4 flex justify-center font-semibold uppercase md:justify-start"
             >
