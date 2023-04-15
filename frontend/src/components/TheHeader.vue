@@ -85,6 +85,7 @@ function handleClickSidebar() {
   align-items: center;
   height: 36px;
   border: 1px solid #ccc;
+  border-radius: 20px;
 }
 #content nav form .form-input input {
   flex-grow: 1;
@@ -167,6 +168,6 @@ function handleClickSidebar() {
   font-family: var(--poppins);
   min-height: calc(100vh - 56px);
   overflow-y: auto;
-  background: var(--grey);
+  background: #d7d5d5;
 }
 </style>

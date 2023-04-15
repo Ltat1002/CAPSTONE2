@@ -6,3 +6,10 @@ export const http = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+http.interceptors.request.use((config) => {
+  console.log(1);
+  const localToken = localStorage.getItem("token") || "";
+  config.headers.Authorization = `Bearer ${localToken}`;
+  return config;
+});

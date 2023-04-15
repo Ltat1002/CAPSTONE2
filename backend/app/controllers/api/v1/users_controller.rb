@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: %i[ create login ]
-  before_action :set_user, only: %i[ show destroy ]
+  skip_before_action :authenticate_request, only: %i[ register login ]
+  before_action :set_user, only: %i[ profile destroy ]
 
   # GET /users
   def index
@@ -10,7 +10,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   # GET /users/1
-  def show
+  def profile
     render json: @user
   end
 
@@ -38,6 +38,7 @@ class Api::V1::UsersController < ApplicationController
         message: 'Login Successful',
         data: {
           accessToken: command.result,
+          user: User.find_by(email: params[:email])
         }
       }
     else
@@ -59,22 +60,13 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def user_params
-      params.permit(:email,
-        :password,
-        :password_confirmation,
-        :first_name,
-        :last_name,
-        :mobile,
-        :address,
-        :technique,
-        :role,
-        :status)
-    end
+  def set_user
+    @user = User.find_by(id: current_user.id)
   end
+
+  def user_params
+    params.permit(:email, :password, :password_confirmation, :first_name, :last_name, :mobile,
+                  :address, :ward, :district, :city, :technique, :role, :status)
+  end
+end

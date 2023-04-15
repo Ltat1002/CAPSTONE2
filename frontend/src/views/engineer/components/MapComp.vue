@@ -1,12 +1,14 @@
 <template lang="">
   <ConfirmDialog> </ConfirmDialog>
-  <div class="mt-8 rounded overflow-hidden relative">
-    <div ref="mapDiv" style="width: 100%; height: 80vh"></div>
+  <div class="rounded overflow-hidden relative h-full">
+    <div ref="mapDiv" style="width: 100%; height: 100%"></div>
     <div class="form">
       <div class="wrap_form_search">
         <span class="form_search p-float-label p-input-icon-left">
           <i class="pi pi-search" />
           <InputText
+            ref="input"
+            @focus="showPopup = true"
             @input="handleSearch"
             id="value"
             v-model="searchRef"
@@ -19,6 +21,7 @@
         </span>
       </div>
       <div
+        v-if="showPopup"
         :style="{ 'margin-top': positionList.length > 0 ? '6px' : '0px' }"
         class="position"
       >
@@ -42,25 +45,35 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import {
+  ref,
+  onMounted,
+  onUnmounted,
+  watch,
+  defineEmits,
+  computed,
+  //   defineExpose,
+} from "vue";
 import { useConfirm } from "primevue/useconfirm";
 import ConfirmDialog from "primevue/confirmdialog";
-import { useRouter } from "vue-router";
-// import { useGeolocation } from "@/helper/useGeolocation";
+import { useGeolocation } from "@/helper/useGeolocation.js";
 import { Loader } from "@googlemaps/js-api-loader";
 import InputText from "primevue/inputtext";
 const GOOGLE_MAPS_API_KEY = "AIzaSyADl3t1Xrjtwf58sZsq4wzqSuyWI1zySbM";
+const emit = defineEmits(["setAddress"]);
+let showPopup = ref(false);
+// const a = defineExpose({ input });
+// console.log(a);
 const searchRef = ref("");
 let positionList = ref([]);
 var markers = [];
 const confirm = useConfirm();
-const router = useRouter();
-// const input = ref("");
-// const { coords } = useGeolocation();
-// const currPos = computed(() => ({
-//   lat: coords.value.latitude,
-//   lng: coords.value.longitude,
-// }));
+const input = ref("");
+const { coords } = useGeolocation();
+const currPos = computed(() => ({
+  lat: coords.value.latitude,
+  lng: coords.value.longitude,
+}));
 const otherPos = ref(null);
 const loader = new Loader({ apiKey: GOOGLE_MAPS_API_KEY });
 const mapDiv = ref(null);
@@ -96,96 +109,97 @@ onMounted(async () => {
     return (otherPos.value = { lat: lat(), lng: lng() });
   });
 });
+
 onUnmounted(async () => {
   if (clickListener) clickListener.remove();
 });
-// var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-// let newDistance = null;
+// var iconBase = "https://maps.google.com/mapfiles/kml/shapes/";
+let newDistance = null;
 // var directionsDisplay;
-// var myMarker;
-// var otherMarker;
-// watch([map, currPos, otherPos], () => {
-//   if (otherMarker) {
-//     otherMarker.setMap(null);
-//   }
-//   var origin1 = new window.google.maps.LatLng(
-//     currPos.value.lat,
-//     currPos.value.lng
-//   );
-//   var origin2 = new window.google.maps.LatLng(
-//     otherPos.value?.lat,
-//     otherPos.value?.lng
-//   );
+var myMarker;
+var otherMarker;
+watch([map, currPos, otherPos], () => {
+  if (otherMarker) {
+    otherMarker.setMap(null);
+  }
+  var origin1 = new window.google.maps.LatLng(
+    currPos.value.lat,
+    currPos.value.lng
+  );
+  var origin2 = new window.google.maps.LatLng(
+    otherPos.value?.lat,
+    otherPos.value?.lng
+  );
 
-//   myMarker = new window.google.maps.Marker({
-//     position: origin1,
-//     title: "My location!",
-//     icon: createIcon(
-//       "https://images.squarespace-cdn.com/content/v1/5e24773c72c72a5f12fe787d/1644781864949-3CL50TS4DXV9K1MOQ5FA/IMG-8008.PNG"
-//     ),
-//   });
-//   myMarker.setMap(map.value);
-//   otherMarker = new window.google.maps.Marker({
-//     position: origin2,
-//     title: "New location!",
-//   });
-//   otherMarker.setMap(map.value);
-//   newDistance = new window.google.maps.DistanceMatrixService();
-//   newDistance.getDistanceMatrix(
-//     {
-//       origins: [origin1],
-//       destinations: [origin2],
-//       travelMode: "DRIVING",
-//     },
-//     getDistance
-//   );
-//   var directionsService = new window.google.maps.DirectionsService();
+  myMarker = new window.google.maps.Marker({
+    position: origin1,
+    title: "My location!",
+    icon: createIcon(
+      "https://images.squarespace-cdn.com/content/v1/5e24773c72c72a5f12fe787d/1644781864949-3CL50TS4DXV9K1MOQ5FA/IMG-8008.PNG"
+    ),
+  });
+  myMarker.setMap(map.value);
+  otherMarker = new window.google.maps.Marker({
+    position: origin2,
+    title: "New location!",
+  });
+  otherMarker.setMap(map.value);
+  newDistance = new window.google.maps.DistanceMatrixService();
+  newDistance.getDistanceMatrix(
+    {
+      origins: [origin1],
+      destinations: [origin2],
+      travelMode: "DRIVING",
+    },
+    getDistance
+  );
+  //   var directionsService = new window.google.maps.DirectionsService();
 
-//   function dogetRedirect_map(position, roomLatlng) {
-//     if (directionsDisplay) {
-//       directionsDisplay.setMap(null);
-//     }
-//     directionsDisplay = new window.google.maps.DirectionsRenderer({
-//       suppressMarkers: true,
-//     });
-//     var request = {
-//       origin: position,
-//       destination: roomLatlng,
-//       travelMode: window.google.maps.TravelMode.DRIVING,
-//     };
-//     directionsDisplay.setMap(map.value); // map là biến google maps được tạo ở đoạn code bài trước
-//     directionsService.route(request, function (response, status) {
-//       if (status == window.google.maps.DirectionsStatus.OK) {
-//         directionsDisplay.setOptions({
-//           preserveViewport: true,
-//           suppressMarkers: true,
-//         });
-//         directionsDisplay.setDirections(response);
-//         // var myroute = response.routes[0]; // Kết quả trả về
-//         // var time = myroute.legs[0].duration.text; // Thời gian duy chuyển
-//         // var total = myroute.legs[0].distance.text; // Chiều dài đoạn đường duy chuyển
-//         // var from = myroute.legs[0].start_address; // Điểm xuất phát
-//         // var to = myroute.legs[0].end_address; // Điểm đến
-//       } else {
-//         console.log(status);
-//       }
-//     });
-//   }
-//   dogetRedirect_map(origin1, origin2);
-// });
+  //   function dogetRedirect_map(position, roomLatlng) {
+  //     if (directionsDisplay) {
+  //       directionsDisplay.setMap(null);
+  //     }
+  //     directionsDisplay = new window.google.maps.DirectionsRenderer({
+  //       suppressMarkers: true,
+  //     });
+  //     var request = {
+  //       origin: position,
+  //       destination: roomLatlng,
+  //       travelMode: window.google.maps.TravelMode.DRIVING,
+  //     };
+  //     directionsDisplay.setMap(map.value); // map là biến google maps được tạo ở đoạn code bài trước
+  //     directionsService.route(request, function (response, status) {
+  //       if (status == window.google.maps.DirectionsStatus.OK) {
+  //         directionsDisplay.setOptions({
+  //           preserveViewport: true,
+  //           suppressMarkers: true,
+  //         });
+  //         directionsDisplay.setDirections(response);
+  //         // var myroute = response.routes[0]; // Kết quả trả về
+  //         // var time = myroute.legs[0].duration.text; // Thời gian duy chuyển
+  //         // var total = myroute.legs[0].distance.text; // Chiều dài đoạn đường duy chuyển
+  //         // var from = myroute.legs[0].start_address; // Điểm xuất phát
+  //         // var to = myroute.legs[0].end_address; // Điểm đến
+  //       } else {
+  //         console.log(status);
+  //       }
+  //     });
+  //   }
+  //   dogetRedirect_map(origin1, origin2);
+});
 
-// function createIcon(url) {
-//   return {
-//     url: url, // url
-//     scaledSize: new window.google.maps.Size(30, 30), // scaled size
-//     origin: new window.google.maps.Point(0, 0), // origin
-//     anchor: new window.google.maps.Point(0, 0), // anchor
-//   };
-// }
+function createIcon(url) {
+  return {
+    url: url, // url
+    scaledSize: new window.google.maps.Size(30, 30), // scaled size
+    origin: new window.google.maps.Point(0, 0), // origin
+    anchor: new window.google.maps.Point(0, 0), // anchor
+  };
+}
 
-// const getDistance = (response, status) => {
-//   console.log(response, status);
-// };
+const getDistance = (response, status) => {
+  console.log(response, status);
+};
 
 function handleSearch() {
   if (markers.length > 0) {
@@ -214,12 +228,13 @@ function handleSearch() {
 }
 
 const handleShowInfo = (address, name) => {
+  showPopup.value = false;
   confirm.require({
     message: `Địa chỉ của bạn: ${name ? `${name},` : ""} ${address}`,
     header: "Xác nhận",
     icon: "pi pi-exclamation-triangle",
     accept: () => {
-      router.push("/preview");
+      emit("setAddress", `${name ? `${name},` : ""} ${address}`);
     },
     reject: () => {
       console.log("no");
@@ -255,7 +270,7 @@ function createMarker(place) {
   border-radius: 6px;
   position: absolute;
   width: 80%;
-  top: 20%;
+  top: 15%;
   left: 50%;
   transform: translateX(-50%);
   padding: 22px;

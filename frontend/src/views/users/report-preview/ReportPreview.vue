@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class="flex flex-col">
-        <div class="p-2">
+        <div class="p-2 mt-4">
           <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
           <p class="ml-4">
             HOME REPAIR SERVICE là một doanh nghiệp do một gia đình sở hữu và
@@ -77,43 +77,103 @@
             vụ bạn.
           </p>
         </div>
-        <div class="p-2">
-          <h3 class="text-[20px] text-[#333] font-semibold mb-2">Thiết bị</h3>
-          <ul class="ml-[2.7rem]">
-            <li class="list-disc">
-              <span>Thiết bị:</span><span>Thiết bị điện tử</span>
-            </li>
-            <li class="list-disc">
-              <span>Tên thiết bị:</span><span>Điện thoại</span>
-            </li>
-          </ul>
+        <div class="p-2 flex justify-between mt-4">
+          <div class="w-[30%]">
+            <h3 class="text-[20px] text-[#333] font-semibold mb-2">Thiết bị</h3>
+            <ul class="ml-[2.7rem]">
+              <li class="list-disc">
+                <span>Thiết bị:</span><span>Thiết bị điện tử</span>
+              </li>
+              <li class="list-disc">
+                <span>Tên thiết bị:</span><span>Điện thoại</span>
+              </li>
+            </ul>
+          </div>
+          <Timeline :value="events" layout="horizontal" align="top">
+            <template #marker="slotProps">
+              <span
+                class="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1 p-[8px] rounded-[50%]"
+                :style="{ backgroundColor: slotProps.item.color }"
+              >
+                <i :class="slotProps.item.icon" class="text-[25px]"></i>
+              </span>
+            </template>
+            <template #content="slotProps">
+              <div>
+                <p>{{ slotProps.item.status }}</p>
+                <p class="h-3">{{ slotProps.item.date }}</p>
+              </div>
+            </template>
+            <template #connector="slotProps">
+              <div
+                class="h-[2px] w-full"
+                :style="{ backgroundColor: slotProps.item.color }"
+              ></div>
+            </template>
+          </Timeline>
         </div>
         <div class="p-2">
           <h3 class="text-[20px] text-[#333] font-semibold mb-2"></h3>
-          <div class="flex flex-wrap mx-[-5px]">
+          <div class="flex flex-wrap justify-end mx-[-5px]">
             <span
-              class="bg-[#36e241] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
+              class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
               ><i class="bx bx-check-circle mr-1"></i>Xác nhận</span
             >
             <span
-              class="bg-[#36e241] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
+              @click="visible = !visible"
+              class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
               ><i class="bx bxs-message-rounded-dots mr-1"></i>Đánh giá</span
             >
             <span
-              class="bg-[#36e241] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
-              ><i class="bx bx-message-alt-x mr-1"></i>Xóa</span
+              class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
+              ><i class="bx bx-message-alt-x mr-1"></i>Hủy</span
             >
           </div>
         </div>
       </div>
     </div>
   </div>
+  <Dialog v-model:visible="visible" modal header="Đánh giá">
+    <TheRating />
+  </Dialog>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import Dialog from "primevue/dialog";
+import Timeline from "primevue/timeline";
+
+import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
 import Button from "primevue/button";
+const visible = ref(false);
+const events = ref([
+  {
+    status: "Gửi yêu cầu",
+    date: "15/10/2020 16:15",
+    icon: "bx bxs-compass bx-spin",
+    color: "#6366F1",
+  },
+  {
+    status: "Xác nhận",
+    date: "15/10/2020 10:30",
+    icon: "bx bx-cog bx-spin",
+    color: "#6366F1",
+    image: "game-controller.jpg",
+  },
+  {
+    status: "Tiến hành",
+    date: "15/10/2020 14:00",
+    icon: "bx bx-bolt-circle bx-spin",
+    color: "#6366F1",
+  },
+  {
+    status: "Hoàn thành",
+    icon: "bx bxs-sun bx-spin",
+    color: "#333",
+  },
+]);
+
 onMounted(() => {
   bindDocumentListeners();
 });
@@ -228,6 +288,22 @@ const fullScreenIcon = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+:deep(.p-timeline-event-opposite) {
+  padding: 0;
+}
+:deep(.p-timeline-event-content) {
+  white-space: nowrap;
+}
+:deep(.p-timeline-event-connector) {
+  background-color: red;
+}
+.p-dialog .p-dialog-content {
+  padding: 0;
+}
+:deep(.p-dialog .p-dialog-header) {
+  display: 2px;
+}
+
 .preview {
   margin-right: -10px;
   margin-left: -10px;

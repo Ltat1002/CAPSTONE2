@@ -9,7 +9,12 @@ import "primevue/resources/themes/lara-light-indigo/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 import "boxicons";
-const app = createApp(App);
+import { pinia } from "./store";
+import ToastService from "primevue/toastservice";
+
+export const app = createApp(App);
+app.use(pinia);
+app.use(ToastService);
 app.use(router);
 app.use(PrimeVue);
 app.use(ConfirmationService);

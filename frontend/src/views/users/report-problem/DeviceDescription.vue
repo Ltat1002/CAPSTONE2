@@ -1,7 +1,7 @@
 <template lang="">
   <keep-alive>
     <div class="description">
-      <div class="card flex justify-content-center">
+      <div>
         <span class="p-float-label">
           <Textarea v-model="value" rows="10" />
           <label>Mô tả</label>
@@ -51,27 +51,29 @@ const value = ref("");
 <style lang="scss" scoped>
 .images {
   position: relative;
-  display: flex;
   height: 500px;
   z-index: 1;
   overflow-y: auto;
   flex: 1;
   border-radius: 7px;
   margin-left: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
   margin-right: -10px;
-  box-shadow: 0 0 3px #c2b5b5;
-  padding: 70px 20px 20px 20px;
+  border: 1px solid #ced4da;
+  background-color: #e8ecf2;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 200px);
+  grid-template-rows: repeat(2, 200px);
+  grid-gap: 20px;
   .p-image {
-    margin-right: 10px;
-    margin-left: 10px;
-    margin-bottom: 10px;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ced4da;
+    border-radius: 7px;
   }
   :deep(.p-image-preview-container) > img {
     height: 200px;
     border-radius: 7px;
-    box-shadow: 0px 0px 5px #c2b5b5;
     object-fit: cover;
   }
   :deep(.p-image-preview-indicator) {
@@ -90,8 +92,8 @@ const value = ref("");
 }
 .upload_image {
   position: absolute;
-  right: 5px;
-  top: 5px;
+  right: 20px;
+  top: 20px;
 }
 .p-fileupload {
   height: 50px;
