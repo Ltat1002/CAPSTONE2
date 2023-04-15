@@ -3,11 +3,7 @@ class Api::V1::RepairEquipmentsController < ApplicationController
 
   # GET /repair_equipments
   def index
-    if params[:eq_type] == "hot" || params[:eq_type] == 1
-      @repair_equipments = RepairEquipment.hot
-    else
-      @repair_equipments = RepairEquipment.cold
-    end
+    @repair_equipments = RepairEquipment.all
 
     render json: @repair_equipments
   end
@@ -43,13 +39,12 @@ class Api::V1::RepairEquipmentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_repair_equipment
-      @repair_equipment = RepairEquipment.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def repair_equipment_params
-      params.permit(:name, :eq_type, :price)
-    end
+  def set_repair_equipment
+    @repair_equipment = RepairEquipment.find(params[:id])
+  end
+
+  def repair_equipment_params
+    params.permit(:name, :description)
+  end
 end

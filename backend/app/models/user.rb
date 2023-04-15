@@ -9,8 +9,9 @@ class User < ApplicationRecord
   has_many :reports, foreign_key: 'user_send_id'
   has_many :reports, foreign_key: 'user_receive_id'
   has_many :vouchers
+  belongs_to :repair_equipment
 
-  enum role: %i[user admin]
+  enum role: %i[user engineer admin]
 
   alias authenticate valid_password?
 end
