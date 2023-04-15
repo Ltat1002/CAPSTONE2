@@ -184,8 +184,10 @@ async function handleLogin() {
       })
       .catch(() => {
         toastMessage("error", "Thất bại", "Đăng thất bại");
+      })
+      .finally(() => {
+        loading.value = false;
       });
-    loading.value = false;
   }, 2000);
 }
 

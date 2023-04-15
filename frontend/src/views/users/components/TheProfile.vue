@@ -16,20 +16,20 @@
           <div class="info-sub">
             <div>
               <div>
-                <h2>0702355627</h2>
+                <h2>{{ profile.mobile }}</h2>
               </div>
               <p>Mobile Number</p>
             </div>
             <div>
               <div>
-                <h2>leanhkhanh6540@gmail.com</h2>
+                <h2>{{ profile.email }}</h2>
               </div>
               <p>Email Address</p>
             </div>
 
             <div>
               <div>
-                <h2>Huees</h2>
+                <h2>{{ profile.address }}</h2>
               </div>
               <p>Address</p>
             </div>
@@ -39,11 +39,11 @@
       <div class="content">
         <TabView>
           <TabPanel header="Profile">
-            <div class="flex flex-col justify-center items-center h-[100vh]">
+            <div class="flex flex-col justify-center items-center">
               <div
                 class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:!shadow-none p-3"
               >
-                <div class="mt-2 mb-8 w-full">
+                <div class="mt-2 w-full">
                   <h4 class="px-2 text-xl font-bold text-navy-700">
                     Thông tin chung
                   </h4>
@@ -55,13 +55,13 @@
                     khoản đầu tư lớn nhất của mình trong nhiều năm tới đến!
                   </p>
                 </div>
-                <div class="grid grid-cols-2 gap-4 px-2 w-full">
+                <div class="grid grid-cols-2 px-2 w-full">
                   <div
                     class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
                   >
                     <p class="text-sm text-gray-600">Họ và tên</p>
                     <p class="text-base font-medium text-navy-700">
-                      Lê Anh Khánh
+                      {{ profile.last_name }} {{ profile.first_name }}
                     </p>
                   </div>
 
@@ -76,7 +76,9 @@
                     class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
                   >
                     <p class="text-sm text-gray-600">Địa chỉ</p>
-                    <p class="text-base font-medium text-navy-700">Huế</p>
+                    <p class="text-base font-medium text-navy-700">
+                      {{ profile.address }}
+                    </p>
                   </div>
 
                   <div
@@ -84,7 +86,7 @@
                   >
                     <p class="text-sm text-gray-600">Số điện thoại</p>
                     <p class="text-base font-medium text-navy-700">
-                      0000000000
+                      {{ profile.mobile }}
                     </p>
                   </div>
 
@@ -102,7 +104,7 @@
                   >
                     <p class="text-sm text-gray-600">Email</p>
                     <p class="text-base font-medium text-navy-700">
-                      leanhkhanh6540@gmail.com
+                      {{ profile.email }}
                     </p>
                   </div>
                 </div>
@@ -268,6 +270,13 @@ import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import Message from "primevue/message";
 // import Button from "primevue/button";
+import { useRegisterStore } from "@/store/register.js";
+import { computed } from "vue";
+const registerStore = useRegisterStore();
+
+const profile = computed(() => {
+  return registerStore.account;
+});
 </script>
 <style lang="scss" scoped>
 .bg-main-color {
@@ -321,6 +330,8 @@ import Message from "primevue/message";
     overflow: hidden;
     color: #000;
     .info-sub {
+      width: 100%;
+      overflow-x: hidden;
       border-radius: 5px;
       border: 1px solid #ccc;
       > div {
