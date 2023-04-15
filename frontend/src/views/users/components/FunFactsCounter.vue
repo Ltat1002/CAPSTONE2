@@ -1,5 +1,5 @@
 <template lang="">
-  <main class="counter-container">
+  <main class="counter-container wrap">
     <div class="social">
       <div class="social-icon">
         <box-icon name="youtube" type="logo" color="red" size="60px"></box-icon>

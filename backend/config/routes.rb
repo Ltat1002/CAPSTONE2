@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       post 'auth/login', to: 'users#login'
 
       put 'edit_profile', to: 'users#edit_profile'
+      get 'profile', to: 'users#profile'
     end
   end
 end

@@ -1,10 +1,16 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
 * {
   padding: 0;
   margin: 0;
   border: 0;
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
   font-size: 16px;
 }
@@ -25,7 +31,7 @@ li {
 :root {
   --poppins: "Poppins", sans-serif;
   --lato: "Lato", sans-serif;
-  --primary-color: #d90429 !important;
+  --primary-color: #6366F1 !important;
   --light: #f9f9f9;
   --blue: #3c91e6;
   --light-blue: #cfe8ff;
@@ -38,12 +44,9 @@ li {
   --orange: #fd7238;
   --light-orange: #ffe0d3;
   --color-title: #0969f8;
-  --width-container: 1200px;
+  --width-container: 1100px;
+  --sub-color: #6366F1;
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 body {
   background: var(--grey);

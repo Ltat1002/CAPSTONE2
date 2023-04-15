@@ -6,15 +6,15 @@
     </router-link>
     <ul class="side-menu top">
       <li :class="{ active: currentPage.includes('/report-problem') }">
-        <router-link to="/report-problem">
+        <router-link to="engineer/history">
           <i class="bx bxs-user"></i>
-          <span class="text">Report Problem</span>
+          <span class="text">Lịch sử báo cáo</span>
         </router-link>
       </li>
       <li :class="{ active: currentPage.includes('/voucher') }">
         <router-link to="/voucher">
           <i class="bx bxs-shopping-bag-alt"></i>
-          <span class="text">Voucher giveaway</span>
+          <span class="text">...</span>
         </router-link>
       </li>
     </ul>

@@ -1,14 +1,30 @@
-import ReportProblem from "@/views/users/report-problem/ReportProblem.vue";
-import VoucherProblem from "@/views/users/voucher-giveaway/VoucherProblem.vue";
-export const routerUsers = [
+import ReportPreview from "@/views/users/report-preview/ReportPreview.vue";
+import TheHistory from "@/views/users/components/TheHistory.vue";
+import ShowReport from "@/views/engineer/components/ShowReport.vue";
+import CompHome from "@/views/users/home/CompHome.vue";
+import UploadInfomation from "@/views/engineer/UploadInformation.vue";
+export const routerEngineer = [
   {
-    path: "/report-problem",
-    name: "/report-problem",
-    component: ReportProblem,
+    path: "",
+    component: CompHome,
   },
   {
-    path: "/voucher",
-    name: "/voucher",
-    component: VoucherProblem,
+    path: "preview",
+    name: "preview",
+    component: ReportPreview,
+  },
+  {
+    path: "history",
+    name: "history",
+    component: TheHistory,
+  },
+  {
+    path: "upload-information",
+    component: UploadInfomation,
+  },
+  {
+    path: "show-report",
+    name: "ShowReport",
+    component: ShowReport,
   },
 ];

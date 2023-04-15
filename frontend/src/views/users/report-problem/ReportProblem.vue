@@ -2,7 +2,7 @@
   <div class="pt-5 report">
     <div class="wrap">
       <div class="device">
-        <div class="card">
+        <div>
           <Steps :model="items" :readonly="false" aria-label="Form Steps" />
         </div>
         <router-view></router-view>
@@ -43,10 +43,6 @@ const items = ref([
     to: "/report-problem/device",
   },
   {
-    label: "Vấn đề",
-    to: "/report-problem/problem",
-  },
-  {
     label: "Mô tả",
     to: "/report-problem/description",
   },
@@ -75,10 +71,18 @@ function handleBackByStep() {
 }
 </script>
 <style lang="scss" scoped>
+.p-button {
+  background: var(--sub-color);
+}
 .report {
   width: 100%;
   background-color: #fff;
   padding-top: 30px;
+}
+
+:deep(.p-steps .p-steps-item .p-menuitem-link .p-steps-number) {
+  min-width: 1rem;
+  height: 1rem;
 }
 
 :deep(.p-timeline-event-content) {
@@ -87,10 +91,30 @@ function handleBackByStep() {
 }
 
 :deep(.p-steps .p-steps-item.p-highlight .p-steps-number) {
-  background: #4338ca;
+  background: var(--sub-color);
   color: #fff;
 }
 
+:deep(.p-steps .p-steps-item.p-highlight .p-steps-number) {
+  color: var(--sub-color);
+}
+
+:deep(.p-steps-title) {
+  font-size: 12px;
+}
+:deep(.p-steps .p-steps-item .p-menuitem-link .p-steps-number) {
+  color: #fff;
+  border: 2px solid var(--sub-color);
+  font-size: 1px;
+  &:hover {
+    background-color: var(--sub-color);
+    color: var(--sub-color);
+  }
+}
+:deep(.p-steps .p-steps-item:before) {
+  border: 1px solid var(--sub-color);
+  top: 57%;
+}
 .action {
   display: flex;
   justify-content: space-between;
