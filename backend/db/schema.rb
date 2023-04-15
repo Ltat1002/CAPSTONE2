@@ -41,18 +41,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
 
   create_table "repair_equipments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
-    t.integer "eq_type", default: 0
-    t.decimal "price", precision: 15, scale: 4
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "reports", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "report_mobile"
-    t.string "report_address"
-    t.string "report_ward"
-    t.string "report_district"
-    t.string "report_city"
+    t.string "name"
+    t.string "mobile"
+    t.string "address"
+    t.float "longitude"
+    t.float "latitude"
     t.string "description"
     t.decimal "amount_pay", precision: 15, scale: 4
     t.string "reason"
@@ -83,12 +82,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
     t.string "last_name"
     t.string "mobile"
     t.string "address"
-    t.string "ward"
-    t.string "district"
-    t.string "city"
-    t.string "technique"
+    t.float "longitude"
+    t.float "latitude"
     t.integer "role", default: 0
+    t.string "description"
     t.integer "status", default: 0
+    t.integer "onl_status", default: 0
+    t.bigint "repair_equipment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email", default: "", null: false
@@ -97,12 +97,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["repair_equipment_id"], name: "index_users_on_repair_equipment_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   create_table "vouchers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "voucher_code"
-    t.decimal "sale", precision: 15, scale: 4
+    t.decimal "voucher_value", precision: 15, scale: 4
     t.date "using_date"
     t.date "giving_date"
     t.date "expired_date"
@@ -121,6 +122,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
   add_foreign_key "reports", "users", column: "user_send_id"
   add_foreign_key "reviews", "users", column: "user_receive_id"
   add_foreign_key "reviews", "users", column: "user_send_id"
+  add_foreign_key "users", "repair_equipments"
   add_foreign_key "vouchers", "reports"
   add_foreign_key "vouchers", "users"
 end
