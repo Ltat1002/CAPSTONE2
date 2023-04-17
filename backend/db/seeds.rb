@@ -8,3 +8,9 @@
 
 # Create admin
 User.create(email: "admin@gmail.com", password: "123456", password_confirmation: "123456", role: 1)
+
+# Create repair equipments
+RepairEquipment.create(name: "Thiết bị điện")
+RepairEquipment.create(name: "Thiết bị điện tử")
+RepairEquipment.create(name: "Thiết bị điện lạnh")
+RepairEquipment.create(name: "Thiết bị nước")
