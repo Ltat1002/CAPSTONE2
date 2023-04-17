@@ -3,19 +3,30 @@ class Api::V1::ReportsController < ApplicationController
 
   def index
     @reports = Report.includes(:repair_equipment, :user_send, :user_receive, :vouchers)
-                     .where(user_send_id: current_user.id)
+                     .where(user_send_id: current_user.id).with_attached_images
 
-    render json: @reports
+    render json: @reports.map { |report|
+      report.as_json(include: %i[user_send user_receive repair_equipment vouchers])
+            .merge({ images: url_for(report.images.first) })
+    }
   end
 
   def show
-    render json: @report
+    render json: @report.as_json(include: %i[user_send user_receive repair_equipment vouchers])
+                        .merge(images: @report.images.map do |image|
+                                         url_for(image)
+                                       end)
   end
 
   def create
-    @report = Report.create(report_params)
-    @report.images.attach(params[:images])
+    @report = Report.create(report_params.except(:images))
     @report.user_send = current_user
+
+    if params[:images].present?
+      params[:images].each do |image|
+        @report.images.attach(image)
+      end
+    end
 
     if @report.save
       render json: @report, status: :created
