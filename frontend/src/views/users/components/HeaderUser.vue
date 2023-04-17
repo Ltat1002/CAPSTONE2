@@ -96,7 +96,6 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 const registerStore = useRegisterStore();
 const checkLogin = computed(() => (registerStore.account?.id ? true : false));
-console.log(registerStore.account);
 const showDropdown = ref(false);
 const isOnline = ref(true);
 const router = useRouter();
