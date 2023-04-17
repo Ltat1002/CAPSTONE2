@@ -14,6 +14,7 @@ class Api::V1::ReportsController < ApplicationController
 
   def create
     @report = Report.create(report_params)
+    @report.images.attach(params[:images])
     @report.user_send = current_user
 
     if @report.save
@@ -42,8 +43,7 @@ class Api::V1::ReportsController < ApplicationController
   end
 
   def report_params
-    params.require(:report).permit(:name, :mobile, :address, :longitude, :latitude, :description,
-                                   :amount_pay, :reason, :status, :repair_equipment_id,
-                                   :user_send_id, images: [])
+    params.permit(:name, :mobile, :address, :longitude, :latitude, :description, :amount_pay,
+                  :reason, :status, :repair_equipment_id, :user_send_id, images: [])
   end
 end
