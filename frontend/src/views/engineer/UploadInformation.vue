@@ -2,16 +2,19 @@
   <div class="wrap my-5">
     <div class="flex gap-5">
       <div class="form flex-1 flex flex-col">
-        <MultiSelect
+        <Dropdown
           v-model="selectedDevices"
           :options="deviceList"
           filter
           optionLabel="name"
           placeholder="Chọn thiết bị"
-          :maxSelectedLabels="3"
           class="w-full md:w-20rem mb-4"
         />
-        <Editor v-model="value" class="flex-1" editorStyle="height: 320px" />
+        <Editor
+          v-model="description"
+          class="flex-1"
+          editorStyle="height: 320px"
+        />
       </div>
       <div class="flex-1 h-[500px]">
         <div class="h-[416px] overflow-hidden">
@@ -37,36 +40,65 @@
   </div>
 </template>
 <script setup>
+import Dropdown from "primevue/dropdown";
 import Editor from "primevue/editor";
-import MultiSelect from "primevue/multiselect";
 import MapComp from "./components/MapComp.vue";
 import Button from "primevue/button";
 import { ref, watch } from "vue";
-const value = ref("");
+import { useEquipmentsStore } from "@/store/equipments";
+import { useRegisterStore } from "@/store/register";
+import { toastMessage } from "@/helper/toastMessage";
+import { useRouter } from "vue-router";
+const equipments = useEquipmentsStore();
+const register = useRegisterStore();
+const router = useRouter();
+const description = ref("");
 const loading = ref(false);
 const address = ref("");
-const deviceList = ref([
-  { name: "New York", code: "NY" },
-  { name: "Rome", code: "RM" },
-  { name: "London", code: "LDN" },
-  { name: "Istanbul", code: "IST" },
-  { name: "Paris", code: "PRS" },
-]);
+const deviceList = ref([]);
 const selectedDevices = ref([]);
+let coordinates;
 
-function setAddress(addressProps) {
+function setAddress(addressProps, coor) {
   address.value = addressProps;
+  coordinates = coor;
 }
 
 function handleRegisterEngineer() {
   loading.value = true;
+  const data = {
+    repair_equipment_id: selectedDevices.value.id,
+    latitude: coordinates?.lat || "",
+    longitude: coordinates?.lng || "",
+    description: description.value,
+    role: "engineer",
+  };
+  console.log(data);
   setTimeout(() => {
-    loading.value = false;
+    register
+      .updateProfile(data)
+      .then((data) => {
+        console.log(data);
+        router.push("/");
+        register.profile();
+        toastMessage("success", "Thành công", "Đăng ký thành công");
+      })
+      .catch(() => {
+        toastMessage("error", "Thất bại", "Đăng ký thất bại");
+      })
+      .finally(() => {
+        loading.value = false;
+      });
   }, 2000);
 }
 
-watch(value, () => {
-  console.log(value);
+equipments.getEquipments().then((data) => {
+  console.log(data.data);
+  deviceList.value = data.data;
+});
+
+watch(selectedDevices, () => {
+  console.log(selectedDevices.value);
 });
 </script>
 <style lang="scss" scoped>

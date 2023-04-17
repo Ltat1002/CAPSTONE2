@@ -21,7 +21,7 @@
               <p>Mobile Number</p>
             </div>
             <div>
-              <div>
+              <div class="w-full overflow-hidden">
                 <h2>{{ profile.email }}</h2>
               </div>
               <p>Email Address</p>

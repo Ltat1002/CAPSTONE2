@@ -25,6 +25,9 @@ export const useRegisterStore = defineStore("register", {
           localStorage.removeItem("token");
         });
     },
+    updateProfile(profile) {
+      return http.put("edit_profile", profile);
+    },
     setAccount(account) {
       this.account = account;
     },

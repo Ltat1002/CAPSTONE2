@@ -18,15 +18,17 @@
             >Báo cáo</router-link
           >
         </li>
-        <li v-if="checkLogin">
+        <li v-if="checkLogin && registerStore.account.role !== 'engineer'">
           <router-link
             to="/engineer/upload-information"
             href="#contact"
             class="nav-link"
           >
-            <!-- <Button label="Trở thành đối tác của HRS" /> -->
             Trở thành đối tác của HRS
           </router-link>
+        </li>
+        <li v-if="checkLogin && registerStore.account.role === 'engineer'">
+          <Button label="Bạn là đối tác của HRS" />
         </li>
         <li v-if="!checkLogin">
           <router-link to="/auth/login" href="#contact">Đăng nhập</router-link>
@@ -65,11 +67,11 @@
               <li class="flex-col items-start status">
                 <a><i class="bx bxs-analyse"></i>Trạng thái</a>
                 <ul>
-                  <li @click="isOnline = true">
+                  <li @click="handleUpdateOnline">
                     <span class="active"><i class="bx bx-check"></i></span>
                     Online
                   </li>
-                  <li @click="isOnline = false">
+                  <li @click="handleUpdateOffline">
                     <span></span>
                     Offline
                   </li>
@@ -84,6 +86,7 @@
 </template>
 <script setup>
 import { useRegisterStore } from "@/store/register.js";
+import Button from "primevue/button";
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 const registerStore = useRegisterStore();
@@ -95,6 +98,20 @@ const router = useRouter();
 function handleLogout() {
   localStorage.removeItem("token");
   router.push("/auth/login");
+}
+
+function handleUpdateOnline() {
+  isOnline.value = true;
+  registerStore.updateProfile({
+    onl_status: 0,
+  });
+}
+
+function handleUpdateOffline() {
+  isOnline.value = false;
+  registerStore.updateProfile({
+    onl_status: 1,
+  });
 }
 </script>
 <style lang="scss" scoped>

@@ -35,12 +35,8 @@ import Steps from "primevue/steps";
 import Button from "primevue/button";
 const items = ref([
   {
-    label: "Loại thiết bị",
-    to: "/report-problem",
-  },
-  {
     label: "Thiết bị",
-    to: "/report-problem/device",
+    to: "/report-problem",
   },
   {
     label: "Mô tả",
