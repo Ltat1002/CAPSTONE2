@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
       put 'edit_profile', to: 'users#edit_profile'
       get 'profile', to: 'users#profile'
+
+      put 'become_partner', to: 'users#become_partner'
     end
   end
 end
