@@ -18,7 +18,6 @@ export const useRegisterStore = defineStore("register", {
         .get("profile")
         .then((data) => {
           this.account = data.data;
-          console.log(data);
         })
         .catch(() => {
           router.push("/");

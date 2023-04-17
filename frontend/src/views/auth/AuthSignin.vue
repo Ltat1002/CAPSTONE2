@@ -6,7 +6,13 @@
         class="container a-container"
         id="a-container"
       >
-        <form class="form form_sign_up" id="a-form" method="" action="">
+        <form
+          class="form form_sign_up"
+          id="a-form"
+          @submit.prevent="handleRegister"
+          method=""
+          action=""
+        >
           <h2 class="form_title title">Tạo tài khoản</h2>
           <div class="form__icons">
             <img
@@ -66,11 +72,10 @@
           />
           <Button
             class="mt-3 sign_up"
-            type="button"
+            type="submit"
             rounded
             label="ĐĂNG KÝ"
             :loading="loading"
-            @click="handleRegister"
           />
         </form>
       </div>
@@ -79,7 +84,13 @@
         class="container b-container"
         id="b-container"
       >
-        <form class="form" id="b-form" method="" action="">
+        <form
+          class="form"
+          id="b-form"
+          method=""
+          @submit.prevent="handleLogin"
+          action=""
+        >
           <h2 class="form_title title">Đăng nhập vào trang Website</h2>
           <div class="form__icons">
             <img
@@ -109,11 +120,10 @@
           /><a class="form__link">Quên mật khẩu?</a>
           <Button
             class="mt-3 sign_up"
-            type="button"
+            type="submit"
             rounded
             label="ĐĂNG NHẬP"
             :loading="loading"
-            @click="handleLogin"
           />
         </form>
       </div>

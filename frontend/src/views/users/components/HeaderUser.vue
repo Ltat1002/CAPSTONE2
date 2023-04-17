@@ -7,14 +7,19 @@
           alt=""
       /></router-link>
       <ul class="menu">
-        <li><router-link to="/" class="nav-link">Trang chủ</router-link></li>
         <li>
-          <router-link to="/notify" href="#about" class="nav-link"
+          <router-link to="/" active-class="nav-link">Trang chủ</router-link>
+        </li>
+        <li>
+          <router-link to="/notify" href="#about" active-class="nav-link"
             >Thông báo</router-link
           >
         </li>
         <li>
-          <router-link to="/report-problem" href="#about" class="nav-link"
+          <router-link
+            to="/report-problem"
+            href="#about"
+            active-class="nav-link"
             >Báo cáo</router-link
           >
         </li>
@@ -22,7 +27,7 @@
           <router-link
             to="/engineer/upload-information"
             href="#contact"
-            class="nav-link"
+            active-class="nav-link"
           >
             Trở thành đối tác của HRS
           </router-link>
@@ -91,6 +96,7 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 const registerStore = useRegisterStore();
 const checkLogin = computed(() => (registerStore.account?.id ? true : false));
+console.log(registerStore.account);
 const showDropdown = ref(false);
 const isOnline = ref(true);
 const router = useRouter();
@@ -224,7 +230,7 @@ img {
   }
 }
 
-a.router-link-active.router-link-exact-active {
+a.nav-link.router-link-exact-active {
   color: var(--sub-color) !important;
   position: relative;
   &::after {
