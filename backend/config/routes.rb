@@ -15,6 +15,12 @@ Rails.application.routes.draw do
       get 'profile', to: 'users#profile'
 
       put 'become_partner', to: 'users#become_partner'
+
+      namespace :engineer do
+      end
+
+      namespace :admin do
+      end
     end
   end
 end
