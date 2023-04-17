@@ -49,6 +49,9 @@ import { useRouter } from "vue-router";
 // import { useGeolocation } from "@/helper/useGeolocation";
 import { Loader } from "@googlemaps/js-api-loader";
 import InputText from "primevue/inputtext";
+import { useReportStore } from "@/store/report.js";
+const reportStore = useReportStore();
+
 const GOOGLE_MAPS_API_KEY = "AIzaSyADl3t1Xrjtwf58sZsq4wzqSuyWI1zySbM";
 const searchRef = ref("");
 let positionList = ref([]);
@@ -219,6 +222,7 @@ const handleShowInfo = (address, name) => {
     header: "Xác nhận",
     icon: "pi pi-exclamation-triangle",
     accept: () => {
+      reportStore.report.address = `${name ? `${name},` : ""} ${address}`;
       router.push("/preview");
     },
     reject: () => {

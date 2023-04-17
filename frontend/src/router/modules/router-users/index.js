@@ -48,7 +48,7 @@ export const routerUsers = [
         component: DeviceLocation,
       },
       {
-        path: "description",
+        path: "description/:id",
         component: DeviceDescription,
       },
     ],

@@ -40,7 +40,7 @@ const items = ref([
   },
   {
     label: "Mô tả",
-    to: "/report-problem/description",
+    to: "/report-problem/description/0",
   },
   {
     label: "Địa điểm",

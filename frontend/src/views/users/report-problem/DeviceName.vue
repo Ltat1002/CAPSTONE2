@@ -3,21 +3,34 @@
     <div class="content">
       <!-- <h1 class="heading">Thiết bị</h1> -->
       <div class="image-container">
-        <TheDevice v-for="value in images" :key="value" :img="value" />
+        <TheDevice
+          @chooseDevice="handleDeviceEmit"
+          v-for="value in device"
+          :key="value.id"
+          :device="value"
+        />
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import TheDevice from "../components/TheDevice.vue";
-
-const images = [
-  "https://cdn11.dienmaycholon.vn/filewebdmclnew/public//userupload/images/dien-thoai-Samsung-Galaxy-S10-Plus-1.jpg",
-  "https://img.websosanh.vn/v2/users/review/images/0smhaniff09ui.jpg?compress=85",
-  "https://static.chotot.com/storage/chotot-kinhnghiem/c2c/2020/05/laptop-cu-cau-hinh-cao.jpg",
-  "https://cdn.tgdd.vn/Files/2022/04/22/1427870/mung-le-30-3-table-slae-h2_1280x720-800-resize.jpg",
-  "https://media.cnn.com/api/v1/images/stellar/prod/210921222249-3-9th-gen-ipad-review-underscored.jpg?q=w_3748,h_2108,x_0,y_0,c_fill",
-];
+import { useReportStore } from "@/store/report.js";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
+const reportStore = useReportStore();
+const device = ref();
+const repairEquipments = async () => {
+  reportStore.repairEquipments().then((res) => {
+    device.value = res.data;
+  });
+};
+repairEquipments();
+function handleDeviceEmit(id) {
+  reportStore.report.repair_equipment_id = id;
+  router.push(`report-problem/description/${id}`);
+}
 </script>
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap");

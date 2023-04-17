@@ -3,7 +3,15 @@
     <div class="description">
       <div>
         <span class="p-float-label">
-          <Textarea v-model="value" rows="10" />
+          <InputText id="name" v-model="description.name" />
+          <label for="name">Tên chi tiết</label>
+        </span>
+        <span class="p-float-label">
+          <InputText id="mobile" v-model="description.mobile" />
+          <label for="mobile">Số điện thoại</label>
+        </span>
+        <span class="p-float-label">
+          <Textarea v-model="description.description" rows="10" />
           <label>Mô tả</label>
         </span>
       </div>
@@ -21,7 +29,7 @@
         </div>
 
         <Image
-          v-for="value in images"
+          v-for="value in description.images"
           :key="value"
           :src="value"
           alt="Image"
@@ -36,17 +44,29 @@
 import Textarea from "primevue/textarea";
 import FileUpload from "primevue/fileupload";
 import Image from "primevue/image";
-import { ref } from "vue";
-const images = ref([]);
+import InputText from "primevue/inputtext";
+import { useReportStore } from "@/store/report.js";
+import { reactive, watch } from "vue";
 
+const reportStore = useReportStore();
+const description = reactive({
+  name: "",
+  mobile: "",
+  description: "",
+  images: [],
+});
+watch(description, () => {
+  reportStore.report = {
+    ...reportStore.report,
+    ...description,
+  };
+});
 const customBase64Uploader = async (event) => {
   const file = event.files;
   file.forEach((el) => {
-    images.value.push(el.objectURL);
+    description.images.push(el.objectURL);
   });
 };
-
-const value = ref("");
 </script>
 <style lang="scss" scoped>
 .images {
@@ -83,12 +103,19 @@ const value = ref("");
 }
 .description {
   display: flex;
+  height: 500px;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 40px;
-  .p-inputtextarea {
+  .p-inputtextarea,
+  .p-inputtext {
     width: 400px;
     margin-right: 10px;
-    height: 500px;
   }
+}
+.p-float-label {
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 .upload_image {
   position: absolute;

@@ -117,6 +117,7 @@
           <div class="flex flex-wrap justify-end mx-[-5px]">
             <span
               class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
+              @click="handleConfirm"
               ><i class="bx bx-check-circle mr-1"></i>Xác nhận</span
             >
             <span
@@ -142,10 +143,11 @@
 import { ref, computed, onMounted } from "vue";
 import Dialog from "primevue/dialog";
 import Timeline from "primevue/timeline";
-
+import { useReportStore } from "@/store/report.js";
 import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
 import Button from "primevue/button";
+const reportStore = useReportStore();
 const visible = ref(false);
 const events = ref([
   {
@@ -173,7 +175,9 @@ const events = ref([
     color: "#333",
   },
 ]);
-
+function handleConfirm() {
+  console.log(reportStore.report);
+}
 onMounted(() => {
   bindDocumentListeners();
 });
