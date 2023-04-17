@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :reports, foreign_key: 'user_receive_id'
   has_many :vouchers
   belongs_to :repair_equipment, optional: true
+  has_rich_text :description
 
   enum role: %i[user engineer admin]
 
