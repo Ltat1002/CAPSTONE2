@@ -111,7 +111,15 @@
               </div>
             </div>
           </TabPanel>
-          <TabPanel header="Messages"> <TheNotify /> </TabPanel>
+          <TabPanel header="Messages">
+            <TheNotify />
+            <div v-if="load" class="flex justify-center h-full items-center">
+              <ProgressBar
+                mode="indeterminate"
+                style="height: 6px"
+              ></ProgressBar>
+            </div>
+          </TabPanel>
           <TabPanel header="Edit profile">
             <form>
               <div class="relative z-0 w-full mb-6 group">
@@ -232,6 +240,15 @@
               </button>
             </form>
           </TabPanel>
+          <TabPanel v-if="profile.role === 'engineer'" header="CV">
+            <upload-information />
+            <div v-if="load" class="flex justify-center h-full items-center">
+              <ProgressBar
+                mode="indeterminate"
+                style="height: 6px"
+              ></ProgressBar>
+            </div>
+          </TabPanel>
         </TabView>
       </div>
     </div>
@@ -242,17 +259,33 @@
 // <Button label="save" class="ml-2" />
 import TheNotify from "@/components/TheNotify.vue";
 import TabView from "primevue/tabview";
+import UploadInformation from "@/views/engineer/UploadInformation.vue";
 import TabPanel from "primevue/tabpanel";
+import ProgressBar from "primevue/progressbar";
 // import Button from "primevue/button";
 import { useRegisterStore } from "@/store/register.js";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 const registerStore = useRegisterStore();
-
+const load = ref(false);
 const profile = computed(() => {
   return registerStore.account;
 });
 </script>
 <style lang="scss" scoped>
+// :deep(.p-progressbar) {
+//   width: 50%;
+// }
+// :deep(.p-tabview) {
+//   height: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   .p-tabview-panels {
+//     flex: 1;
+//     .p-tabview-panel {
+//       height: 100%;
+//     }
+//   }
+// }
 .bg-main-color {
   background-color: var(--main-color);
 }

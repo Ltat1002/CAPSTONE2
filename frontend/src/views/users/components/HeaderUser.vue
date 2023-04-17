@@ -23,7 +23,7 @@
             >Báo cáo</router-link
           >
         </li>
-        <li v-if="checkLogin && registerStore.account.role !== 'engineer'">
+        <li v-if="checkLogin && registerStore.account.status === 0">
           <router-link
             to="/engineer/upload-information"
             href="#contact"
@@ -69,7 +69,10 @@
                   ><i class="bx bxs-log-out"></i>Logout</a
                 >
               </li>
-              <li class="flex-col items-start status">
+              <li
+                v-if="registerStore.account.role === 'engineer'"
+                class="flex-col items-start status"
+              >
                 <a><i class="bx bxs-analyse"></i>Trạng thái</a>
                 <ul>
                   <li @click="handleUpdateOnline">
@@ -96,7 +99,6 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 const registerStore = useRegisterStore();
 const checkLogin = computed(() => (registerStore.account?.id ? true : false));
-console.log(registerStore.account);
 const showDropdown = ref(false);
 const isOnline = ref(true);
 const router = useRouter();

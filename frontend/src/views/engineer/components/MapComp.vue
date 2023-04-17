@@ -67,6 +67,7 @@ import ConfirmDialog from "primevue/confirmdialog";
 import { useGeolocation } from "@/helper/useGeolocation.js";
 import { Loader } from "@googlemaps/js-api-loader";
 import InputText from "primevue/inputtext";
+import { defineProps } from "vue";
 const GOOGLE_MAPS_API_KEY = "AIzaSyADl3t1Xrjtwf58sZsq4wzqSuyWI1zySbM";
 const emit = defineEmits(["setAddress"]);
 let showPopup = ref(false);
@@ -77,6 +78,7 @@ let positionList = ref([]);
 var markers = [];
 const confirm = useConfirm();
 const input = ref("");
+const props = defineProps(["coor"]);
 const { coords } = useGeolocation();
 const currPos = computed(() => ({
   lat: coords.value.latitude,
@@ -130,10 +132,12 @@ let newDistance = null;
 // var directionsDisplay;
 var myMarker;
 var otherMarker;
-watch([map, currPos, otherPos], () => {
+watch([map, currPos, otherPos, props.coor], () => {
   if (otherMarker) {
     otherMarker.setMap(null);
   }
+  handleSetMarkerUpdate();
+  console.log(currPos.value.lat, currPos.value.lng);
   var origin1 = new window.google.maps.LatLng(
     currPos.value.lat,
     currPos.value.lng
@@ -239,6 +243,7 @@ function handleSearch() {
 }
 
 const handleShowInfo = (address, name, lat, lng) => {
+  console.log(lat, lng);
   showPopup.value = false;
   confirm.require({
     message: `Địa chỉ của bạn: ${name ? `${name},` : ""} ${address}`,
@@ -246,8 +251,8 @@ const handleShowInfo = (address, name, lat, lng) => {
     icon: "pi pi-exclamation-triangle",
     accept: () => {
       emit("setAddress", `${name ? `${name},` : ""} ${address}`, {
-        lat: lat,
-        lng: lng,
+        lat: lat || props.coor.lat,
+        lng: lng || props.coor.lng,
       });
     },
     reject: () => {},
@@ -269,6 +274,21 @@ function createMarker(place) {
     window.infowindow.setContent(place.name || "");
     window.infowindow.open(map.value);
   });
+}
+
+function handleSetMarkerUpdate() {
+  if (props.coor?.lat && props.coor.lng) {
+    console.log(props.coor?.lat, props.coor.lng);
+    var origin3 = new window.google.maps.LatLng(
+      props.coor?.lat,
+      props.coor?.lng
+    );
+    var updateMarker = new window.google.maps.Marker({
+      position: origin3,
+      title: "My location!",
+    });
+    updateMarker.setMap(map.value);
+  }
 }
 </script>
 <style lang="scss" scoped>

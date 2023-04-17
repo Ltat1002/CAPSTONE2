@@ -3,14 +3,26 @@
     <div class="content">
       <!-- <h1 class="heading">Thiết bị</h1> -->
       <div class="image-container">
-        <TheDevice v-for="value in images" :key="value" :img="value" />
+        <TheDevice
+          v-for="value in images"
+          :key="value"
+          :img="value"
+          :equipmentList="equipmentList"
+        />
       </div>
     </div>
   </div>
 </template>
 <script setup>
+import { ref } from "vue";
 import TheDevice from "../components/TheDevice.vue";
-
+import { useEquipmentsStore } from "@/store/equipments";
+const equipments = useEquipmentsStore();
+const equipmentList = ref([]);
+equipments.getEquipments().then((data) => {
+  console.log(data);
+  equipmentList.value = data.data;
+});
 const images = [
   "https://cdn11.dienmaycholon.vn/filewebdmclnew/public//userupload/images/dien-thoai-Samsung-Galaxy-S10-Plus-1.jpg",
   "https://img.websosanh.vn/v2/users/review/images/0smhaniff09ui.jpg?compress=85",
