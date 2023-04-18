@@ -287,29 +287,6 @@ function handleSetMarkerUpdate() {
     });
     updateMarker.setMap(map.value);
   }
-  var geocoder = new window.google.maps.Geocoder();
-  var latLng = new window.google.maps.LatLng(props.coor?.lat, props.coor.lng);
-  geocoder.geocode(
-    {
-      latLng: latLng,
-    },
-    function (results, status) {
-      if (status == window.google.maps.GeocoderStatus.OK) {
-        if (results[1]) {
-          emit("setAddress", results[1].formatted_address, {
-            lat: props.coor.lat,
-            lng: props.coor.lng,
-          });
-          // handleShowInfo(
-          //   results[1].formatted_address,
-          //   undefined,
-          //   results[1].geometry.location.lat(),
-          //   results[1].geometry.location.lng()
-          // );
-        }
-      }
-    }
-  );
 }
 </script>
 <style lang="scss" scoped>

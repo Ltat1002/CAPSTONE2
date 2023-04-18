@@ -66,11 +66,12 @@ let coordinates;
 
 if (pathProfile.value) {
   selectedDevices.value = register.account.repair_equipment;
-  description.value = register.account.description;
+  description.value = register.account?.description?.body || "";
   coor.value = {
     lat: register.account.latitude,
     lng: register.account.longitude,
   };
+  address.value = register.account.address;
 }
 
 function setAddress(addressProps, coor) {
@@ -86,6 +87,7 @@ function handleRegisterEngineer() {
     longitude: coordinates?.lng || "",
     description: description.value,
     role: "engineer",
+    address: address.value,
     status: 2,
   };
   console.log(data);
@@ -108,7 +110,6 @@ function handleRegisterEngineer() {
 }
 
 equipments.getEquipments().then((data) => {
-  console.log(data.data);
   deviceList.value = data.data;
 });
 

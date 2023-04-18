@@ -3,10 +3,11 @@
     <div class="wrap flex">
       <div class="nav-bar">
         <div>
-          <img
-            src="https://scontent.fhan3-4.fna.fbcdn.net/v/t39.30808-6/323952197_567233611560466_7304591525322997827_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=uMNInV918rgAX8-icZN&_nc_ht=scontent.fhan3-4.fna&oh=00_AfAd5CoSVFqLGaBuT2Ls8jaBBUXR_p6p3cJim0iL3-mUPg&oe=64386504"
-            alt=""
-          />
+          <div
+            class="w-[200px] h-[200px] rounded-full overflow-hidden mx-auto border border-solid border-white"
+          >
+            <the-avt :size="80" />
+          </div>
           <div class="user-box">
             <h2>{{ profile.first_name + " " + profile.last_name }}</h2>
             <p>Ngày tham gia: 24/5/2021</p>
@@ -281,6 +282,7 @@
   </div>
 </template>
 <script setup>
+import TheAvt from "@/components/TheAvt.vue";
 import TheNotify from "@/components/TheNotify.vue";
 import TabView from "primevue/tabview";
 import UploadInformation from "@/views/engineer/UploadInformation.vue";

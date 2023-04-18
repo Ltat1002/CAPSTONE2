@@ -32,6 +32,9 @@
             Trở thành đối tác của HRS
           </router-link>
         </li>
+        <li v-if="checkLogin && registerStore.account.status === 1">
+          <Button label="Chờ xét duyệt CV" />
+        </li>
         <li v-if="checkLogin && registerStore.account.role === 'engineer'">
           <Button label="Bạn là đối tác của HRS" />
         </li>
@@ -46,10 +49,9 @@
           @click="showDropdown = !showDropdown"
           v-else
         >
-          <img
-            src="https://www.vinamilk.com.vn/sua-bot-nguoi-lon-vinamilk/wp-content/themes/suabotnguoilon/tpl/assets/img/profile/avt-default.jpg"
-            alt=""
-          />
+          <div class="w-[50px] h-[50px] rounded-full overflow-hidden">
+            <the-avt :size="25" />
+          </div>
           <div class="down"><i class="bx bx-check"></i></div>
           <div v-if="showDropdown" class="drop_down">
             <ul>
@@ -93,6 +95,7 @@
   </div>
 </template>
 <script setup>
+import TheAvt from "@/components/TheAvt.vue";
 import { useRegisterStore } from "@/store/register.js";
 import Button from "primevue/button";
 import { ref, computed } from "vue";
