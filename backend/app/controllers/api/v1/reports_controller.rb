@@ -14,6 +14,7 @@ class Api::V1::ReportsController < ApplicationController
 
   def create
     @report = Report.create(report_params)
+    @report.images.attach(params[:images])
     @report.user_send = current_user
 
     if @report.save

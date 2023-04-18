@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: %i[ register login ]
-  before_action :set_user, only: %i[ profile destroy ]
+  skip_before_action :authenticate_request, only: %i[register login]
+  before_action :set_user, only: %i[profile destroy]
 
   # GET /users
   def index
@@ -9,7 +9,6 @@ class Api::V1::UsersController < ApplicationController
     render json: @users
   end
 
-  # GET /users/1
   def profile
     render json: @user
   end
@@ -54,6 +53,14 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def become_partner
+    if current_user.update(eng_params)
+      render json: current_user
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
   # DELETE /users/1
   def destroy
     @user.destroy
@@ -67,7 +74,11 @@ class Api::V1::UsersController < ApplicationController
 
   def user_params
     params.permit(:email, :password, :password_confirmation, :first_name, :last_name, :mobile,
-                  :address, :longitude, :latitude, :role, :description, :status, :onl_status,
-                  :repair_equipment_id)
+                  :address, :longitude, :latitude, :repair_equipment_id, :description)
+  end
+
+  def eng_params
+    params.permit(:role, :repair_equipment_id, :description)
+          .with_defaults(role: :engineer)
   end
 end
