@@ -17,6 +17,10 @@ Rails.application.routes.draw do
       put 'become_partner', to: 'users#become_partner'
 
       namespace :engineer do
+        get 'index', to: 'reports#index'
+        put 'receive', to: 'reports#receive_report'
+        put 'offer', to: 'reports#offer_price'
+        put 'submit', to: 'reports#submit_report'
       end
 
       namespace :admin do
