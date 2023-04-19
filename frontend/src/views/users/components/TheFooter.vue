@@ -110,11 +110,10 @@
               HOME REPAIR SERVICE
             </h6>
             <p>
-              HOME REPAIR SERVICE là một doanh nghiệp do một gia đình sở hữu và
-              điều hành trong gần 70 năm. Chúng tôi cam kết chất lượng tay nghề
-              thủ công và sự hài lòng của khách hàng
+              HRS là một trang web cho mọi gia đình sở hữu. Chúng tôi cam kết
+              chất lượng tay nghề thủ công và sự hài lòng của khách hàng. Chúng
+              tôi rất mong được phục vụ bạn.
             </p>
-            <p>Chúng tôi rất mong được phục vụ bạn.</p>
           </div>
           <!-- Products section -->
           <div class="flex-1 px-4">
@@ -126,16 +125,16 @@
                 >Sửa chữa</a
               >
             </p>
-            <p class="mb-4">
+            <!-- <p class="mb-4">
               <a href="#!" class="text-neutral-600 dark:text-neutral-200"
                 >Bảo hành</a
               >
-            </p>
-            <p class="mb-4">
+            </p> -->
+            <!-- <p class="mb-4">
               <a href="#!" class="text-neutral-600 dark:text-neutral-200"
                 >Mua</a
               >
-            </p>
+            </p> -->
           </div>
           <!-- Contact section -->
           <div class="flex-1 px-4">

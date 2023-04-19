@@ -1,7 +1,7 @@
 <template lang="">
   <div class="my-10">
     <div class="wrap">
-      <div class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50">
+      <div class="mb-4 bg-gray-50">
         <time class="text-lg font-semibold text-gray-900 dark:text-white"
           >January 13th, 2022</time
         >
@@ -103,7 +103,7 @@
           </li>
         </ol>
       </div>
-      <div class="p-5 border border-gray-100 rounded-lg bg-gray-50">
+      <div class="bg-gray-50">
         <time class="text-lg font-semibold text-gray-900 dark:text-white"
           >January 12th, 2022</time
         >
@@ -313,7 +313,6 @@ export default {};
 <style lang="scss" scoped>
 .wrap {
   > div {
-    box-shadow: 0px 0px 17px 8px #ccc;
     time {
       color: #333;
     }

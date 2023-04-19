@@ -18,12 +18,14 @@ export const useRegisterStore = defineStore("register", {
         .get("profile")
         .then((data) => {
           this.account = data.data;
-          console.log(data);
         })
         .catch(() => {
           router.push("/");
           localStorage.removeItem("token");
         });
+    },
+    updateProfile(profile) {
+      return http.put("edit_profile", profile);
     },
     setAccount(account) {
       this.account = account;
