@@ -2,11 +2,11 @@ class Api::V1::ReportsController < ApplicationController
   before_action :set_report, only: %i[show update destroy]
 
   def index
-    @reports = Report.includes(:repair_equipment, :user_send, :user_receive, :vouchers)
+    @reports = Report.includes(:repair_equipment, :user_send, :user_receive, :vouchers, :review)
                      .where(user_send_id: current_user.id).with_attached_images
 
     render json: @reports.map { |report|
-      report.as_json(include: %i[user_send user_receive repair_equipment vouchers description])
+      report.as_json(include: %i[user_send user_receive repair_equipment vouchers description review])
             .merge({ images: url_for(report.images.first) })
     }
   end
@@ -14,7 +14,7 @@ class Api::V1::ReportsController < ApplicationController
   def show
     if @report.user_send_id == current_user.id
       render json: @report.as_json(include: %i[user_send user_receive repair_equipment
-                                               vouchers description])
+                                               vouchers description review])
                           .merge(images: @report.images.map do |image|
                                            url_for(image)
                                          end)

@@ -1,7 +1,7 @@
 <template lang="">
   <keep-alive>
     <div class="description">
-      <div>
+      <div class="flex flex-col">
         <span class="p-float-label">
           <InputText id="name" v-model="description.name" />
           <label for="name">Tên chi tiết</label>
@@ -107,7 +107,6 @@ const customBase64Uploader = async (event) => {
   display: flex;
   height: 500px;
   justify-content: space-between;
-  align-items: center;
   margin-top: 40px;
   .p-inputtextarea,
   .p-inputtext {
@@ -116,8 +115,14 @@ const customBase64Uploader = async (event) => {
   }
 }
 .p-float-label {
-  margin-top: 30px;
   margin-bottom: 30px;
+  &:last-child {
+    flex: 1;
+    margin-bottom: 0;
+    :deep(.p-inputtextarea) {
+      height: 100%;
+    }
+  }
 }
 .upload_image {
   position: absolute;

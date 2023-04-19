@@ -8,7 +8,7 @@ const avt = ref(null);
 const register = useRegisterStore();
 const props = defineProps(["size"]);
 const character = computed(() => {
-  return register.account.last_name[0];
+  return register.account.last_name[0].toUpperCase();
 });
 onMounted(() => {
   avt.value.style.fontSize = props.size + "px";
