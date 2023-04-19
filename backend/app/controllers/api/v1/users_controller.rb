@@ -1,16 +1,10 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request, only: %i[register login]
-  before_action :set_user, only: %i[profile destroy]
 
-  # GET /users
   def index
     @users = User.all
 
     render json: @users
-  end
-
-  def profile
-    render json: @user
   end
 
   def register
@@ -33,23 +27,35 @@ class Api::V1::UsersController < ApplicationController
   def authenticate(email, password)
     command = AuthenticateUser.call(email, password)
     if command.success?
-      render json: {
-        message: 'Login Successful',
-        data: {
-          accessToken: command.result,
-          user: User.find_by(email: params[:email])
-        }
-      }
+      render json: { message: 'Login Successful',
+                     data: { accessToken: command.result,
+                             user: User.find_by(email: params[:email]) } }
     else
       render json: { error: command.errors }, status: :unauthorized
     end
   end
 
+  def profile
+    render json: current_user
+  end
+
   def edit_profile
-    if current_user.update(user_params)
+    current_password = params[:current_password]
+    if current_password.present?
+      change_password(current_password)
+    elsif current_user.update(user_params)
       render json: current_user
     else
       render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
+  def change_password(current_password)
+    user = AuthenticateUser.call(current_user.email, current_password)
+    if user.success? && current_user.update(user_params)
+      render json: current_user
+    else
+      render json: { message: 'Wrong current password' }, status: :unprocessable_entity
     end
   end
 
@@ -62,15 +68,11 @@ class Api::V1::UsersController < ApplicationController
   end
 
   # DELETE /users/1
-  def destroy
-    @user.destroy
-  end
+  # def destroy
+  #   @user.destroy
+  # end
 
   private
-
-  def set_user
-    @user = User.find_by(id: current_user.id)
-  end
 
   def user_params
     params.permit(:email, :password, :password_confirmation, :first_name, :last_name, :mobile,
