@@ -6,22 +6,25 @@ class Api::V1::ReportsController < ApplicationController
                      .where(user_send_id: current_user.id).with_attached_images
 
     render json: @reports.map { |report|
-      report.as_json(include: %i[user_send user_receive repair_equipment vouchers])
+      report.as_json(include: %i[user_send user_receive repair_equipment vouchers description])
             .merge({ images: url_for(report.images.first) })
     }
   end
 
   def show
-    render json: @report.as_json(include: %i[user_send user_receive repair_equipment vouchers])
-                        .merge(images: @report.images.map do |image|
-                                         url_for(image)
-                                       end)
+    if @report.user_send_id == current_user.id
+      render json: @report.as_json(include: %i[user_send user_receive repair_equipment
+                                               vouchers description])
+                          .merge(images: @report.images.map do |image|
+                                           url_for(image)
+                                         end)
+    else
+      render json: { message: 'Does not exist' }, status: :not_found
+    end
   end
 
   def create
     @report = Report.create(report_params.except(:images))
-    @report.user_send = current_user
-
     if params[:images].present?
       params[:images].each do |image|
         @report.images.attach(image)
@@ -55,6 +58,7 @@ class Api::V1::ReportsController < ApplicationController
 
   def report_params
     params.permit(:name, :mobile, :address, :longitude, :latitude, :description, :amount_pay,
-                  :reason, :status, :repair_equipment_id, :user_send_id, images: [])
+                  :reason, :status, :repair_equipment_id, images: [])
+          .merge(user_send_id: current_user.id)
   end
 end

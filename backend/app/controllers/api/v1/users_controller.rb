@@ -55,9 +55,7 @@ class Api::V1::UsersController < ApplicationController
     if user.success? && current_user.update(user_params)
       render json: current_user
     else
-      render json: {
-        message: 'Wrong current password'
-      }, status: :unprocessable_entity
+      render json: { message: 'Wrong current password' }, status: :unprocessable_entity
     end
   end
 
