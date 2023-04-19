@@ -1,16 +1,10 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request, only: %i[register login]
-  before_action :set_user, only: %i[profile destroy]
 
-  # GET /users
   def index
     @users = User.all
 
     render json: @users
-  end
-
-  def profile
-    render json: @user
   end
 
   def register
@@ -33,16 +27,16 @@ class Api::V1::UsersController < ApplicationController
   def authenticate(email, password)
     command = AuthenticateUser.call(email, password)
     if command.success?
-      render json: {
-        message: 'Login Successful',
-        data: {
-          accessToken: command.result,
-          user: User.find_by(email: params[:email])
-        }
-      }
+      render json: { message: 'Login Successful',
+                     data: { accessToken: command.result,
+                             user: User.find_by(email: params[:email]) } }
     else
       render json: { error: command.errors }, status: :unauthorized
     end
+  end
+
+  def profile
+    render json: current_user
   end
 
   def edit_profile
@@ -50,14 +44,6 @@ class Api::V1::UsersController < ApplicationController
     if current_password.present?
       change_password(current_password)
     elsif current_user.update(user_params)
-      render json: current_user
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
-  end
-
-  def become_partner
-    if current_user.update(eng_params)
       render json: current_user
     else
       render json: @user.errors, status: :unprocessable_entity
@@ -75,16 +61,20 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1
-  def destroy
-    @user.destroy
+  def become_partner
+    if current_user.update(eng_params)
+      render json: current_user
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
   end
+
+  # DELETE /users/1
+  # def destroy
+  #   @user.destroy
+  # end
 
   private
-
-  def set_user
-    @user = User.find_by(id: current_user.id)
-  end
 
   def user_params
     params.permit(:email, :password, :password_confirmation, :first_name, :last_name, :mobile,
