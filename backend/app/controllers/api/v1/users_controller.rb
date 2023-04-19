@@ -46,7 +46,10 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def edit_profile
-    if current_user.update(user_params)
+    current_password = params[:current_password]
+    if current_password.present?
+      change_password(current_password)
+    elsif current_user.update(user_params)
       render json: current_user
     else
       render json: @user.errors, status: :unprocessable_entity
@@ -58,6 +61,17 @@ class Api::V1::UsersController < ApplicationController
       render json: current_user
     else
       render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
+  def change_password(current_password)
+    user = AuthenticateUser.call(current_user.email, current_password)
+    if user.success? && current_user.update(user_params)
+      render json: current_user
+    else
+      render json: {
+        message: 'Wrong current password'
+      }, status: :unprocessable_entity
     end
   end
 
