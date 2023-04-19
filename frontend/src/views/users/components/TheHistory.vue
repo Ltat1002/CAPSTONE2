@@ -82,7 +82,7 @@
                   </div>
                 </div>
                 <p class="text-gray-700 text-base w-full mt-3">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  {{ his.description.body }}
                 </p>
               </div>
             </div>
