@@ -7,7 +7,7 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 # Create admin
-User.create(email: "admin@gmail.com", password: "123456", password_confirmation: "123456", role: 1)
+User.create(email: "admin@gmail.com", password: "123456", password_confirmation: "123456", role: :admin)
 
 # Create repair equipments
 RepairEquipment.create(name: "Thiết bị điện")
