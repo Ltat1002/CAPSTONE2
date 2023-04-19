@@ -71,10 +71,7 @@
         <div class="p-2 mt-4">
           <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
           <p class="ml-4">
-            HOME REPAIR SERVICE là một doanh nghiệp do một gia đình sở hữu và
-            điều hành trong gần 70 năm. Chúng tôi cam kết chất lượng tay nghề
-            thủ công và sự hài lòng của khách hàng Chúng tôi rất mong được phục
-            vụ bạn.
+            {{ preview.description }}
           </p>
         </div>
         <div class="p-2 flex justify-between mt-4">
@@ -82,10 +79,7 @@
             <h3 class="text-[20px] text-[#333] font-semibold mb-2">Thiết bị</h3>
             <ul class="ml-[2.7rem]">
               <li class="list-disc">
-                <span>Thiết bị:</span><span>Thiết bị điện tử</span>
-              </li>
-              <li class="list-disc">
-                <span>Tên thiết bị:</span><span>Điện thoại</span>
+                <span>Thiết bị:</span><span>{{ preview.name }}</span>
               </li>
             </ul>
           </div>
@@ -147,7 +141,10 @@ import { useReportStore } from "@/store/report.js";
 import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
 import Button from "primevue/button";
+import { toastMessage } from "@/helper/toastMessage.js";
+import axios from "axios";
 const reportStore = useReportStore();
+const preview = ref(reportStore.report);
 const visible = ref(false);
 const events = ref([
   {
@@ -176,55 +173,47 @@ const events = ref([
   },
 ]);
 function handleConfirm() {
-  console.log(reportStore.report);
+  const formData = new FormData();
+  Object.keys(reportStore.report).forEach((val) => {
+    if (val === "images") {
+      console.log(reportStore.report[val]);
+      reportStore.report["images"].forEach((e) => {
+        formData.append(`images[]`, e, e.name);
+      });
+    } else if (val !== "img") {
+      formData.append(val, reportStore.report[val]);
+    }
+  });
+  const localToken = localStorage.getItem("token") || "";
+  axios
+    .post("http://localhost:3000/api/v1/reports", formData, {
+      headers: {
+        Authorization: `Bearer ${localToken}`,
+      },
+    })
+    .then((res) => {
+      console.log(res);
+      toastMessage("success", "thanh cong", "report");
+    })
+    .catch(() => {
+      toastMessage("error", "thanh cong", "report");
+    });
 }
 onMounted(() => {
   bindDocumentListeners();
 });
 
 const galleria = ref();
-const images = ref([
-  {
-    itemImageSrc:
-      "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg",
-    thumbnailImageSrc:
-      "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg",
-    alt: "Description for Image 1",
-    title: "Title 1",
-  },
-  {
-    itemImageSrc:
-      "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg",
-    thumbnailImageSrc:
-      "https://media.istockphoto.com/id/504566177/photo/video-camera-lens.jpg?s=612x612&w=0&k=20&c=gx3jDUBxoD3pDtA6PymcIuhQADeoY2C8sJTikKMKPf0=",
-    alt: "Description for Image 1",
-    title: "Title 1",
-  },
-  {
-    itemImageSrc:
-      "https://static.fotor.com/app/features/img/aiimage/scenes/a%20realistic%20fox%20in%20the%20lake%20generated%20by%20ai%20image%20creator.png",
-    thumbnailImageSrc:
-      "https://imgv3.fotor.com/images/blog-cover-image/part-blurry-image.jpg",
-    alt: "Description for Image 1",
-    title: "Title 1",
-  },
-  {
-    itemImageSrc:
-      "https://imgv3.fotor.com/images/blog-cover-image/part-blurry-image.jpg",
-    thumbnailImageSrc:
-      "https://media.istockphoto.com/id/504566177/photo/video-camera-lens.jpg?s=612x612&w=0&k=20&c=gx3jDUBxoD3pDtA6PymcIuhQADeoY2C8sJTikKMKPf0=",
-    alt: "Description for Image 1",
-    title: "Title 1",
-  },
-  {
-    itemImageSrc:
-      "https://imgv3.fotor.com/images/blog-cover-image/part-blurry-image.jpg",
-    thumbnailImageSrc:
-      "https://media.istockphoto.com/id/504566177/photo/video-camera-lens.jpg?s=612x612&w=0&k=20&c=gx3jDUBxoD3pDtA6PymcIuhQADeoY2C8sJTikKMKPf0=",
-    alt: "Description for Image 1",
-    title: "Title 1",
-  },
-]);
+const images = computed(() => {
+  return reportStore.report.img.map((val, index) => {
+    return {
+      itemImageSrc: val,
+      thumbnailImageSrc: val,
+      alt: `Ảnh ${index}`,
+      title: `Ảnh ${index}`,
+    };
+  });
+});
 
 const activeIndex = ref(0);
 const showThumbnails = ref(true);

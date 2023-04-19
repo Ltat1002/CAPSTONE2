@@ -61,12 +61,12 @@
               </li>
               <li>
                 <router-link to="/profile">
-                  <i class="bx bxs-contact"></i> Profile
+                  <i class="bx bxs-contact"></i> Hồ sơ
                 </router-link>
               </li>
               <li>
                 <a href="#" @click="handleLogout"
-                  ><i class="bx bxs-log-out"></i>Logout</a
+                  ><i class="bx bxs-log-out"></i>Đăng xuất</a
                 >
               </li>
               <li class="flex-col items-start status">

@@ -29,26 +29,31 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import Steps from "primevue/steps";
 import Button from "primevue/button";
-const items = ref([
-  {
-    label: "Thiết bị",
-    to: "/report-problem",
-  },
-  {
-    label: "Mô tả",
-    to: "/report-problem/description/0",
-  },
-  {
-    label: "Địa điểm",
-    to: "/report-problem/location",
-  },
-]);
 const router = useRouter();
 const route = useRoute();
+const id = computed(() => {
+  return route.params?.id;
+});
+const items = computed(() => {
+  return [
+    {
+      label: "Thiết bị",
+      to: "/report-problem",
+    },
+    {
+      label: "Mô tả",
+      to: `/report-problem/description/${id.value}`,
+    },
+    {
+      label: "Địa điểm",
+      to: "/report-problem/location",
+    },
+  ];
+});
 
 function handleNextByStep() {
   items.value.forEach((item, index) => {

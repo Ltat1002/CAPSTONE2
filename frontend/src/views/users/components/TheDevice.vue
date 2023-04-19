@@ -1,7 +1,10 @@
 <template lang="">
-  <section class="cursor-pointer" @click="handleClickDevice(device.id)">
+  <section class="cursor-pointer" @click="handleClickDevice($event, device.id)">
     <div class="blog-post">
-      <img :src="device.img" :alt="device.name" />
+      <img
+        src="https://dt24h.com/wp-content/uploads/2022/02/Blackview-A95-1.jpg"
+        :alt="device.name"
+      />
       <a href="h#" target="_blank" class="category"> {{ device.name }}</a>
       <div class="text-content">
         <h2 class="post-title">
@@ -19,11 +22,15 @@
 import { defineProps, defineEmits } from "vue";
 defineProps(["device"]);
 const emit = defineEmits(["chooseDevice"]);
-function handleClickDevice(id) {
+function handleClickDevice($event, id) {
+  $event.target.classList.add("active");
   emit("chooseDevice", id);
 }
 </script>
 <style lang="scss" scoped>
+.active {
+  background-color: chocolate;
+}
 section {
   padding: 10px;
   width: 25%;

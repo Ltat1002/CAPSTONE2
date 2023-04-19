@@ -25,7 +25,13 @@
         <div class="position_list">
           <ul>
             <li
-              @click="handleShowInfo(position.formatted_address, position.name)"
+              @click="
+                handleShowInfo(
+                  position.formatted_address,
+                  position.name,
+                  position
+                )
+              "
               v-for="position of positionList"
               :key="position.place_id"
             >
@@ -76,7 +82,6 @@ onMounted(async () => {
     zoom: 12,
   });
   clickListener = map.value.addListener("click", ({ latLng: { lat, lng } }) => {
-    console.log(event);
     var geocoder = new window.google.maps.Geocoder();
     var latLng = new window.google.maps.LatLng(lat(), lng());
     geocoder.geocode(
@@ -86,8 +91,7 @@ onMounted(async () => {
       function (results, status) {
         if (status == window.google.maps.GeocoderStatus.OK) {
           if (results[1]) {
-            console.log(results[1]);
-            handleShowInfo(results[1].formatted_address);
+            handleShowInfo(results[1].formatted_address, undefined, results[1]);
           } else {
             alert("No results found");
           }
@@ -206,7 +210,6 @@ function handleSearch() {
       results
     ) {
       for (let i = 0; i < results.length; i++) {
-        console.log(results);
         positionList.value = results;
         // createMarker(results[i]);
       }
@@ -216,18 +219,24 @@ function handleSearch() {
   });
 }
 
-const handleShowInfo = (address, name) => {
+const handleShowInfo = (address, name, position) => {
   confirm.require({
     message: `Địa chỉ của bạn: ${name ? `${name},` : ""} ${address}`,
     header: "Xác nhận",
     icon: "pi pi-exclamation-triangle",
     accept: () => {
+      reportStore.report = {
+        ...reportStore.report,
+        address: `${name ? `${name},` : ""} ${address}`,
+        latitude: position.geometry.location.lat(),
+        longitude: position.geometry.location.lng(),
+      };
       reportStore.report.address = `${name ? `${name},` : ""} ${address}`;
+      reportStore.report.address = `${name ? `${name},` : ""} ${address}`;
+
       router.push("/preview");
     },
-    reject: () => {
-      console.log("no");
-    },
+    reject: () => {},
   });
 };
 

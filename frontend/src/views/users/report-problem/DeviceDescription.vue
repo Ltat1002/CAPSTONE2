@@ -29,7 +29,7 @@
         </div>
 
         <Image
-          v-for="value in description.images"
+          v-for="value in description.img"
           :key="value"
           :src="value"
           alt="Image"
@@ -54,6 +54,7 @@ const description = reactive({
   mobile: "",
   description: "",
   images: [],
+  img: [],
 });
 watch(description, () => {
   reportStore.report = {
@@ -64,7 +65,8 @@ watch(description, () => {
 const customBase64Uploader = async (event) => {
   const file = event.files;
   file.forEach((el) => {
-    description.images.push(el.objectURL);
+    description.images.push(el);
+    description.img.push(el.objectURL);
   });
 };
 </script>

@@ -1,14 +1,18 @@
 <template lang="">
   <div class="wrap">
     <div class="list my-5" v-if="!previewUser">
-      <router-link to="/notify/preview">
+      <router-link
+        v-for="his in historyRepair"
+        :key="his?.id"
+        to="/notify/preview"
+      >
         <div class="cursor-pointer rounded-md overflow-hidden item">
           <div class="lg:flex">
             <div
               class="w-48 flex-none bg-cover text-center overflow-hidden"
-              style="
-                background-image: url('https://cdn.tgdd.vn/Files/2014/09/23/568616/broken-iphone-600x400.jpg');
-              "
+              :style="{
+                'background-image': 'url(' + his.images + ')',
+              }"
               title="Mountain"
             ></div>
             <div
@@ -17,7 +21,10 @@
               <div>
                 <div class="flex justify-between">
                   <div>
-                    <p class="text-sm text-gray-600 flex items-center mb-2">
+                    <p
+                      v-if="his.status === 0"
+                      class="text-sm text-gray-600 flex items-center mb-2"
+                    >
                       <box-icon
                         name="lock-open"
                         type="solid"
@@ -27,8 +34,22 @@
                       ></box-icon>
                       Chưa hoàn thành
                     </p>
+                    <p
+                      v-else
+                      class="text-sm text-gray-600 flex items-center mb-2"
+                    >
+                      <box-icon
+                        name="lock-open"
+                        type="solid"
+                        animation="tada"
+                        class="mr-1"
+                        color="#ffffff"
+                      ></box-icon>
+                      hoàn thành
+                    </p>
+
                     <div class="text-gray-900 font-bold text-xl">
-                      Điện thoại
+                      {{ his.name }}
                     </div>
                   </div>
                   <div class="h-full">
@@ -55,71 +76,9 @@
                       ></i>
                       Thời gian
                     </p>
-                    <div class="text-gray-900 text-sm">2:16 30-04-2001</div>
-                  </div>
-                </div>
-                <p class="text-gray-700 text-base w-full mt-3">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/notify/preview">
-        <div class="cursor-pointer rounded-md overflow-hidden item">
-          <div class="lg:flex">
-            <div
-              class="w-48 flex-none bg-cover text-center overflow-hidden"
-              style="
-                background-image: url('https://cdn.tgdd.vn/Files/2014/09/23/568616/broken-iphone-600x400.jpg');
-              "
-              title="Mountain"
-            ></div>
-            <div
-              class="border-gray-400 lg:border-gray-400 bg-white p-4 flex flex-col justify-between leading-normal flex-1"
-            >
-              <div>
-                <div class="flex justify-between">
-                  <div>
-                    <p class="text-sm text-gray-600 flex items-center mb-2">
-                      <box-icon
-                        name="lock"
-                        type="solid"
-                        animation="tada"
-                        class="mr-1"
-                      ></box-icon>
-                      Đã hoàn thành
-                    </p>
-                    <div class="text-gray-900 font-bold text-xl">
-                      Điện thoại
+                    <div class="text-gray-900 text-sm">
+                      {{ his.updated_at }}
                     </div>
-                  </div>
-                  <div class="h-full">
-                    <p class="text-sm text-gray-600 flex items-center mb-2">
-                      <box-icon
-                        class="mr-1"
-                        name="graphql"
-                        type="logo"
-                        animation="spin"
-                        rotate="90"
-                      ></box-icon>
-                      Đánh giá
-                    </p>
-                    <div>
-                      <Rating v-model="rating" :cancel="false" readonly />
-                    </div>
-                  </div>
-                  <div>
-                    <p class="text-sm text-gray-600 flex items-center mb-2">
-                      <i
-                        class="pi pi-spin pi-clock mr-2 text-black"
-                        style="font-size: 1rem"
-                        color="#000"
-                      ></i>
-                      Thời gian
-                    </p>
-                    <div class="text-gray-900 text-sm">2:16 30-04-2001</div>
                   </div>
                 </div>
                 <p class="text-gray-700 text-base w-full mt-3">
@@ -138,10 +97,19 @@
 import Rating from "primevue/rating";
 import { useRoute } from "vue-router";
 import { ref, computed } from "vue";
+import { useReportStore } from "@/store/report";
+const reportStore = useReportStore();
 const route = useRoute();
 const previewUser = computed(() => route.path.includes("/notify/preview"));
-const rating = ref(4);
 const rating2 = ref();
+const historyRepair = ref([]);
+const reportHistoryRepair = async () => {
+  await reportStore.reportHistoryRepair().then((res) => {
+    historyRepair.value = res.data;
+    console.log(res.data);
+  });
+};
+reportHistoryRepair();
 </script>
 <style lang="scss" scoped>
 .item {

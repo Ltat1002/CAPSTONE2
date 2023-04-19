@@ -10,12 +10,16 @@ export const useReportStore = defineStore("equipments", {
         address: "",
         description: "",
         images: "",
+        img: [],
       },
     };
   },
   actions: {
     repairEquipments() {
       return http.get("/repair_equipments");
+    },
+    reportHistoryRepair() {
+      return http.get("/reports");
     },
   },
 });
