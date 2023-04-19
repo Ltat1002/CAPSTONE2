@@ -3,12 +3,13 @@
     <div class="wrap flex">
       <div class="nav-bar">
         <div>
-          <img
-            src="https://scontent.fhan3-4.fna.fbcdn.net/v/t39.30808-6/323952197_567233611560466_7304591525322997827_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=uMNInV918rgAX8-icZN&_nc_ht=scontent.fhan3-4.fna&oh=00_AfAd5CoSVFqLGaBuT2Ls8jaBBUXR_p6p3cJim0iL3-mUPg&oe=64386504"
-            alt=""
-          />
+          <div
+            class="w-[200px] h-[200px] rounded-full overflow-hidden mx-auto border border-solid border-white"
+          >
+            <the-avt :size="80" />
+          </div>
           <div class="user-box">
-            <h2>Lê Đình Trường</h2>
+            <h2>{{ profile.first_name + " " + profile.last_name }}</h2>
             <p>Ngày tham gia: 24/5/2021</p>
           </div>
         </div>
@@ -18,20 +19,20 @@
               <div>
                 <h2>{{ profile.mobile }}</h2>
               </div>
-              <p>Mobile Number</p>
+              <p>Số điện thoại</p>
             </div>
             <div>
-              <div>
+              <div class="w-full overflow-hidden">
                 <h2>{{ profile.email }}</h2>
               </div>
-              <p>Email Address</p>
+              <p>Email</p>
             </div>
 
             <div>
               <div>
                 <h2>{{ profile.address }}</h2>
               </div>
-              <p>Address</p>
+              <p>Địa chỉ</p>
             </div>
           </div>
         </div>
@@ -112,33 +113,16 @@
             </div>
           </TabPanel>
           <TabPanel header="Messages">
-            <Message severity="success">
-              <div>
-                <h2>Info Message Content</h2>
-                <p>20/04/2022</p>
-              </div>
-            </Message>
-            <Message severity="success">
-              <div>
-                <h2>Info Message Content</h2>
-                <p>20/04/2022</p>
-              </div>
-            </Message>
-            <Message severity="success">
-              <div>
-                <h2>Info Message Content</h2>
-                <p>20/04/2022</p>
-              </div>
-            </Message>
-            <Message severity="success">
-              <div>
-                <h2>Info Message Content</h2>
-                <p>20/04/2022</p>
-              </div>
-            </Message>
+            <TheNotify />
+            <div v-if="load" class="flex justify-center h-full items-center">
+              <ProgressBar
+                mode="indeterminate"
+                style="height: 6px"
+              ></ProgressBar>
+            </div>
           </TabPanel>
           <TabPanel header="Edit profile">
-            <form>
+            <form @submit.prevent="handleUpdateProfile">
               <div class="relative z-0 w-full mb-6 group">
                 <input
                   type="email"
@@ -146,42 +130,13 @@
                   id="floating_email"
                   class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
-                  required
+                  v-model="editProfile.email"
+                  disabled
                 />
                 <label
                   for="floating_email"
                   class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >Email address</label
-                >
-              </div>
-              <div class="relative z-0 w-full mb-6 group">
-                <input
-                  type="password"
-                  name="floating_password"
-                  id="floating_password"
-                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
-                />
-                <label
-                  for="floating_password"
-                  class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >Password</label
-                >
-              </div>
-              <div class="relative z-0 w-full mb-6 group">
-                <input
-                  type="password"
-                  name="repeat_password"
-                  id="floating_repeat_password"
-                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
-                />
-                <label
-                  for="floating_repeat_password"
-                  class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >Confirm password</label
+                  >Email</label
                 >
               </div>
               <div class="grid md:grid-cols-2 md:gap-6">
@@ -192,12 +147,12 @@
                     id="floating_first_name"
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
-                    required
+                    v-model="editProfile.first_name"
                   />
                   <label
                     for="floating_first_name"
                     class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                    >First name</label
+                    >Họ</label
                   >
                 </div>
                 <div class="relative z-0 w-full mb-6 group">
@@ -207,12 +162,12 @@
                     id="floating_last_name"
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
-                    required
+                    v-model="editProfile.last_name"
                   />
                   <label
                     for="floating_last_name"
                     class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                    >Last name</label
+                    >Tên</label
                   >
                 </div>
               </div>
@@ -220,35 +175,90 @@
                 <div class="relative z-0 w-full mb-6 group">
                   <input
                     type="tel"
-                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                     name="floating_phone"
                     id="floating_phone"
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
-                    required
+                    v-model="editProfile.mobile"
                   />
                   <label
                     for="floating_phone"
                     class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                    >Phone number (123-456-7890)</label
+                    >Số điện thoại</label
+                  >
+                </div>
+              </div>
+              <div class="grid md:grid-cols-2 md:gap-6">
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="tel"
+                    name="floating_phone"
+                    id="floating_phone"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    v-model="editProfile.address"
+                  />
+                  <label
+                    for="floating_phone"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >Địa chỉ</label
+                  >
+                </div>
+              </div>
+              <div
+                class="text-blue-500 decoration-1 underline cursor-pointer mb-4 text-[0.875rem]"
+                @click="handleUpdatePassword"
+              >
+                Cập nhật mật khẩu
+              </div>
+              <div v-if="checkPassword">
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="password"
+                    name="floating_password"
+                    id="floating_password"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    v-model="password.password"
+                  />
+                  <label
+                    for="floating_password"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >Mật khẩu hiện tại</label
                   >
                 </div>
                 <div class="relative z-0 w-full mb-6 group">
                   <input
-                    type="text"
-                    name="floating_company"
-                    id="floating_company"
+                    type="password"
+                    name="repeat_password"
+                    id="floating_repeat_password"
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
-                    required
+                    v-model="password.new_password"
                   />
                   <label
-                    for="floating_company"
+                    for="floating_repeat_password"
                     class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                    >Company (Ex. Google)</label
+                    >Mật khẩu mới</label
+                  >
+                </div>
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="password"
+                    name="repeat_password"
+                    id="floating_repeat_password"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    v-model="password.confirm_new_password"
+                  />
+                  <label
+                    for="floating_repeat_password"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >Xác nhận mật khẩu mới</label
                   >
                 </div>
               </div>
+
               <button
                 type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -257,28 +267,83 @@
               </button>
             </form>
           </TabPanel>
+          <TabPanel v-if="profile.role === 'engineer'" header="CV">
+            <div v-if="!load"><upload-information /></div>
+            <div v-if="load" class="flex justify-center h-full items-center">
+              <ProgressBar
+                mode="indeterminate"
+                style="height: 6px"
+              ></ProgressBar>
+            </div>
+          </TabPanel>
         </TabView>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-// <Button label="cancel" class="mr-2" severity="secondary" />
-// <Button label="save" class="ml-2" />
-
+import TheAvt from "@/components/TheAvt.vue";
+import TheNotify from "@/components/TheNotify.vue";
 import TabView from "primevue/tabview";
+import UploadInformation from "@/views/engineer/UploadInformation.vue";
 import TabPanel from "primevue/tabpanel";
-import Message from "primevue/message";
-// import Button from "primevue/button";
+import { asyncComputed } from "@vueuse/core";
 import { useRegisterStore } from "@/store/register.js";
-import { computed } from "vue";
+import { ref, watch, reactive, onMounted } from "vue";
+import { toastMessage } from "@/helper/toastMessage.js";
+const load = ref(false);
 const registerStore = useRegisterStore();
-
-const profile = computed(() => {
-  return registerStore.account;
+const password = reactive({
+  password: "",
+  new_password: "",
+  confirm_new_password: "",
 });
+const handleUpdateProfile = async () => {
+  await registerStore
+    .updateProfile({
+      ...editProfile.value,
+    })
+    .then(() => {
+      toastMessage("success", "Thành công", "Cập nhật Hồ sơ");
+    })
+    .catch(() => {
+      toastMessage("error", "Thất bại", "Cập nhật Hồ sơ");
+    });
+  await registerStore.profile();
+};
+
+onMounted(() => {
+  setTimeout(() => {
+    load.value = false;
+  }, 4000);
+});
+const profile = asyncComputed(async () => {
+  return await registerStore.account;
+}, null);
+const editProfile = ref();
+const checkPassword = ref(false);
+watch(profile, () => {
+  editProfile.value = { ...profile.value };
+});
+function handleUpdatePassword() {
+  checkPassword.value = !checkPassword.value;
+}
 </script>
 <style lang="scss" scoped>
+:deep(.p-progressbar) {
+  width: 50%;
+}
+:deep(.p-tabview) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .p-tabview-panels {
+    flex: 1;
+    .p-tabview-panel {
+      height: 100%;
+    }
+  }
+}
 .bg-main-color {
   background-color: var(--main-color);
 }
@@ -323,8 +388,8 @@ const profile = computed(() => {
   }
   .info {
     display: flex;
+    height: 100%;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     background-color: #fff;
     overflow: hidden;

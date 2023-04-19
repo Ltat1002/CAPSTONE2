@@ -4,8 +4,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :reviews, foreign_key: 'user_send_id'
-  has_many :reviews, foreign_key: 'user_receive_id'
   has_many :reports, foreign_key: 'user_send_id'
   has_many :reports, foreign_key: 'user_receive_id'
   has_many :vouchers

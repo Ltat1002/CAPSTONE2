@@ -28,7 +28,15 @@
         <div class="position_list">
           <ul>
             <li
-              @click="handleShowInfo(position.formatted_address, position.name)"
+              @click="
+                handleShowInfo(
+                  position.formatted_address,
+                  position.name,
+                  // position
+                  position.geometry.location.lat(),
+                  position.geometry.location.lng()
+                )
+              "
               v-for="position of positionList"
               :key="position.place_id"
             >
@@ -59,6 +67,7 @@ import ConfirmDialog from "primevue/confirmdialog";
 import { useGeolocation } from "@/helper/useGeolocation.js";
 import { Loader } from "@googlemaps/js-api-loader";
 import InputText from "primevue/inputtext";
+import { defineProps } from "vue";
 const GOOGLE_MAPS_API_KEY = "AIzaSyADl3t1Xrjtwf58sZsq4wzqSuyWI1zySbM";
 const emit = defineEmits(["setAddress"]);
 let showPopup = ref(false);
@@ -69,6 +78,7 @@ let positionList = ref([]);
 var markers = [];
 const confirm = useConfirm();
 const input = ref("");
+const props = defineProps(["coor"]);
 const { coords } = useGeolocation();
 const currPos = computed(() => ({
   lat: coords.value.latitude,
@@ -86,7 +96,6 @@ onMounted(async () => {
     zoom: 12,
   });
   clickListener = map.value.addListener("click", ({ latLng: { lat, lng } }) => {
-    console.log(event);
     var geocoder = new window.google.maps.Geocoder();
     var latLng = new window.google.maps.LatLng(lat(), lng());
     geocoder.geocode(
@@ -96,8 +105,12 @@ onMounted(async () => {
       function (results, status) {
         if (status == window.google.maps.GeocoderStatus.OK) {
           if (results[1]) {
-            console.log(results[1]);
-            handleShowInfo(results[1].formatted_address);
+            handleShowInfo(
+              results[1].formatted_address,
+              undefined,
+              results[1].geometry.location.lat(),
+              results[1].geometry.location.lng()
+            );
           } else {
             alert("No results found");
           }
@@ -118,10 +131,11 @@ let newDistance = null;
 // var directionsDisplay;
 var myMarker;
 var otherMarker;
-watch([map, currPos, otherPos], () => {
+watch([map, currPos, otherPos, props.coor], () => {
   if (otherMarker) {
     otherMarker.setMap(null);
   }
+  handleSetMarkerUpdate();
   var origin1 = new window.google.maps.LatLng(
     currPos.value.lat,
     currPos.value.lng
@@ -217,7 +231,6 @@ function handleSearch() {
       results
     ) {
       for (let i = 0; i < results.length; i++) {
-        console.log(results);
         positionList.value = results;
         // createMarker(results[i]);
       }
@@ -227,18 +240,20 @@ function handleSearch() {
   });
 }
 
-const handleShowInfo = (address, name) => {
+const handleShowInfo = (address, name, lat, lng) => {
+  console.log(lat, lng);
   showPopup.value = false;
   confirm.require({
     message: `Địa chỉ của bạn: ${name ? `${name},` : ""} ${address}`,
     header: "Xác nhận",
     icon: "pi pi-exclamation-triangle",
     accept: () => {
-      emit("setAddress", `${name ? `${name},` : ""} ${address}`);
+      emit("setAddress", `${name ? `${name},` : ""} ${address}`, {
+        lat: lat || props.coor.lat,
+        lng: lng || props.coor.lng,
+      });
     },
-    reject: () => {
-      console.log("no");
-    },
+    reject: () => {},
   });
 };
 
@@ -257,6 +272,21 @@ function createMarker(place) {
     window.infowindow.setContent(place.name || "");
     window.infowindow.open(map.value);
   });
+}
+
+function handleSetMarkerUpdate() {
+  if (props.coor?.lat && props.coor.lng) {
+    console.log(props.coor?.lat, props.coor.lng);
+    var origin3 = new window.google.maps.LatLng(
+      props.coor?.lat,
+      props.coor?.lng
+    );
+    var updateMarker = new window.google.maps.Marker({
+      position: origin3,
+      title: "My location!",
+    });
+    updateMarker.setMap(map.value);
+  }
 }
 </script>
 <style lang="scss" scoped>
