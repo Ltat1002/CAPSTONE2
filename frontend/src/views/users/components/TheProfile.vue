@@ -111,7 +111,15 @@
               </div>
             </div>
           </TabPanel>
-          <TabPanel header="Messages"> <TheNotify /> </TabPanel>
+          <TabPanel header="Messages">
+            <TheNotify />
+            <div v-if="load" class="flex justify-center h-full items-center">
+              <ProgressBar
+                mode="indeterminate"
+                style="height: 6px"
+              ></ProgressBar>
+            </div>
+          </TabPanel>
           <TabPanel header="Edit profile">
             <form @submit.prevent="handleUpdateProfile">
               <div class="relative z-0 w-full mb-6 group">
@@ -258,6 +266,15 @@
               </button>
             </form>
           </TabPanel>
+          <TabPanel v-if="profile.role === 'engineer'" header="CV">
+            <div v-if="!load"><upload-information /></div>
+            <div v-if="load" class="flex justify-center h-full items-center">
+              <ProgressBar
+                mode="indeterminate"
+                style="height: 6px"
+              ></ProgressBar>
+            </div>
+          </TabPanel>
         </TabView>
       </div>
     </div>
@@ -266,16 +283,37 @@
 <script setup>
 import TheNotify from "@/components/TheNotify.vue";
 import TabView from "primevue/tabview";
+import UploadInformation from "@/views/engineer/UploadInformation.vue";
 import TabPanel from "primevue/tabpanel";
 import { asyncComputed } from "@vueuse/core";
 import { useRegisterStore } from "@/store/register.js";
-import { ref, watch, reactive } from "vue";
+import { ref, watch, reactive, onMounted } from "vue";
 import { toastMessage } from "@/helper/toastMessage.js";
+const load = ref(false);
 const registerStore = useRegisterStore();
 const password = reactive({
   password: "",
   new_password: "",
   confirm_new_password: "",
+});
+const handleUpdateProfile = async () => {
+  await registerStore
+    .updateProfile({
+      ...editProfile.value,
+    })
+    .then(() => {
+      toastMessage("success", "Thành công", "Cập nhật Hồ sơ");
+    })
+    .catch(() => {
+      toastMessage("error", "Thất bại", "Cập nhật Hồ sơ");
+    });
+  await registerStore.profile();
+};
+
+onMounted(() => {
+  setTimeout(() => {
+    load.value = false;
+  }, 4000);
 });
 const profile = asyncComputed(async () => {
   return await registerStore.account;
@@ -288,24 +326,22 @@ watch(profile, () => {
 function handleUpdatePassword() {
   checkPassword.value = !checkPassword.value;
 }
-
-const handleUpdateProfile = async () => {
-  await registerStore
-    .updateProfile({
-      ...editProfile.value,
-    })
-    .then((data) => {
-      console.log(data);
-      toastMessage("success", "Thành công", "Cập nhật Hồ sơ");
-    })
-    .catch((error) => {
-      toastMessage("error", "Thất bại", "Cập nhật Hồ sơ");
-      console.log(error);
-    });
-  await registerStore.profile();
-};
 </script>
 <style lang="scss" scoped>
+:deep(.p-progressbar) {
+  width: 50%;
+}
+:deep(.p-tabview) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .p-tabview-panels {
+    flex: 1;
+    .p-tabview-panel {
+      height: 100%;
+    }
+  }
+}
 .bg-main-color {
   background-color: var(--main-color);
 }
@@ -350,8 +386,8 @@ const handleUpdateProfile = async () => {
   }
   .info {
     display: flex;
+    height: 100%;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     background-color: #fff;
     overflow: hidden;

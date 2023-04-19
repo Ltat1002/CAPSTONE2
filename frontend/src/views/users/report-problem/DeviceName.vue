@@ -14,9 +14,9 @@
   </div>
 </template>
 <script setup>
+import { ref } from "vue";
 import TheDevice from "../components/TheDevice.vue";
 import { useReportStore } from "@/store/report.js";
-import { ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const reportStore = useReportStore();

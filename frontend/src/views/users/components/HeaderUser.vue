@@ -23,7 +23,7 @@
             >Báo cáo</router-link
           >
         </li>
-        <li v-if="checkLogin && registerStore.account.role !== 'engineer'">
+        <li v-if="checkLogin && registerStore.account.status === 0">
           <router-link
             to="/engineer/upload-information"
             href="#contact"
@@ -69,7 +69,10 @@
                   ><i class="bx bxs-log-out"></i>Đăng xuất</a
                 >
               </li>
-              <li class="flex-col items-start status">
+              <li
+                v-if="registerStore.account.role === 'engineer'"
+                class="flex-col items-start status"
+              >
                 <a><i class="bx bxs-analyse"></i>Trạng thái</a>
                 <ul>
                   <li @click="handleUpdateOnline">

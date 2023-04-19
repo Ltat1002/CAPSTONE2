@@ -1,6 +1,6 @@
 <template lang="">
-  <div class="wrap my-5">
-    <div class="flex gap-5">
+  <div class="wrap" :class="{ 'my-5': !pathProfile }">
+    <div class="flex gap-5" :class="{ 'flex-col-reverse': pathProfile }">
       <div class="form flex-1 flex flex-col">
         <Dropdown
           v-model="selectedDevices"
@@ -13,12 +13,12 @@
         <Editor
           v-model="description"
           class="flex-1"
-          editorStyle="height: 320px"
+          editorStyle="height: 350px"
         />
       </div>
       <div class="flex-1 h-[500px]">
         <div class="h-[416px] overflow-hidden">
-          <map-comp @setAddress="setAddress"></map-comp>
+          <map-comp :coor="coor" @setAddress="setAddress"></map-comp>
         </div>
         <div
           class="h-[60px] address mt-4 border border-solid border-[#fff] w-full text-white rounded-md px-3 overflow-y-auto flex items-center"
@@ -44,20 +44,34 @@ import Dropdown from "primevue/dropdown";
 import Editor from "primevue/editor";
 import MapComp from "./components/MapComp.vue";
 import Button from "primevue/button";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useEquipmentsStore } from "@/store/equipments";
 import { useRegisterStore } from "@/store/register";
 import { toastMessage } from "@/helper/toastMessage";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 const equipments = useEquipmentsStore();
 const register = useRegisterStore();
 const router = useRouter();
+const route = useRoute();
+const pathProfile = computed(() => {
+  return route.path.includes("profile");
+});
 const description = ref("");
 const loading = ref(false);
 const address = ref("");
 const deviceList = ref([]);
 const selectedDevices = ref([]);
+const coor = ref({});
 let coordinates;
+
+if (pathProfile.value) {
+  selectedDevices.value = register.account.repair_equipment;
+  description.value = register.account.description;
+  coor.value = {
+    lat: register.account.latitude,
+    lng: register.account.longitude,
+  };
+}
 
 function setAddress(addressProps, coor) {
   address.value = addressProps;
@@ -72,6 +86,7 @@ function handleRegisterEngineer() {
     longitude: coordinates?.lng || "",
     description: description.value,
     role: "engineer",
+    status: 2,
   };
   console.log(data);
   setTimeout(() => {
@@ -104,6 +119,7 @@ watch(selectedDevices, () => {
 <style lang="scss" scoped>
 .p-editor-container {
   display: flex;
+  min-height: 350px;
   flex-direction: column;
   :deep(.p-editor-content) {
     flex: 1;
