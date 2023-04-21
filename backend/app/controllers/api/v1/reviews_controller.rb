@@ -16,7 +16,6 @@ class Api::V1::ReviewsController < ApplicationController
   # POST /reviews
   def create
     @review = Review.new(review_params)
-    @review.user_send = current_user
 
     if @review.save
       render json: @review, status: :created
@@ -46,6 +45,6 @@ class Api::V1::ReviewsController < ApplicationController
   end
 
   def review_params
-    params.require(:review).permit(:rating, :comment, :user_send_id, :user_receive_id)
+    params.require(:review).permit(:rating, :comment, :report_id)
   end
 end
