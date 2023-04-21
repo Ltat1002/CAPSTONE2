@@ -7,10 +7,11 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 # Create admin
-User.create(email: "admin@gmail.com", password: "123456", password_confirmation: "123456", role: :admin)
+User.create(email: 'admin@gmail.com', password: 'Admin123!',
+            password_confirmation: 'Admin123!', role: :admin)
 
 # Create repair equipments
-RepairEquipment.create(name: "Thiết bị điện")
-RepairEquipment.create(name: "Thiết bị điện tử")
-RepairEquipment.create(name: "Thiết bị điện lạnh")
-RepairEquipment.create(name: "Thiết bị nước")
+RepairEquipment.create(name: 'Thiết bị điện')
+RepairEquipment.create(name: 'Thiết bị điện tử')
+RepairEquipment.create(name: 'Thiết bị điện lạnh')
+RepairEquipment.create(name: 'Thiết bị nước')
