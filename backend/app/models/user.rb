@@ -10,7 +10,14 @@ class User < ApplicationRecord
   belongs_to :repair_equipment, optional: true
   has_rich_text :description
 
+  validates :first_name, :last_name, :mobile, :address, presence: true
+  validates :password, format: {
+    with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}\z/
+  }
+  validates :mobile, format: { with: /(84|0[3|5|7|8|9])+([0-9]{8}|[0-9]{9})\b/ }
+
   enum role: %i[user engineer admin]
+  enum onl_status: %i[online offline]
 
   alias authenticate valid_password?
 end
