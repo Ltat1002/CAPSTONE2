@@ -2,7 +2,8 @@
   <div class="device--name">
     <div class="content">
       <!-- <h1 class="heading">Thiết bị</h1> -->
-      <div class="image-container">
+      <div v-if="loading" class="text-center"><TheLoading /></div>
+      <div v-else class="image-container">
         <TheDevice
           @chooseDevice="handleDeviceEmit"
           v-for="value in device"
@@ -18,15 +19,23 @@ import { ref } from "vue";
 import TheDevice from "../components/TheDevice.vue";
 import { useReportStore } from "@/store/report.js";
 import { useRouter } from "vue-router";
+import TheLoading from "@/components/TheLoading.vue";
 const router = useRouter();
 const reportStore = useReportStore();
 const device = ref();
-const repairEquipments = async () => {
-  reportStore.repairEquipments().then((res) => {
-    device.value = res.data;
-  });
+const loading = ref(false);
+const dataRepair = async () => {
+  loading.value = true;
+  reportStore
+    .repairEquipments()
+    .then((res) => {
+      device.value = res.data;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
-repairEquipments();
+dataRepair();
 function handleDeviceEmit(id) {
   reportStore.report.repair_equipment_id = id;
   router.push(`report-problem/description/${id}`);

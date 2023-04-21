@@ -44,12 +44,12 @@ import Dropdown from "primevue/dropdown";
 import Editor from "primevue/editor";
 import MapComp from "./components/MapComp.vue";
 import Button from "primevue/button";
-import { ref, watch, computed } from "vue";
+import { ref, computed } from "vue";
 import { useEquipmentsStore } from "@/store/equipments";
 import { useRegisterStore } from "@/store/register";
 import { toastMessage } from "@/helper/toastMessage";
 import { useRouter, useRoute } from "vue-router";
-const equipments = useEquipmentsStore();
+const equipmentStore = useEquipmentsStore();
 const register = useRegisterStore();
 const router = useRouter();
 const route = useRoute();
@@ -109,12 +109,8 @@ function handleRegisterEngineer() {
   }, 2000);
 }
 
-equipments.getEquipments().then((data) => {
+equipmentStore.getEquipments().then((data) => {
   deviceList.value = data.data;
-});
-
-watch(selectedDevices, () => {
-  console.log(selectedDevices.value);
 });
 </script>
 <style lang="scss" scoped>

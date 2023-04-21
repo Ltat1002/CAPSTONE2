@@ -247,27 +247,27 @@ $controlSize: 60px;
   // @for $i from 1 through $numOfSlides {
   &:nth-child(1) {
     .slide__inner {
-      background-image: url("https://images.macrumors.com/t/snwdJtwBfBxr1BE-AhB11Nblk3k=/1600x900/smart/article-new/2022/12/Apple-EU-Self-Service-repair-iPhone_big.jpg.large_.jpg");
+      background-image: url("https://gsi-tools.com.vn/Images/news/2111300945-cac-bien-phap-an-toan-trong-xuong-sua-chua-o-to-3.jpg");
     }
   }
   &:nth-child(2) {
     .slide__inner {
-      background-image: url("https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/featured-image-garage-door.jpeg.jpg");
+      background-image: url("https://www.xtmobile.vn/vnt_upload/news/11_2021/18/appple-4-xtmobile.jpg");
     }
   }
   &:nth-child(3) {
     .slide__inner {
-      background-image: url("https://www.lifewire.com/thmb/IvdPvULCpGpGtCIqNDZE4wOoEUw=/768x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-489081568-582f59295f9b58d5b1b367b5.jpg");
+      background-image: url("https://afamilycdn.com/150157425591193600/2020/5/4/d48e95b462f28bacd2e3-15885714561481551857156-68-0-693-1000-crop-15885714633771150167584.jpg");
     }
   }
   &:nth-child(4) {
     .slide__inner {
-      background-image: url("https://www.dienlanhminhtin.com/wp-content/uploads/2021/11/3-13-602x400.jpg");
+      background-image: url("https://afamilycdn.com/150157425591193600/2020/5/4/d48e95b462f28bacd2e3-15885714561481551857156-68-0-693-1000-crop-15885714633771150167584.jpg");
     }
   }
   &:nth-child(5) {
     .slide__inner {
-      background-image: url("https://www.maylanhdongnai.vn/wp-content/uploads/2022/07/sua-dieu-hoa-tai-ha-noi.png");
+      background-image: url("https://tieudung.kinhtedothi.vn/upload_images/images/2022/08/23/mac.jpg");
     }
   }
   // }

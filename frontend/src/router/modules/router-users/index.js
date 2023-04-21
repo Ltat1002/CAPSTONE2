@@ -26,7 +26,7 @@ export const routerUsers = [
     component: TheHistory,
     children: [
       {
-        path: "preview",
+        path: "preview/:id",
         component: ReportPreview,
       },
     ],

@@ -180,8 +180,6 @@ const login = reactive({
 const loading = ref(false);
 
 async function handleLogin() {
-  console.log("click");
-  // registerStore.login(login);
   loading.value = true;
   setTimeout(async () => {
     registerStore
@@ -210,8 +208,7 @@ function handleRegister() {
   setTimeout(() => {
     registerStore
       .register(register)
-      .then((data) => {
-        console.log(data);
+      .then(() => {
         toastMessage("success", "Thành công", "Đăng Ký thành công");
         addClass();
       })
@@ -253,7 +250,6 @@ function mouted() {
     }, 1500);
 
     switchCtn.classList.toggle("is-txr");
-    console.log(switchCtn);
     switchCircle[0].classList.toggle("is-txr");
     switchCircle[1].classList.toggle("is-txr");
 

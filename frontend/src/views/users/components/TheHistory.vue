@@ -1,10 +1,22 @@
 <template lang="">
   <div class="wrap">
+    <div
+      v-if="!previewUser"
+      class="mt-4 text-end flex justify-end mr-[-32px] ml-[-32px]"
+    >
+      <span class="p-input-icon-left flex-1 mr-8 ml-8">
+        <i class="pi pi-search" />
+        <InputText v-model="value1" placeholder="Tìm kiếm" class="w-full" />
+      </span>
+      <router-link to="/report-problem" class="mr-8 ml-8">
+        <Button label="Tạo báo cáo"
+      /></router-link>
+    </div>
     <div class="list my-5" v-if="!previewUser">
       <router-link
         v-for="his in historyRepair"
         :key="his?.id"
-        to="/notify/preview"
+        :to="`/notify/preview/${his?.id}`"
       >
         <div class="cursor-pointer rounded-md overflow-hidden item">
           <div class="lg:flex">
@@ -45,7 +57,7 @@
                         class="mr-1"
                         color="#ffffff"
                       ></box-icon>
-                      hoàn thành
+                      Hoàn thành
                     </p>
 
                     <div class="text-gray-900 font-bold text-xl">
@@ -77,7 +89,15 @@
                       Thời gian
                     </p>
                     <div class="text-gray-900 text-sm">
-                      {{ his.updated_at }}
+                      {{
+                        new Date(his.updated_at).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "numeric",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "2-digit",
+                        })
+                      }}
                     </div>
                   </div>
                 </div>
@@ -96,6 +116,8 @@
 <script setup>
 import Rating from "primevue/rating";
 import { useRoute } from "vue-router";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
 import { ref, computed } from "vue";
 import { useReportStore } from "@/store/report";
 const reportStore = useReportStore();

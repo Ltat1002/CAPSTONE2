@@ -83,7 +83,7 @@
               </li>
             </ul>
           </div>
-          <Timeline :value="events" layout="horizontal" align="top">
+          <Timeline :value="timeline" layout="horizontal" align="top">
             <template #marker="slotProps">
               <span
                 class="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1 p-[8px] rounded-[50%]"
@@ -110,16 +110,25 @@
           <h3 class="text-[20px] text-[#333] font-semibold mb-2"></h3>
           <div class="flex flex-wrap justify-end mx-[-5px]">
             <span
+              v-if="route.path.includes('/preview')"
+              class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
+              @click="handleConfirm"
+              ><i class="bx bx-check-circle mr-1"></i>Đăng</span
+            >
+            <span
+              v-if="route.path.includes('notify/preview/4')"
               class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
               @click="handleConfirm"
               ><i class="bx bx-check-circle mr-1"></i>Xác nhận</span
             >
             <span
+              v-if="route.path.includes('notify/preview')"
               @click="visible = !visible"
               class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
               ><i class="bx bxs-message-rounded-dots mr-1"></i>Đánh giá</span
             >
             <span
+              v-if="!route.path.includes('notify/preview')"
               class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
               ><i class="bx bx-message-alt-x mr-1"></i>Hủy</span
             >
@@ -134,7 +143,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, watchEffect, watch, computed, onMounted } from "vue";
 import Dialog from "primevue/dialog";
 import Timeline from "primevue/timeline";
 import { useReportStore } from "@/store/report.js";
@@ -143,28 +152,26 @@ import Galleria from "primevue/galleria";
 import Button from "primevue/button";
 import { toastMessage } from "@/helper/toastMessage.js";
 import axios from "axios";
+import { useRoute } from "vue-router";
+const route = useRoute();
 const reportStore = useReportStore();
 const preview = ref(reportStore.report);
 const visible = ref(false);
-const events = ref([
+const timeline = ref([
   {
     status: "Gửi yêu cầu",
-    date: "15/10/2020 16:15",
     icon: "bx bxs-compass bx-spin",
     color: "#6366F1",
   },
   {
     status: "Xác nhận",
-    date: "15/10/2020 10:30",
     icon: "bx bx-cog bx-spin",
     color: "#6366F1",
-    image: "game-controller.jpg",
   },
   {
     status: "Tiến hành",
-    date: "15/10/2020 14:00",
     icon: "bx bx-bolt-circle bx-spin",
-    color: "#6366F1",
+    color: "#333",
   },
   {
     status: "Hoàn thành",
@@ -172,6 +179,45 @@ const events = ref([
     color: "#333",
   },
 ]);
+
+watchEffect(async () => {
+  await reportStore.getReportDetail(route.params.id).then((res) => {
+    preview.value = {
+      ...res.data,
+      description: res.data.description.body,
+      img: [...res.data.images],
+    };
+  });
+});
+watch(preview, () => {
+  for (let key in timeline.value) {
+    if (Number(key) === preview.value.status) {
+      timeline.value[key] = {
+        ...timeline.value[key],
+        date: new Date(preview.value.created_at).toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        }),
+        color: "#6366F1",
+      };
+    }
+    if (Number(key) < preview.value.status) {
+      timeline.value[key] = {
+        ...timeline.value[key],
+        color: "#6366F1",
+      };
+    }
+    if (Number(key) > preview.value.status) {
+      timeline.value[key] = {
+        ...timeline.value[key],
+        color: "#333",
+      };
+    }
+  }
+});
 function handleConfirm() {
   const formData = new FormData();
   Object.keys(reportStore.report).forEach((val) => {
@@ -205,7 +251,7 @@ onMounted(() => {
 
 const galleria = ref();
 const images = computed(() => {
-  return reportStore.report.img.map((val, index) => {
+  return preview.value.img.map((val, index) => {
     return {
       itemImageSrc: val,
       thumbnailImageSrc: val,
@@ -281,6 +327,12 @@ const fullScreenIcon = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+:deep(.custom-galleria .p-galleria-thumbnail-wrapper) {
+  top: 0;
+}
+:deep(.p-galleria-thumbnail-container) {
+  height: 100%;
+}
 :deep(.p-timeline-event-opposite) {
   padding: 0;
 }

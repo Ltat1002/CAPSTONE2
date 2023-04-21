@@ -11,8 +11,7 @@
           {{ device.description }}
         </h2>
         <div class="tags">
-          <a href="h#" target="_blank">#điện tử</a>
-          <a href="h#" target="_blank">#laptop</a>
+          <a href="h#" target="_blank">#{{ device.name }}</a>
         </div>
       </div>
     </div>
@@ -95,7 +94,7 @@ section {
   transition: 0.3s ease;
 }
 .tags a:hover {
-  color: #000;
+  color: #2a5aea;
 }
 @media screen and (max-width: 1100px) {
   .container {

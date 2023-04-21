@@ -2,7 +2,7 @@ import ReportPreview from "@/views/users/report-preview/ReportPreview.vue";
 import TheHistory from "@/views/users/components/TheHistory.vue";
 import ShowReport from "@/views/engineer/components/ShowReport.vue";
 import CompHome from "@/views/users/home/CompHome.vue";
-import UploadInfomation from "@/views/engineer/UploadInformation.vue";
+import UploadInformation from "@/views/engineer/UploadInformation.vue";
 export const routerEngineer = [
   {
     path: "",
@@ -10,7 +10,6 @@ export const routerEngineer = [
   },
   {
     path: "preview",
-    name: "preview",
     component: ReportPreview,
   },
   {
@@ -20,11 +19,12 @@ export const routerEngineer = [
   },
   {
     path: "upload-information",
-    component: UploadInfomation,
+    name: "upload-information",
+    component: UploadInformation,
   },
   {
     path: "show-report",
-    name: "ShowReport",
+    name: "Show-report",
     component: ShowReport,
   },
 ];

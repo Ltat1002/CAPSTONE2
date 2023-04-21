@@ -11,18 +11,26 @@
           <router-link to="/" active-class="nav-link">Trang chủ</router-link>
         </li>
         <li>
-          <router-link to="/notify" href="#about" active-class="nav-link"
+          <router-link
+            to="/receive-report"
+            href="#about"
+            active-class="nav-link"
             >Thông báo</router-link
           >
         </li>
         <li>
+          <router-link to="/notify" href="#about" active-class="nav-link"
+            >Báo cáo</router-link
+          >
+        </li>
+        <!-- <li>
           <router-link
             to="/report-problem"
             href="#about"
             active-class="nav-link"
             >Báo cáo</router-link
           >
-        </li>
+        </li> -->
         <li v-if="checkLogin && registerStore.account.status === 0">
           <router-link
             to="/engineer/upload-information"
@@ -204,9 +212,8 @@ img {
 .drop_down {
   position: absolute;
   top: 100%;
-  left: 50%;
   width: 300px;
-  transform: translateX(-50%);
+  right: 0;
   background-color: #fff;
   border-radius: 5px;
   padding: 0 20px;
