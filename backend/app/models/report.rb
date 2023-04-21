@@ -7,5 +7,6 @@ class Report < ApplicationRecord
   has_many_attached :images
   has_rich_text :description
 
-  validates :images, presence: true
+  validates :name, :mobile, :address, :description, :images, presence: true
+  validates :mobile, format: { with: /(84|0[3|5|7|8|9])+([0-9]{8}|[0-9]{9})\b/ }
 end
