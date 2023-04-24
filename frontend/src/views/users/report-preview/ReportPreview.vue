@@ -67,22 +67,24 @@
           ></iframe>
         </div>
       </div>
-      <div class="flex flex-col">
-        <div class="p-2 mt-4">
-          <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
-          <p class="ml-4">
-            {{ preview.description }}
-          </p>
+      <div class="flex flex-col mt-4">
+        <div class="w-[30%]">
+          <h3 class="text-[20px] text-[#333] font-semibold mb-2">Thiết bị</h3>
+          <ul class="ml-[2.7rem]">
+            <li class="list-disc">
+              <span>Thiết bị:</span><span>{{ preview.name }}</span>
+            </li>
+          </ul>
         </div>
-        <div class="p-2 flex justify-between mt-4">
-          <div class="w-[30%]">
-            <h3 class="text-[20px] text-[#333] font-semibold mb-2">Thiết bị</h3>
-            <ul class="ml-[2.7rem]">
-              <li class="list-disc">
-                <span>Thiết bị:</span><span>{{ preview.name }}</span>
-              </li>
-            </ul>
+
+        <div class="p-2 flex justify-between">
+          <div class="p-2 mt-4 w-[30%]">
+            <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
+            <p class="ml-4">
+              {{ preview.description }}
+            </p>
           </div>
+
           <Timeline :value="timeline" layout="horizontal" align="top">
             <template #marker="slotProps">
               <span
@@ -152,7 +154,8 @@ import Galleria from "primevue/galleria";
 import Button from "primevue/button";
 import { toastMessage } from "@/helper/toastMessage.js";
 import axios from "axios";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+const router = useRouter();
 const route = useRoute();
 const reportStore = useReportStore();
 const preview = ref(reportStore.report);
@@ -161,12 +164,12 @@ const timeline = ref([
   {
     status: "Gửi yêu cầu",
     icon: "bx bxs-compass bx-spin",
-    color: "#6366F1",
+    color: "#333",
   },
   {
     status: "Xác nhận",
     icon: "bx bx-cog bx-spin",
-    color: "#6366F1",
+    color: "#333",
   },
   {
     status: "Tiến hành",
@@ -222,7 +225,6 @@ function handleConfirm() {
   const formData = new FormData();
   Object.keys(reportStore.report).forEach((val) => {
     if (val === "images") {
-      console.log(reportStore.report[val]);
       reportStore.report["images"].forEach((e) => {
         formData.append(`images[]`, e, e.name);
       });
@@ -237,8 +239,8 @@ function handleConfirm() {
         Authorization: `Bearer ${localToken}`,
       },
     })
-    .then((res) => {
-      console.log(res);
+    .then(() => {
+      router.push("/notify");
       toastMessage("success", "thanh cong", "report");
     })
     .catch(() => {
@@ -268,6 +270,7 @@ const fullScreen = ref(false);
 const onThumbnailButtonClick = () => {
   showThumbnails.value = !showThumbnails.value;
 };
+
 const toggleFullScreen = () => {
   if (fullScreen.value) {
     closeFullScreen();

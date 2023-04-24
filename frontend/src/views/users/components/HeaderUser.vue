@@ -12,7 +12,7 @@
         </li>
         <li>
           <router-link
-            to="/receive-report"
+            to="/engineer/receive-report"
             href="#about"
             active-class="nav-link"
             >Thông báo</router-link

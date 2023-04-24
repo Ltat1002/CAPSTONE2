@@ -343,9 +343,6 @@ const profile = asyncComputed(
     address: "",
   }
 );
-watch(profile, () => {
-  console.log(profile.value);
-});
 const editProfile = ref({
   email: "",
   first_name: "",

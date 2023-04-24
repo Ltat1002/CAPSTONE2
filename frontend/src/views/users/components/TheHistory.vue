@@ -13,7 +13,9 @@
       /></router-link>
     </div>
     <div class="list my-5" v-if="!previewUser">
+      <div v-if="loading" class="text-center"><TheLoading /></div>
       <router-link
+        v-else
         v-for="his in historyRepair"
         :key="his?.id"
         :to="`/notify/preview/${his?.id}`"
@@ -118,6 +120,7 @@ import Rating from "primevue/rating";
 import { useRoute } from "vue-router";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
+import TheLoading from "@/components/TheLoading.vue";
 import { ref, computed } from "vue";
 import { useReportStore } from "@/store/report";
 const reportStore = useReportStore();
@@ -125,11 +128,17 @@ const route = useRoute();
 const previewUser = computed(() => route.path.includes("/notify/preview"));
 const rating2 = ref();
 const historyRepair = ref([]);
+const loading = ref(false);
 const reportHistoryRepair = async () => {
-  await reportStore.reportHistoryRepair().then((res) => {
-    historyRepair.value = res.data;
-    console.log(res.data);
-  });
+  loading.value = true;
+  await reportStore
+    .reportHistoryRepair()
+    .then((res) => {
+      historyRepair.value = res.data;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 reportHistoryRepair();
 </script>
