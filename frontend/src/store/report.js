@@ -9,7 +9,7 @@ export const useReportStore = defineStore("reports", {
         mobile: "",
         address: "",
         description: "",
-        images: "",
+        images: [],
         img: [],
       },
     };

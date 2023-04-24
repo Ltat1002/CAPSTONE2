@@ -67,22 +67,24 @@
           ></iframe>
         </div>
       </div>
-      <div class="flex flex-col">
-        <div class="p-2 mt-4">
-          <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
-          <p class="ml-4">
-            {{ preview.description }}
-          </p>
+      <div class="flex flex-col mt-4">
+        <div class="w-[30%]">
+          <h3 class="text-[20px] text-[#333] font-semibold mb-2">Thiết bị</h3>
+          <ul class="ml-[2.7rem]">
+            <li class="list-disc">
+              <span>Thiết bị:</span><span>{{ preview.name }}</span>
+            </li>
+          </ul>
         </div>
-        <div class="p-2 flex justify-between mt-4">
-          <div class="w-[30%]">
-            <h3 class="text-[20px] text-[#333] font-semibold mb-2">Thiết bị</h3>
-            <ul class="ml-[2.7rem]">
-              <li class="list-disc">
-                <span>Thiết bị:</span><span>{{ preview.name }}</span>
-              </li>
-            </ul>
+
+        <div class="p-2 flex justify-between">
+          <div class="p-2 mt-4 w-[30%]">
+            <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
+            <p class="ml-4">
+              {{ preview.description }}
+            </p>
           </div>
+
           <Timeline :value="timeline" layout="horizontal" align="top">
             <template #marker="slotProps">
               <span
@@ -166,7 +168,7 @@ const timeline = ref([
   {
     status: "Xác nhận",
     icon: "bx bx-cog bx-spin",
-    color: "#6366F1",
+    color: "#333",
   },
   {
     status: "Tiến hành",
