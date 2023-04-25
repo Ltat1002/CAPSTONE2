@@ -5,7 +5,6 @@ Rails.application.routes.draw do
       resources :vouchers
       resources :reviews
       resources :reports
-      resources :users
       resources :repair_equipments
 
       post 'auth/register', to: 'users#register'
@@ -26,6 +25,7 @@ Rails.application.routes.draw do
       end
 
       namespace :admin do
+        resources :users, only: :index
       end
     end
   end
