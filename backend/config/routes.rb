@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
       put 'become_partner', to: 'users#become_partner'
 
+      get 'search', to: 'reports#search'
+
       namespace :engineer do
         get 'index', to: 'reports#index'
         put 'receive', to: 'reports#receive_report'
