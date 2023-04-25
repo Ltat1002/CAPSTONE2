@@ -16,4 +16,9 @@ class Report < ApplicationRecord
         Rails.application.routes.url_helpers.url_for(image)
       end)
   end
+
+  def show_all_report_json
+    as_json(include: %i[user_send user_receive repair_equipment vouchers description review])
+      .merge({ images: Rails.application.routes.url_helpers.url_for(images.first) })
+  end
 end

@@ -3,12 +3,9 @@ class Api::V1::ReportsController < ApplicationController
 
   def index
     @reports = Report.includes(:repair_equipment, :user_send, :user_receive, :vouchers, :review)
-                     .where(user_send_id: current_user.id).with_attached_images
+                     .where(user_send_id: current_user.id).with_attached_images.with_all_rich_text
 
-    render json: @reports.map { |report|
-      report.as_json(include: %i[user_send user_receive repair_equipment vouchers description review])
-            .merge({ images: url_for(report.images.first) })
-    }
+    render json: @reports.map { |report| report&.show_all_report_json }
   end
 
   def show
@@ -49,6 +46,18 @@ class Api::V1::ReportsController < ApplicationController
   # def destroy
   #   @report.destroy
   # end
+
+  def search
+    @report_search = Report.includes(:repair_equipment, :user_send, :user_receive, :vouchers, :review)
+                           .joins(:rich_text_description).with_attached_images.with_all_rich_text
+                           .where('action_text_rich_texts.body like ? or reports.name like ?',
+                                  "%#{params[:search]}%", "%#{params[:search]}%")
+    if @report_search.present?
+      render json: @report_search.map { |report| report&.show_all_report_json }
+    else
+      render json: { message: 'Not found' }, status: :not_found
+    end
+  end
 
   private
 
