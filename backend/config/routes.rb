@@ -18,10 +18,12 @@ Rails.application.routes.draw do
       get 'search', to: 'reports#search'
 
       namespace :engineer do
-        get 'index', to: 'reports#index'
+        resources :reports
         put 'receive', to: 'reports#receive_report'
         put 'offer', to: 'reports#offer_price'
         put 'submit', to: 'reports#submit_report'
+        get 'receive_history', to: 'reports#receive_history'
+        get 'receive_history/:id', to: 'reports#receive_history_details'
       end
 
       namespace :admin do
