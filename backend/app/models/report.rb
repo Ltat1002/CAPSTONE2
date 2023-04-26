@@ -8,7 +8,7 @@ class Report < ApplicationRecord
   has_rich_text :description
 
   validates :name, :mobile, :address, :description, :images, presence: true
-  validates :mobile, format: { with: /(84|0[3|5|7|8|9])+([0-9]{8}|[0-9]{9})\b/ }
+  validates :mobile, format: { with: /(84|0[3|5|7|8|9])+([0-9]{8}|[0-9]{9})\b/ }, on: :create
 
   scope :newsest, -> { order(updated_at: :desc) }
   scope :report_relation, lambda {
