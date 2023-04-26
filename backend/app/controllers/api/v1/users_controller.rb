@@ -1,12 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request, only: %i[register login]
 
-  def index
-    @users = User.all
-
-    render json: @users
-  end
-
   def register
     @user = User.new(user_params)
 
