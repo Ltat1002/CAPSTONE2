@@ -1,3 +1,3 @@
 class RepairEquipmentSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :created_at, :updated_at
+  attributes :id, :name, :description, :photo, :created_at, :updated_at
 end
