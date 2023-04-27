@@ -93,7 +93,7 @@ function handleRegisterEngineer() {
   console.log(data);
   setTimeout(() => {
     register
-      .updateProfile(data)
+      .updateProfile({ ...register.account, ...data })
       .then((data) => {
         console.log(data);
         router.push("/");

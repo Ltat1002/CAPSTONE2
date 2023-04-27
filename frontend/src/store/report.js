@@ -24,5 +24,8 @@ export const useReportStore = defineStore("reports", {
     getReportDetail(id) {
       return http.get(`/reports/${id}`);
     },
+    searchReport(search) {
+      return http.get(`/search?search=${search}`);
+    },
   },
 });

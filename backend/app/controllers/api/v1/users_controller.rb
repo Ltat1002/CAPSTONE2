@@ -1,5 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request, only: %i[register login]
+  before_action :set_user, only: %i[edit_profile become_partner]
 
   def register
     @user = User.new(user_params)
@@ -67,6 +68,10 @@ class Api::V1::UsersController < ApplicationController
   # end
 
   private
+
+  def set_user
+    @user = current_user
+  end
 
   def user_params
     params.permit(:email, :password, :password_confirmation, :first_name, :last_name, :mobile,

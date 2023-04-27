@@ -6,7 +6,7 @@
     >
       <span class="p-input-icon-left flex-1 mr-8 ml-8">
         <i class="pi pi-search" />
-        <InputText v-model="value1" placeholder="Tìm kiếm" class="w-full" />
+        <InputText v-model="search" placeholder="Tìm kiếm" class="w-full" />
       </span>
       <router-link to="/report-problem" class="mr-8 ml-8">
         <Button label="Tạo báo cáo"
@@ -121,7 +121,7 @@ import { useRoute } from "vue-router";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import TheLoading from "@/components/TheLoading.vue";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useReportStore } from "@/store/report";
 const reportStore = useReportStore();
 const route = useRoute();
@@ -140,7 +140,18 @@ const reportHistoryRepair = async () => {
       loading.value = false;
     });
 };
+const search = ref("");
 reportHistoryRepair();
+watch(search, () => {
+  reportStore
+    .searchReport(search.value)
+    .then((res) => {
+      historyRepair.value = res.data;
+    })
+    .catch(() => {
+      historyRepair.value = [];
+    });
+});
 </script>
 <style lang="scss" scoped>
 .item {
