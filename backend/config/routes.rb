@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       resources :vouchers
       resources :reviews
       resources :reports
-      resources :repair_equipments
+      resources :repair_equipments, only: %i[index show]
 
       post 'auth/register', to: 'users#register'
       post 'auth/login', to: 'users#login'
