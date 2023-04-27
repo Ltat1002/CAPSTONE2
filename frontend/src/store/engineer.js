@@ -8,5 +8,8 @@ export const useEngineerStore = defineStore("engineer", {
     receiveReport() {
       return http.get("engineer/reports");
     },
+    receive(data) {
+      return http.put("engineer/receive", data);
+    },
   },
 });

@@ -9,10 +9,10 @@ export const routerEngineer = [
     path: "",
     component: CompHome,
   },
-  {
-    path: "preview",
-    component: ReportPreview,
-  },
+  // {
+  //   path: "preview",
+  //   component: ReportPreview,
+  // },
   {
     path: "history",
     name: "history",
@@ -27,6 +27,12 @@ export const routerEngineer = [
     path: "receive-report",
     name: "receive-report",
     component: ReceiveReport,
+    children: [
+      {
+        path: "preview/:id",
+        component: ReportPreview,
+      },
+    ],
   },
   {
     path: "show-report",

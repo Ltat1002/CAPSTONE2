@@ -142,6 +142,14 @@
   <Dialog v-model:visible="visible" modal header="Đánh giá">
     <TheRating />
   </Dialog>
+  <Dialog
+    v-model:visible="bill"
+    modal
+    header="Tiến hành"
+    :style="{ width: '50vw' }"
+  >
+    <BillMoney />
+  </Dialog>
 </template>
 
 <script setup>
@@ -153,6 +161,7 @@ import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
 import Button from "primevue/button";
 import { toastMessage } from "@/helper/toastMessage.js";
+import BillMoney from "@/views/engineer/components/BillMoney.vue";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
@@ -160,6 +169,7 @@ const route = useRoute();
 const reportStore = useReportStore();
 const preview = ref(reportStore.report);
 const visible = ref(false);
+const bill = ref(false);
 const timeline = ref([
   {
     status: "Gửi yêu cầu",
@@ -423,10 +433,17 @@ const fullScreenIcon = computed(() => {
   padding: 0px 10px;
   .p-galleria-thumbnail-item-content {
     height: 100%;
+    > div {
+      &:first-child {
+        overflow-y: hidden;
+      }
+    }
   }
 }
 :deep(.p-galleria-thumbnail-items) {
   margin-right: -10px;
   margin-left: -10px;
+  height: 100%;
+  overflow-y: hidden;
 }
 </style>
