@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         put 'accept_cv', to: 'users#accept_cv'
         put 'approve_cv', to: 'users#approve_cv'
         put 'deny_cv', to: 'users#deny_cv'
+        resources :repair_equipments, except: :destroy
       end
     end
   end
