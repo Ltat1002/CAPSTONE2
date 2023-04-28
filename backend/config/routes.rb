@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       devise_for :users
       resources :vouchers
-      resources :reviews
+      resources :reviews, only: :create
       resources :reports
       resources :repair_equipments, only: %i[index show]
 
@@ -27,6 +27,12 @@ Rails.application.routes.draw do
       namespace :admin do
         resources :users, only: %i[index show]
         resources :reports, only: %i[index show]
+        get 'show_engineer', to: 'users#show_engineer'
+        put 'accept_cv', to: 'users#accept_cv'
+        put 'approve_cv', to: 'users#approve_cv'
+        put 'deny_cv', to: 'users#deny_cv'
+        resources :repair_equipments, except: :destroy
+        resources :reviews, only: %i[index show destroy]
       end
     end
   end
