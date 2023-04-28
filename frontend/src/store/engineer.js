@@ -11,5 +11,8 @@ export const useEngineerStore = defineStore("engineer", {
     receive(data) {
       return http.put("engineer/receive", data);
     },
+    offer(data) {
+      return http.put("engineer/offer", data);
+    },
   },
 });

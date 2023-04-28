@@ -133,7 +133,7 @@
     header="Tiến hành"
     :style="{ width: '50vw' }"
   >
-    <BillMoney />
+    <BillMoney :id="idBill" />
   </Dialog>
 </template>
 <script setup>
@@ -175,7 +175,9 @@ const handleClickSuccess = async (id) => {
       toastMessage("success", "Thất bại", "Nhận đơn thất bại");
     });
 };
-function handleClickProceed() {
+const idBill = ref("");
+function handleClickProceed(id) {
+  idBill.value = id;
   visible.value = true;
 }
 onMounted(() => {
