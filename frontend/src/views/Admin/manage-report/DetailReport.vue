@@ -52,10 +52,6 @@ function getDetailReport() {
     console.log(res);
   });
 }
-const handleClickUpdate = () => {
-  console.log(1);
-  dt.value.exportCSV();
-};
 getDetailReport();
 </script>
 <style lang="scss" scoped></style>

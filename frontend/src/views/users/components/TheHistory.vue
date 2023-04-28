@@ -25,7 +25,7 @@
             <div
               class="w-48 flex-none bg-cover text-center overflow-hidden"
               :style="{
-                'background-image': 'url(' + his.images + ')',
+                'background-image': `url('${his.images}')`,
               }"
               title="Mountain"
             ></div>

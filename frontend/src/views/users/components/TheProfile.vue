@@ -10,6 +10,7 @@
           </div>
           <div class="user-box">
             <h2>{{ profile?.first_name + " " + profile?.last_name }}</h2>
+            {{ profile }}
             <p>Ngày tham gia: 24/5/2021</p>
           </div>
         </div>
