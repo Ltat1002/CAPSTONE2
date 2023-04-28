@@ -62,6 +62,12 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def all_engineer
+    @users = User.includes(:repair_equipment).with_all_rich_text.where(role: :engineer)
+
+    render json: @users
+  end
+
   # DELETE /users/1
   # def destroy
   #   @user.destroy

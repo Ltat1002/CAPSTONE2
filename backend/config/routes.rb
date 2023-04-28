@@ -9,13 +9,11 @@ Rails.application.routes.draw do
 
       post 'auth/register', to: 'users#register'
       post 'auth/login', to: 'users#login'
-
       put 'edit_profile', to: 'users#edit_profile'
       get 'profile', to: 'users#profile'
-
       put 'become_partner', to: 'users#become_partner'
-
       get 'search', to: 'reports#search'
+      get 'all_engineer', to: 'users#all_engineer'
 
       namespace :engineer do
         resources :reports
