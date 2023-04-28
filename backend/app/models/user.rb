@@ -13,11 +13,12 @@ class User < ApplicationRecord
   validates :first_name, :last_name, :mobile, :address, presence: true
   validates :password, format: {
     with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}\z/
-  }
+  }, on: :create
   validates :mobile, format: { with: /(84|0[3|5|7|8|9])+([0-9]{8}|[0-9]{9})\b/ }
 
   enum role: %i[user engineer admin]
   enum onl_status: %i[online offline]
+  enum status: %i[activate pending accepted approved deactivate]
 
   alias authenticate valid_password?
 end
