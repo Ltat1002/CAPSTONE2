@@ -6,15 +6,27 @@
     </router-link>
     <ul class="side-menu top">
       <li :class="{ active: currentPage.includes('/report-problem') }">
-        <router-link to="engineer/history">
+        <router-link to="/admin/manage-users">
           <i class="bx bxs-user"></i>
-          <span class="text">Lịch sử báo cáo</span>
+          <span class="text">Quản lý người dùng</span>
         </router-link>
       </li>
       <li :class="{ active: currentPage.includes('/voucher') }">
-        <router-link to="/voucher">
+        <router-link to="/admin/manage-report">
           <i class="bx bxs-shopping-bag-alt"></i>
-          <span class="text">...</span>
+          <span class="text">Báo Cáo</span>
+        </router-link>
+      </li>
+      <li :class="{ active: currentPage.includes('/voucher') }">
+        <router-link to="/admin/manage-report">
+          <i class="bx bxs-shopping-bag-alt"></i>
+          <span class="text">Quản lý thiết bị</span>
+        </router-link>
+      </li>
+      <li :class="{ active: currentPage.includes('/voucher') }">
+        <router-link to="/admin/manage-report">
+          <i class="bx bxs-shopping-bag-alt"></i>
+          <span class="text">Quản lý kỹ sư</span>
         </router-link>
       </li>
     </ul>
