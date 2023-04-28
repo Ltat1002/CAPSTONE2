@@ -142,6 +142,14 @@
   <Dialog v-model:visible="visible" modal header="Đánh giá">
     <TheRating />
   </Dialog>
+  <Dialog
+    v-model:visible="bill"
+    modal
+    header="Tiến hành"
+    :style="{ width: '50vw' }"
+  >
+    <BillMoney />
+  </Dialog>
 </template>
 
 <script setup>
@@ -153,17 +161,20 @@ import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
 import Button from "primevue/button";
 import { toastMessage } from "@/helper/toastMessage.js";
+import BillMoney from "@/views/engineer/components/BillMoney.vue";
 import axios from "axios";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+const router = useRouter();
 const route = useRoute();
 const reportStore = useReportStore();
 const preview = ref(reportStore.report);
 const visible = ref(false);
+const bill = ref(false);
 const timeline = ref([
   {
     status: "Gửi yêu cầu",
     icon: "bx bxs-compass bx-spin",
-    color: "#6366F1",
+    color: "#333",
   },
   {
     status: "Xác nhận",
@@ -224,7 +235,6 @@ function handleConfirm() {
   const formData = new FormData();
   Object.keys(reportStore.report).forEach((val) => {
     if (val === "images") {
-      console.log(reportStore.report[val]);
       reportStore.report["images"].forEach((e) => {
         formData.append(`images[]`, e, e.name);
       });
@@ -239,8 +249,8 @@ function handleConfirm() {
         Authorization: `Bearer ${localToken}`,
       },
     })
-    .then((res) => {
-      console.log(res);
+    .then(() => {
+      router.push("/notify");
       toastMessage("success", "thanh cong", "report");
     })
     .catch(() => {
@@ -270,6 +280,7 @@ const fullScreen = ref(false);
 const onThumbnailButtonClick = () => {
   showThumbnails.value = !showThumbnails.value;
 };
+
 const toggleFullScreen = () => {
   if (fullScreen.value) {
     closeFullScreen();
@@ -422,10 +433,17 @@ const fullScreenIcon = computed(() => {
   padding: 0px 10px;
   .p-galleria-thumbnail-item-content {
     height: 100%;
+    > div {
+      &:first-child {
+        overflow-y: hidden;
+      }
+    }
   }
 }
 :deep(.p-galleria-thumbnail-items) {
   margin-right: -10px;
   margin-left: -10px;
+  height: 100%;
+  overflow-y: hidden;
 }
 </style>

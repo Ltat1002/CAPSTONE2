@@ -20,7 +20,7 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 let indexActive = ref(null);
 const deviceTypeList = [
   {
@@ -62,10 +62,6 @@ const deviceTypeList = [
 ];
 
 const deviceType = ref(null);
-
-onMounted(() => {
-  // console.log(deviceType.value);
-});
 
 function handleActive(index) {
   indexActive.value = index;
