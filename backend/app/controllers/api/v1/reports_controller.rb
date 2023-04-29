@@ -42,10 +42,6 @@ class Api::V1::ReportsController < ApplicationController
     end
   end
 
-  # def destroy
-  #   @report.destroy
-  # end
-
   def search
     @report_search = Report.report_relation.joins(:rich_text_description).newsest
                            .where('(action_text_rich_texts.body like ? or reports.name like ?)
@@ -56,6 +52,12 @@ class Api::V1::ReportsController < ApplicationController
     else
       render json: { message: 'Not found' }, status: :not_found
     end
+  end
+
+  def show_all_report
+    @report_all = Report.report_relation.newsest.find(params[:id])
+
+    render json: @report_all.map { |report| report&.show_all_report_json }
   end
 
   private

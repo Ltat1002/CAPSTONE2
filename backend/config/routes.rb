@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       put 'become_partner', to: 'users#become_partner'
       get 'search', to: 'reports#search'
       get 'all_engineer', to: 'users#all_engineer'
+      post 'show_all_report', to: 'reports#show_all_report'
 
       namespace :engineer do
         resources :reports
