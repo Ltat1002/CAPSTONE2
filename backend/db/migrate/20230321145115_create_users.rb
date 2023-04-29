@@ -5,8 +5,8 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :last_name
       t.string :mobile
       t.string :address
-      t.float :longitude
-      t.float :latitude
+      t.decimal :longitude, precision: 15, scale: 8
+      t.decimal :latitude, precision: 15, scale: 8
       t.integer :role, default: 0
       t.integer :status, default: 0
       t.integer :onl_status, default: 0

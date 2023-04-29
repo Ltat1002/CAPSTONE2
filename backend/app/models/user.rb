@@ -18,6 +18,7 @@ class User < ApplicationRecord
 
   enum role: %i[user engineer admin]
   enum onl_status: %i[online offline]
+  enum status: %i[activate pending accepted approved deactivate]
 
   alias authenticate valid_password?
 end
