@@ -5,6 +5,8 @@ import { routerUsers } from "./modules/router-users/index.js";
 import HomeUser from "@/views/users/HomeUser.vue";
 // import { useRegisterStore } from "@/store/register";
 import { routerEngineer } from "./modules/router-engineer/index";
+import HomeAdmin from "@/views/Admin/HomeAdmin.vue";
+import { routerAdmin } from "./modules/router-admin/index.js";
 const routes = [
   {
     path: "/",
@@ -17,6 +19,12 @@ const routes = [
     name: "engineer",
     component: HomeLayout,
     children: [...routerEngineer],
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: HomeAdmin,
+    children: [...routerAdmin],
   },
   { ...routerAuth },
 ];
