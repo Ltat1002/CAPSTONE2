@@ -81,7 +81,7 @@
               <div class="flex w-full justify-between mt-2 font-normal">
                 <dt class="sr-only">Cast</dt>
                 <dd>{{ receive.description.body }}</dd>
-                <div>
+                <div class="flex gap-3">
                   <Button
                     size="small"
                     label="Chấp nhận"
@@ -137,32 +137,52 @@
   </Dialog>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, watchEffect, onMounted } from "vue";
 import { useEngineerStore } from "@/store/engineer.js";
 import Button from "primevue/button";
 import { useRoute } from "vue-router";
+import { asyncComputed } from "@vueuse/core";
+import { getReport } from "@/helper/realtime.js";
 import { toastMessage } from "@/helper/toastMessage.js";
 import Dialog from "primevue/dialog";
 import BillMoney from "@/views/engineer/components/BillMoney.vue";
+import { useRegisterStore } from "@/store/register.js";
 const route = useRoute();
 const visible = ref(false);
 const engineerStore = useEngineerStore();
 const listReceive = ref();
-const listReceiveReport = async () => {
-  engineerStore
-    .receiveReport()
-    .then((res) => {
-      listReceive.value = res.data;
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-};
+const report = ref(null);
+const profile = asyncComputed(
+  async () => {
+    return await useRegisterStore().account;
+  },
+  {
+    email: "",
+    first_name: "",
+    last_name: "",
+    mobile: "",
+    address: "",
+  }
+);
+onMounted(() => {
+  getReport(report);
+});
+watchEffect(async () => {
+  const check = report.value.reduce((accumulator, currenValue) => {
+    if (
+      currenValue.engineer_id.split(", ").includes(String(profile.value.id))
+    ) {
+      console.log(accumulator);
+      accumulator.push(currenValue.report_id);
+    }
+    return accumulator;
+  }, []);
+  console.log(check);
+  // console.log(report.value);
+  const res = await engineerStore.getReportByListId(check);
+  listReceive.value = res.data;
+});
 const handleClickSuccess = async (id) => {
-  console.log({
-    id,
-    status: 1,
-  });
   engineerStore
     .receive({
       id,
@@ -180,7 +200,4 @@ function handleClickProceed(id) {
   idBill.value = id;
   visible.value = true;
 }
-onMounted(() => {
-  listReceiveReport();
-});
 </script>

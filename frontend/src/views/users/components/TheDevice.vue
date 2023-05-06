@@ -1,10 +1,7 @@
 <template lang="">
   <section class="cursor-pointer" @click="handleClickDevice($event, device.id)">
     <div class="blog-post">
-      <img
-        src="https://dt24h.com/wp-content/uploads/2022/02/Blackview-A95-1.jpg"
-        :alt="device.name"
-      />
+      <img :src="device.photo_url" :alt="device.name" />
       <a href="h#" target="_blank" class="category"> {{ device.name }}</a>
       <div class="text-content">
         <h2 class="post-title">

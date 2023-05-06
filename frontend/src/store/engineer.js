@@ -11,8 +11,17 @@ export const useEngineerStore = defineStore("engineer", {
     receive(data) {
       return http.put("engineer/receive", data);
     },
+    getReportByListId(ids) {
+      console.log(ids);
+      return http.post("show_all_report", {
+        id: ids,
+      });
+    },
     offer(data) {
       return http.put("engineer/offer", data);
+    },
+    getAllEngineer() {
+      return http.get("all_engineer");
     },
   },
 });
