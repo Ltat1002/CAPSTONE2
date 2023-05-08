@@ -4,8 +4,8 @@ class CreateReports < ActiveRecord::Migration[7.0]
       t.string :name
       t.string :mobile
       t.string :address
-      t.float :longitude
-      t.float :latitude
+      t.decimal :longitude, precision: 15, scale: 8
+      t.decimal :latitude, precision: 15, scale: 8
       t.decimal :amount_pay, precision: 15, scale: 4
       t.string :reason
       t.integer :status, default: 0

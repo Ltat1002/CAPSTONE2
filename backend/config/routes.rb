@@ -3,19 +3,18 @@ Rails.application.routes.draw do
     namespace :v1 do
       devise_for :users
       resources :vouchers
-      resources :reviews
+      resources :reviews, only: :create
       resources :reports
       resources :repair_equipments, only: %i[index show]
 
       post 'auth/register', to: 'users#register'
       post 'auth/login', to: 'users#login'
-
       put 'edit_profile', to: 'users#edit_profile'
       get 'profile', to: 'users#profile'
-
       put 'become_partner', to: 'users#become_partner'
-
       get 'search', to: 'reports#search'
+      get 'all_engineer', to: 'users#all_engineer'
+      post 'show_all_report', to: 'reports#show_all_report'
 
       namespace :engineer do
         resources :reports
@@ -29,6 +28,12 @@ Rails.application.routes.draw do
       namespace :admin do
         resources :users, only: %i[index show]
         resources :reports, only: %i[index show]
+        get 'show_engineer', to: 'users#show_engineer'
+        put 'accept_cv', to: 'users#accept_cv'
+        put 'approve_cv', to: 'users#approve_cv'
+        put 'deny_cv', to: 'users#deny_cv'
+        resources :repair_equipments, except: :destroy
+        resources :reviews, only: %i[index show destroy]
       end
     end
   end
