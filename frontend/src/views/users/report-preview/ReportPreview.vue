@@ -69,8 +69,8 @@
           </ul>
         </div>
 
-        <div class="p-2 flex justify-between">
-          <div class="p-2 mt-4 w-[30%]">
+        <div class="p-2 flex justify-between flex-col">
+          <div class="p-2 mt-4">
             <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
             <p class="ml-4">
               {{ preview.description }}
@@ -153,6 +153,7 @@ import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
 import { getDistance } from "@/helper/map.js";
 import Button from "primevue/button";
+import { status } from "@/helper/enumStatus";
 import { useEngineerStore } from "@/store/engineer.js";
 import MapComp from "@/views/engineer/components/MapComp.vue";
 import { toastMessage } from "@/helper/toastMessage.js";
@@ -247,7 +248,7 @@ async function handleConfirm() {
         },
       }
     );
-    toastMessage("success", "thanh cong", "report");
+    console.log("ok");
     const engineerRes = await engineer.getAllEngineer();
     console.log(engineerRes);
     const engineerList = await engineerRes.data.map(async (item) => {
@@ -262,31 +263,30 @@ async function handleConfirm() {
         }
       );
       console.log(distance);
-      console.log({
-        distance: distance.rows[0].elements[0].duration?.value || 0,
-        engineer_id: item.id,
-      });
       return {
-        distance: distance.rows[0].elements[0].duration?.value || 0,
+        duration: distance.rows[0].elements[0].distance?.value || 0,
+        duration_text: distance.rows[0].elements[0].duration?.text || 0,
+        distance_text: distance.rows[0].elements[0].duration?.text || 0,
         engineer_id: item.id,
       };
     });
-    console.log(engineerList);
-    router.push("/notify");
+
     Promise.all(engineerList).then((data) => {
-      console.log(data);
       data.sort((a, b) => {
-        return a.distance - b.distance;
+        return a.duration - b.duration;
       });
-      console.log(data);
       const engineerList = data.filter((item, index) => index < 2);
       const realtimeRp = {
+        duration: engineerList.map((item) => item.duration_text).join(", "),
+        distance: engineerList.map((item) => item.distance_text).join(", "),
         report_id: report.data.id,
         engineer_id: engineerList.map((item) => item.engineer_id).join(", "),
+        status: status.pending,
       };
       sendReport(realtimeRp);
     });
-    console.log("123");
+    router.push("/notify");
+    toastMessage("success", "thanh cong", "report");
   } catch (err) {
     toastMessage("error", "Thất bại", "report");
   }

@@ -76,15 +76,16 @@ function setAddress(addressProps, coor) {
 }
 
 function handleRegisterEngineer() {
+  console.log(selectedDevices.value);
   loading.value = true;
   const data = {
-    repair_equipment_id: selectedDevices.value.id,
+    repair_equipment_id: selectedDevices.value,
     latitude: coordinates?.lat || "",
     longitude: coordinates?.lng || "",
     description: description.value,
     role: "engineer",
     address: address.value,
-    status: 1,
+    status: 2,
   };
   setTimeout(() => {
     register
@@ -105,11 +106,11 @@ function handleRegisterEngineer() {
 }
 
 equipmentStore.getEquipments().then((data) => {
-  console.log(data);
   deviceList.value = data.data;
   if (pathProfile.value) {
+    console.log(register.account);
     selectedDevices.value = register.account.repair_equipment_id;
-    description.value = register.account?.description?.body || "";
+    description.value = register.account.description.body || "";
     coor.value = {
       lat: register.account.latitude,
       lng: register.account.longitude,

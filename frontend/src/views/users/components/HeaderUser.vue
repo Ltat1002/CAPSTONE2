@@ -10,7 +10,9 @@
         <li>
           <router-link to="/" active-class="nav-link">Trang chủ</router-link>
         </li>
-        <li v-if="checkLogin && registerStore.account.role === 'engineer'">
+        <li
+          v-if="checkLogin && registerStore.account.status === status.accepted"
+        >
           <router-link
             to="/engineer/receive-report"
             href="#about"
