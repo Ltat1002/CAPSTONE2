@@ -6,6 +6,7 @@
           v-model="selectedDevices"
           :options="deviceList"
           filter
+          optionValue="id"
           optionLabel="name"
           placeholder="Chọn thiết bị"
           class="w-full md:w-20rem mb-4"
@@ -18,7 +19,11 @@
       </div>
       <div class="flex-1 h-[500px]">
         <div class="h-[416px] overflow-hidden">
-          <map-comp :coor="coor" @setAddress="setAddress"></map-comp>
+          <map-comp
+            :coor="coor"
+            @setAddress="setAddress"
+            :pathProfile="pathProfile"
+          ></map-comp>
         </div>
         <div
           class="h-[60px] address mt-4 border border-solid border-[#fff] w-full text-white rounded-md px-3 overflow-y-auto flex items-center"
@@ -64,17 +69,8 @@ const selectedDevices = ref([]);
 const coor = ref({});
 let coordinates;
 
-if (pathProfile.value) {
-  selectedDevices.value = register.account.repair_equipment;
-  description.value = register.account?.description?.body || "";
-  coor.value = {
-    lat: register.account.latitude,
-    lng: register.account.longitude,
-  };
-  address.value = register.account.address;
-}
-
 function setAddress(addressProps, coor) {
+  console.log(coor);
   address.value = addressProps;
   coordinates = coor;
 }
@@ -109,7 +105,21 @@ function handleRegisterEngineer() {
 }
 
 equipmentStore.getEquipments().then((data) => {
+  console.log(data);
   deviceList.value = data.data;
+  if (pathProfile.value) {
+    selectedDevices.value = register.account.repair_equipment_id;
+    description.value = register.account?.description?.body || "";
+    coor.value = {
+      lat: register.account.latitude,
+      lng: register.account.longitude,
+    };
+    // address.value = register.account.address;
+    setAddress(register.account.address, {
+      lat: register.account.latitude,
+      lng: register.account.longitude,
+    });
+  }
 });
 </script>
 <style lang="scss" scoped>

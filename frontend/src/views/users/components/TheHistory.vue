@@ -134,6 +134,7 @@ const reportHistoryRepair = async () => {
   await reportStore
     .reportHistoryRepair()
     .then((res) => {
+      console.log(res.data);
       historyRepair.value = res.data;
     })
     .finally(() => {

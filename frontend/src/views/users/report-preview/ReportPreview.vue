@@ -56,15 +56,7 @@
           </template>
         </Galleria>
         <div class="w-[40%]">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d251637.95196238213!2d105.6189045!3d9.779349!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1681275081254!5m2!1svi!2s"
-            width="100%"
-            height="100%"
-            style="border: 0"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
+          <map-comp></map-comp>
         </div>
       </div>
       <div class="flex flex-col mt-4">
@@ -159,9 +151,13 @@ import Timeline from "primevue/timeline";
 import { useReportStore } from "@/store/report.js";
 import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
+import { getDistance } from "@/helper/map.js";
 import Button from "primevue/button";
+import { useEngineerStore } from "@/store/engineer.js";
+import MapComp from "@/views/engineer/components/MapComp.vue";
 import { toastMessage } from "@/helper/toastMessage.js";
 import BillMoney from "@/views/engineer/components/BillMoney.vue";
+import { sendReport } from "@/helper/realtime.js";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
@@ -192,7 +188,7 @@ const timeline = ref([
     color: "#333",
   },
 ]);
-
+const engineer = useEngineerStore();
 watchEffect(async () => {
   await reportStore.getReportDetail(route.params.id).then((res) => {
     preview.value = {
@@ -231,7 +227,7 @@ watch(preview, () => {
     }
   }
 });
-function handleConfirm() {
+async function handleConfirm() {
   const formData = new FormData();
   Object.keys(reportStore.report).forEach((val) => {
     if (val === "images") {
@@ -242,21 +238,62 @@ function handleConfirm() {
       formData.append(val, reportStore.report[val]);
     }
   });
-  const localToken = localStorage.getItem("token") || "";
-  axios
-    .post("http://localhost:3000/api/v1/reports", formData, {
-      headers: {
-        Authorization: `Bearer ${localToken}`,
-      },
-    })
-    .then(() => {
-      router.push("/notify");
-      toastMessage("success", "thanh cong", "report");
-    })
-    .catch(() => {
-      toastMessage("error", "thanh cong", "report");
+  try {
+    const localToken = localStorage.getItem("token") || "";
+    const report = await axios.post(
+      "http://localhost:3000/api/v1/reports",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localToken}`,
+        },
+      }
+    );
+    toastMessage("success", "thanh cong", "report");
+    const engineerRes = await engineer.getAllEngineer();
+    console.log(engineerRes);
+    const engineerList = await engineerRes.data.map(async (item) => {
+      const distance = await getDistance(
+        {
+          lat: item.latitude,
+          lng: item.longitude,
+        },
+        {
+          lat: report.data.latitude,
+          lng: report.data.longitude,
+        }
+      );
+      console.log(distance);
+      console.log({
+        distance: distance.rows[0].elements[0].duration?.value || 0,
+        engineer_id: item.id,
+      });
+      return {
+        distance: distance.rows[0].elements[0].duration?.value || 0,
+        engineer_id: item.id,
+      };
     });
+    console.log(engineerList);
+    router.push("/notify");
+    Promise.all(engineerList).then((data) => {
+      console.log(data);
+      data.sort((a, b) => {
+        return a.distance - b.distance;
+      });
+      console.log(data);
+      const engineerList = data.filter((item, index) => index < 2);
+      const realtimeRp = {
+        report_id: report.data.id,
+        engineer_id: engineerList.map((item) => item.engineer_id).join(", "),
+      };
+      sendReport(realtimeRp);
+    });
+    console.log("123");
+  } catch (err) {
+    toastMessage("error", "Thất bại", "report");
+  }
 }
+
 onMounted(() => {
   bindDocumentListeners();
 });
