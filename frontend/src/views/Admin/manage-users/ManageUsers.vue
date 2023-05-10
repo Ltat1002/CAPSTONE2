@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="card">
+  <div>
     <DataTable :value="listUser">
       <Column field="id" header="Mã"></Column>
       <Column field="email" header="Email"></Column>
@@ -7,7 +7,6 @@
       <Column field="first_name" header="Tên"></Column>
       <Column field="mobile" header="Số điện thoại"></Column>
       <Column field="address" header="Địa chỉ"></Column>
-      <Column field="onl_status" header="Trạng thái"></Column>
       <Column header="hành động">
         <template #body="slot">
           <div class="flex mx-[-8px]">

@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="card" v-if="!route.path.includes('manage-report/detail-report')">
+  <div v-if="!route.path.includes('manage-report/detail-report')">
     <DataTable :value="listUser">
       <Column field="user_send.first_name" header="Họ"></Column>
       <Column field="user_send.last_name" header="Tên"></Column>
@@ -56,7 +56,6 @@ function getAllReport() {
 }
 getAllReport();
 function handleClickDetail(slot) {
-  console.log(slot.data.id);
   router.push("/admin/manage-report/detail-report/" + slot.data.id);
 }
 </script>

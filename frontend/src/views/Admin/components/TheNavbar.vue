@@ -12,6 +12,12 @@
         </router-link>
       </li>
       <li :class="{ active: currentPage.includes('/voucher') }">
+        <router-link to="/admin/manage-engineer">
+          <i class="bx bxs-shopping-bag-alt"></i>
+          <span class="text">Quản lý Kỹ sư</span>
+        </router-link>
+      </li>
+      <li :class="{ active: currentPage.includes('/voucher') }">
         <router-link to="/admin/manage-report">
           <i class="bx bxs-shopping-bag-alt"></i>
           <span class="text">Báo Cáo</span>

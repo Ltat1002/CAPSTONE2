@@ -11,11 +11,17 @@ export const useAdminStore = defineStore("admin", {
     getUser(id) {
       return http.get(`admin/users/${id}`);
     },
+    getAllEngineer() {
+      return http.get("admin/show_engineer");
+    },
     getAllReport() {
       return http.get("admin/reports");
     },
     getDetailReport(id) {
       return http.get(`admin/reports/${id}`);
+    },
+    setAcceptCv(id) {
+      return http.put("admin/accept_cv", { ...id });
     },
   },
 });

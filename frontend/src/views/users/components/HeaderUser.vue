@@ -31,7 +31,9 @@
             >Báo cáo</router-link
           >
         </li> -->
-        <li v-if="checkLogin && registerStore.account.status === 0">
+        <li
+          v-if="checkLogin && registerStore.account.status === status.activate"
+        >
           <router-link
             to="/engineer/upload-information"
             href="#contact"
@@ -40,10 +42,14 @@
             Trở thành đối tác của HRS
           </router-link>
         </li>
-        <li v-if="checkLogin && registerStore.account.status === 1">
+        <li
+          v-if="checkLogin && registerStore.account.status === status.pending"
+        >
           <Button label="Chờ xét duyệt CV" />
         </li>
-        <li v-if="checkLogin && registerStore.account.role === 'engineer'">
+        <li
+          v-if="checkLogin && registerStore.account.status === status.accepted"
+        >
           <Button label="Bạn là đối tác của HRS" />
         </li>
         <li v-if="!checkLogin">
@@ -106,14 +112,17 @@
 import TheAvt from "@/components/TheAvt.vue";
 import { useRegisterStore } from "@/store/register.js";
 import Button from "primevue/button";
-import { ref, computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import { useRouter } from "vue-router";
+import { status } from "@/helper/enumStatus";
 const registerStore = useRegisterStore();
 const checkLogin = computed(() => (registerStore.account?.id ? true : false));
 const showDropdown = ref(false);
 const isOnline = ref(true);
 const router = useRouter();
-
+watchEffect(() => {
+  console.log(registerStore.account);
+});
 function handleLogout() {
   localStorage.removeItem("token");
   router.push("/auth/login");

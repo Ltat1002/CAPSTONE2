@@ -88,9 +88,8 @@ function handleRegisterEngineer() {
     description: description.value,
     role: "engineer",
     address: address.value,
-    status: 2,
+    status: 1,
   };
-  console.log(data);
   setTimeout(() => {
     register
       .updateProfile({ ...register.account, ...data })
