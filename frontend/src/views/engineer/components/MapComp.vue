@@ -71,14 +71,12 @@ import { defineProps } from "vue";
 const GOOGLE_MAPS_API_KEY = "AIzaSyADl3t1Xrjtwf58sZsq4wzqSuyWI1zySbM";
 const emit = defineEmits(["setAddress"]);
 let showPopup = ref(false);
-// const a = defineExpose({ input });
-// console.log(a);
 const searchRef = ref("");
 let positionList = ref([]);
 var markers = [];
 const confirm = useConfirm();
 const input = ref("");
-const props = defineProps(["coor"]);
+const props = defineProps(["coor", "pathProfile"]);
 const { coords } = useGeolocation();
 const currPos = computed(() => ({
   lat: coords.value.latitude,
@@ -131,7 +129,7 @@ let newDistance = null;
 // var directionsDisplay;
 var myMarker;
 var otherMarker;
-watch([map, currPos, otherPos, props.coor], () => {
+watch([map, currPos, otherPos, () => props.coor], () => {
   if (otherMarker) {
     otherMarker.setMap(null);
   }
@@ -248,6 +246,7 @@ const handleShowInfo = (address, name, lat, lng) => {
     header: "Xác nhận",
     icon: "pi pi-exclamation-triangle",
     accept: () => {
+      console.log(lat, lng);
       emit("setAddress", `${name ? `${name},` : ""} ${address}`, {
         lat: lat || props.coor.lat,
         lng: lng || props.coor.lng,
@@ -275,8 +274,7 @@ function createMarker(place) {
 }
 
 function handleSetMarkerUpdate() {
-  if (props.coor?.lat && props.coor.lng) {
-    console.log(props.coor?.lat, props.coor.lng);
+  if (props.coor?.lat && props.coor?.lng) {
     var origin3 = new window.google.maps.LatLng(
       props.coor?.lat,
       props.coor?.lng

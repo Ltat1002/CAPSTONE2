@@ -29,16 +29,16 @@
           </div>
           <span class="form__span">hoặc sử dụng email để đăng ký</span>
           <input
-            v-model="register.first_name"
-            class="form__input"
-            type="text"
-            placeholder="Tên"
-          />
-          <input
             v-model="register.last_name"
             class="form__input"
             type="text"
             placeholder="Họ"
+          />
+          <input
+            v-model="register.first_name"
+            class="form__input"
+            type="text"
+            placeholder="Tên"
           />
           <input
             v-model="register.address"

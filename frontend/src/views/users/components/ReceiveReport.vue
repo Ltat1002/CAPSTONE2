@@ -78,10 +78,10 @@
                   {{ receive.runtime }}
                 </dd>
               </div>
-              <div class="flex w-full justify-between mt-2 font-normal">
+              <div class="flex w-full justify-between mt-2 font-normal gap-3">
                 <dt class="sr-only">Cast</dt>
-                <dd>{{ receive.description.body }}</dd>
-                <div>
+                <dd class="line-clamp-2">{{ receive.description.body }}</dd>
+                <div class="flex gap-3 shrink-0 h-[50px]">
                   <Button
                     size="small"
                     label="Chấp nhận"
@@ -125,6 +125,12 @@
         </article>
       </router-link>
     </li>
+    <div
+      class="text-center m-auto leading-[50vh]"
+      v-if="!(listReceive.length > 0)"
+    >
+      Không có thông báo
+    </div>
   </ul>
   <router-view v-else></router-view>
   <Dialog
@@ -137,32 +143,51 @@
   </Dialog>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, watchEffect, onMounted } from "vue";
 import { useEngineerStore } from "@/store/engineer.js";
 import Button from "primevue/button";
 import { useRoute } from "vue-router";
+import { asyncComputed } from "@vueuse/core";
+import { getReport } from "@/helper/realtime.js";
+import { status } from "@/helper/enumStatus";
 import { toastMessage } from "@/helper/toastMessage.js";
 import Dialog from "primevue/dialog";
 import BillMoney from "@/views/engineer/components/BillMoney.vue";
+import { useRegisterStore } from "@/store/register.js";
 const route = useRoute();
 const visible = ref(false);
 const engineerStore = useEngineerStore();
-const listReceive = ref();
-const listReceiveReport = async () => {
-  engineerStore
-    .receiveReport()
-    .then((res) => {
-      listReceive.value = res.data;
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-};
+const listReceive = ref([]);
+const report = ref(null);
+const profile = asyncComputed(
+  async () => {
+    return await useRegisterStore().account;
+  },
+  {
+    email: "",
+    first_name: "",
+    last_name: "",
+    mobile: "",
+    address: "",
+  }
+);
+onMounted(() => {
+  getReport(report);
+});
+watchEffect(async () => {
+  const ReportIdList = report.value.reduce((accumulator, currenValue) => {
+    if (
+      currenValue.engineer_id.split(", ").includes(String(profile.value.id)) &&
+      currenValue.status === status.pending
+    ) {
+      accumulator.push(currenValue.report_id);
+    }
+    return accumulator;
+  }, []);
+  const res = await engineerStore.getReportByListId(ReportIdList);
+  listReceive.value = res.data;
+});
 const handleClickSuccess = async (id) => {
-  console.log({
-    id,
-    status: 1,
-  });
   engineerStore
     .receive({
       id,
@@ -180,7 +205,9 @@ function handleClickProceed(id) {
   idBill.value = id;
   visible.value = true;
 }
-onMounted(() => {
-  listReceiveReport();
-});
 </script>
+<style scoped lang="scss">
+.wrap {
+  min-height: 50vh;
+}
+</style>

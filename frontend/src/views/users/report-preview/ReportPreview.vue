@@ -56,15 +56,7 @@
           </template>
         </Galleria>
         <div class="w-[40%]">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d251637.95196238213!2d105.6189045!3d9.779349!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1681275081254!5m2!1svi!2s"
-            width="100%"
-            height="100%"
-            style="border: 0"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
+          <map-comp></map-comp>
         </div>
       </div>
       <div class="flex flex-col mt-4">
@@ -77,8 +69,8 @@
           </ul>
         </div>
 
-        <div class="p-2 flex justify-between">
-          <div class="p-2 mt-4 w-[30%]">
+        <div class="p-2 flex justify-between flex-col">
+          <div class="p-2 mt-4">
             <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
             <p class="ml-4">
               {{ preview.description }}
@@ -159,9 +151,14 @@ import Timeline from "primevue/timeline";
 import { useReportStore } from "@/store/report.js";
 import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
+import { getDistance } from "@/helper/map.js";
 import Button from "primevue/button";
+import { status } from "@/helper/enumStatus";
+import { useEngineerStore } from "@/store/engineer.js";
+import MapComp from "@/views/engineer/components/MapComp.vue";
 import { toastMessage } from "@/helper/toastMessage.js";
 import BillMoney from "@/views/engineer/components/BillMoney.vue";
+import { sendReport } from "@/helper/realtime.js";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
@@ -192,7 +189,7 @@ const timeline = ref([
     color: "#333",
   },
 ]);
-
+const engineer = useEngineerStore();
 watchEffect(async () => {
   await reportStore.getReportDetail(route.params.id).then((res) => {
     preview.value = {
@@ -231,7 +228,7 @@ watch(preview, () => {
     }
   }
 });
-function handleConfirm() {
+async function handleConfirm() {
   const formData = new FormData();
   Object.keys(reportStore.report).forEach((val) => {
     if (val === "images") {
@@ -242,21 +239,61 @@ function handleConfirm() {
       formData.append(val, reportStore.report[val]);
     }
   });
-  const localToken = localStorage.getItem("token") || "";
-  axios
-    .post("http://localhost:3000/api/v1/reports", formData, {
-      headers: {
-        Authorization: `Bearer ${localToken}`,
-      },
-    })
-    .then(() => {
-      router.push("/notify");
-      toastMessage("success", "thanh cong", "report");
-    })
-    .catch(() => {
-      toastMessage("error", "thanh cong", "report");
+  try {
+    const localToken = localStorage.getItem("token") || "";
+    const report = await axios.post(
+      "http://localhost:3000/api/v1/reports",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localToken}`,
+        },
+      }
+    );
+    console.log("ok");
+    const engineerRes = await engineer.getAllEngineer();
+    console.log(engineerRes);
+    const engineerList = await engineerRes.data.map(async (item) => {
+      const distance = await getDistance(
+        {
+          lat: item.latitude,
+          lng: item.longitude,
+        },
+        {
+          lat: report.data.latitude,
+          lng: report.data.longitude,
+        }
+      );
+      console.log(distance);
+      return {
+        duration: distance.rows[0].elements[0].distance?.value || 0,
+        duration_text: distance.rows[0].elements[0].duration?.text || 0,
+        distance_text: distance.rows[0].elements[0].duration?.text || 0,
+        engineer_id: item.id,
+      };
     });
+
+    Promise.all(engineerList).then((data) => {
+      data.sort((a, b) => {
+        return a.duration - b.duration;
+      });
+      const engineerList = data.filter((item, index) => index < 2);
+      const realtimeRp = {
+        duration: engineerList.map((item) => item.duration_text).join(", "),
+        distance: engineerList.map((item) => item.distance_text).join(", "),
+        report_id: report.data.id,
+        engineer_id: engineerList.map((item) => item.engineer_id).join(", "),
+        status: status.pending,
+      };
+      sendReport(realtimeRp);
+    });
+    router.push("/notify");
+    toastMessage("success", "thanh cong", "report");
+  } catch (err) {
+    toastMessage("error", "Thất bại", "report");
+  }
 }
+
 onMounted(() => {
   bindDocumentListeners();
 });

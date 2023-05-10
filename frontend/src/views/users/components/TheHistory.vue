@@ -103,7 +103,7 @@
                     </div>
                   </div>
                 </div>
-                <p class="text-gray-700 text-base w-full mt-3">
+                <p class="text-gray-700 text-base w-full mt-3 line-clamp-2">
                   {{ his.description.body }}
                 </p>
               </div>
@@ -111,6 +111,12 @@
           </div>
         </div>
       </router-link>
+      <div
+        class="text-center leading-[50vh]"
+        v-if="!loading && !(historyRepair.length > 0)"
+      >
+        Không có báo cáo
+      </div>
     </div>
     <router-view v-else></router-view>
   </div>
@@ -134,6 +140,7 @@ const reportHistoryRepair = async () => {
   await reportStore
     .reportHistoryRepair()
     .then((res) => {
+      console.log(res.data);
       historyRepair.value = res.data;
     })
     .finally(() => {
@@ -154,6 +161,9 @@ watch(search, () => {
 });
 </script>
 <style lang="scss" scoped>
+.wrap {
+  min-height: 50vh;
+}
 .item {
   box-shadow: 0 0 8px 2px #ccc;
 }
