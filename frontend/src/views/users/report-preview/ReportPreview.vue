@@ -207,8 +207,6 @@ watch(preview, () => {
           day: "numeric",
           month: "numeric",
           year: "numeric",
-          hour: "numeric",
-          minute: "2-digit",
         }),
         color: "#6366F1",
       };

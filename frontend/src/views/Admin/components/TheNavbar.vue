@@ -24,7 +24,7 @@
         </router-link>
       </li>
       <li :class="{ active: currentPage.includes('/voucher') }">
-        <router-link to="/admin/manage-report">
+        <router-link to="/admin/repair-equipments">
           <i class="bx bxs-shopping-bag-alt"></i>
           <span class="text">Quản lý thiết bị</span>
         </router-link>
