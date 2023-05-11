@@ -1,7 +1,6 @@
 <template lang="">
   <div class="device--name">
     <div class="content">
-      <!-- <h1 class="heading">Thiết bị</h1> -->
       <div v-if="loading" class="text-center"><TheLoading /></div>
       <div v-else class="image-container">
         <TheDevice

@@ -55,7 +55,7 @@ class Api::V1::ReportsController < ApplicationController
   end
 
   def show_all_report
-    @report_all = Report.report_relation.newsest.find(params[:id])
+    @report_all = Report.report_relation.newsest.where(id: params[:id])
 
     render json: @report_all.map { |report| report&.show_all_report_json }
   end

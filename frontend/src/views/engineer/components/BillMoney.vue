@@ -1,15 +1,22 @@
 <template lang="">
   <div>
-    <form @submit="onSubmit" class="flex flex-column">
+    <form @submit.prevent="onSubmit" class="flex flex-column">
       <label for="">Số tiền</label>
-      <InputText type="text" v-model="billMoney.amount_pay" />
+      <InputNumber
+        v-model="billMoney.amount_pay"
+        mode="currency"
+        currency="VND"
+        inputId="currency-germany"
+        locale="en-US"
+        :minFractionDigits="3"
+      />
       <label for="value">Nội dung</label>
       <Textarea
         id="value"
         v-model="billMoney.description"
         class="w-full h-40"
       />
-      <div class="text-center">
+      <div class="text-center mt-3">
         <Button
           type="submit"
           label="Submit"
@@ -23,27 +30,39 @@
 <script setup>
 import Button from "primevue/button";
 import Textarea from "primevue/textarea";
-import InputText from "primevue/inputtext";
-import { reactive, defineProps } from "vue";
+import InputNumber from "primevue/inputnumber";
+import { reactive, defineProps, defineEmits } from "vue";
+import { updateReportById } from "@/helper/realtime.js";
 import { useEngineerStore } from "@/store/engineer.js";
 import { toastMessage } from "@/helper/toastMessage.js";
+import { statusReport } from "@/helper/enumStatus";
 
 const engineerStore = useEngineerStore();
-const props = defineProps(["id"]);
+const props = defineProps(["idBill"]);
+const emit = defineEmits(["setVisible"]);
 const billMoney = reactive({ amount_pay: "", description: "" });
+
 function handleClickOffer() {
   engineerStore
     .offer({
       ...billMoney,
-      id: props.id,
-      status: 2,
+      id: props.idBill.id,
+      status: statusReport.enforcementEngineer,
     })
     .then(() => {
       toastMessage("success", "Thành công", "Tiến hành thành công");
     })
     .catch(() => {
-      toastMessage("success", "Thất bại", "Tiến hành thất bại");
+      toastMessage("error", "Thất bại", "Tiến hành thất bại");
+    })
+    .finally(() => {
+      emit("setVisible", false);
     });
+
+  updateReportById(props.idBill.key, {
+    ...props.idBill.reportRealtime,
+    status: statusReport.enforcementEngineer,
+  });
 }
 </script>
 <style lang="scss"></style>
