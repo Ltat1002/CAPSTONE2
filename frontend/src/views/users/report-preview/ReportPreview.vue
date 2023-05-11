@@ -163,8 +163,9 @@ import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
 const route = useRoute();
+const engineer = useEngineerStore();
 const reportStore = useReportStore();
-const preview = ref(reportStore.report);
+const preview = ref(engineer.repair);
 const visible = ref(false);
 const bill = ref(false);
 const timeline = ref([
@@ -189,7 +190,6 @@ const timeline = ref([
     color: "#333",
   },
 ]);
-const engineer = useEngineerStore();
 watchEffect(async () => {
   await reportStore.getReportDetail(route.params.id).then((res) => {
     preview.value = {
@@ -227,6 +227,7 @@ watch(preview, () => {
   }
 });
 async function handleConfirm() {
+  engineer.setRepair({});
   const formData = new FormData();
   Object.keys(reportStore.report).forEach((val) => {
     if (val === "images") {
@@ -248,7 +249,6 @@ async function handleConfirm() {
         },
       }
     );
-    console.log("ok");
     const engineerRes = await engineer.getAllEngineer();
     console.log(engineerRes);
     const engineerList = await engineerRes.data.map(async (item) => {
