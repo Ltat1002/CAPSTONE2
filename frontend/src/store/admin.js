@@ -2,7 +2,9 @@ import { defineStore } from "pinia";
 import { http } from "@/configs/httpCommon";
 export const useAdminStore = defineStore("admin", {
   state: () => {
-    return {};
+    return {
+      repair: false,
+    };
   },
   actions: {
     getAllUser() {
@@ -22,6 +24,12 @@ export const useAdminStore = defineStore("admin", {
     },
     setAcceptCv(id) {
       return http.put("admin/accept_cv", { ...id });
+    },
+    getRepairEquipment() {
+      return http.get("/admin/repair_equipments");
+    },
+    setRepair(data) {
+      return http.post("admin/repair_equipments", data);
     },
   },
 });

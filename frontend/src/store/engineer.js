@@ -1,10 +1,16 @@
 import { defineStore } from "pinia";
 import { http } from "@/configs/httpCommon";
+import { useStorage } from "@vueuse/core";
 export const useEngineerStore = defineStore("engineer", {
   state: () => {
-    return {};
+    return {
+      repair: useStorage("repair", {}, localStorage),
+    };
   },
   actions: {
+    setRepair(data) {
+      this.repair = data;
+    },
     receiveReport() {
       return http.get("engineer/reports");
     },

@@ -5,31 +5,31 @@
       <span class="text">Repair service</span>
     </router-link>
     <ul class="side-menu top">
-      <li :class="{ active: currentPage.includes('/report-problem') }">
+      <li :class="{ active: currentPage.includes('/manage-users') }">
         <router-link to="/admin/manage-users">
           <i class="bx bxs-user"></i>
           <span class="text">Quản lý người dùng</span>
         </router-link>
       </li>
-      <li :class="{ active: currentPage.includes('/voucher') }">
+      <li :class="{ active: currentPage.includes('/manage-enginee') }">
         <router-link to="/admin/manage-engineer">
           <i class="bx bxs-shopping-bag-alt"></i>
           <span class="text">Quản lý Kỹ sư</span>
         </router-link>
       </li>
-      <li :class="{ active: currentPage.includes('/voucher') }">
+      <li :class="{ active: currentPage.includes('/manage-report') }">
         <router-link to="/admin/manage-report">
           <i class="bx bxs-shopping-bag-alt"></i>
           <span class="text">Báo Cáo</span>
         </router-link>
       </li>
-      <li :class="{ active: currentPage.includes('/voucher') }">
-        <router-link to="/admin/manage-report">
+      <li :class="{ active: currentPage.includes('/repair-equipments') }">
+        <router-link to="/admin/repair-equipments">
           <i class="bx bxs-shopping-bag-alt"></i>
           <span class="text">Quản lý thiết bị</span>
         </router-link>
       </li>
-      <li :class="{ active: currentPage.includes('/voucher') }">
+      <li :class="{ active: currentPage.includes('/manage-reportsss') }">
         <router-link to="/admin/manage-report">
           <i class="bx bxs-shopping-bag-alt"></i>
           <span class="text">Quản lý kỹ sư</span>
@@ -118,7 +118,7 @@ const currentPage = computed(() => route.path);
   padding: 4px;
 }
 #sidebar .side-menu li.active {
-  background: var(--grey);
+  background: #d7d5d5;
   position: relative;
 }
 #sidebar .side-menu li.active::before {

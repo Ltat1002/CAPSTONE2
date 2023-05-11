@@ -46,8 +46,9 @@ import FileUpload from "primevue/fileupload";
 import Image from "primevue/image";
 import InputText from "primevue/inputtext";
 import { useReportStore } from "@/store/report.js";
-import { reactive, watch } from "vue";
-
+import { reactive, watch, watchEffect } from "vue";
+import { useEngineerStore } from "@/store/engineer.js";
+const engineerStore = useEngineerStore();
 const reportStore = useReportStore();
 const description = reactive({
   name: "",
@@ -55,6 +56,7 @@ const description = reactive({
   description: "",
   images: [],
   img: [],
+  ...engineerStore.repair,
 });
 watch(description, () => {
   reportStore.report = {
@@ -62,11 +64,26 @@ watch(description, () => {
     ...description,
   };
 });
+watchEffect(() => {
+  engineerStore.setRepair({
+    ...engineerStore.repair,
+    ...description,
+  });
+});
+function blobToBase64(blob) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+}
 const customBase64Uploader = async (event) => {
   const file = event.files;
   file.forEach((el) => {
     description.images.push(el);
-    description.img.push(el.objectURL);
+    blobToBase64(el).then((data) => {
+      description.img.push(data);
+    });
   });
 };
 </script>

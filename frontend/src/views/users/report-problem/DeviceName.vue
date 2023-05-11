@@ -19,6 +19,8 @@ import TheDevice from "../components/TheDevice.vue";
 import { useReportStore } from "@/store/report.js";
 import { useRouter } from "vue-router";
 import TheLoading from "@/components/TheLoading.vue";
+import { useEngineerStore } from "@/store/engineer.js";
+const engineerStore = useEngineerStore();
 const router = useRouter();
 const reportStore = useReportStore();
 const device = ref();
@@ -37,6 +39,10 @@ const dataRepair = async () => {
 dataRepair();
 function handleDeviceEmit(id) {
   reportStore.report.repair_equipment_id = id;
+  engineerStore.setRepair({
+    ...engineerStore.repair,
+    repair_equipment_id: id,
+  });
   router.push(`report-problem/description/${id}`);
 }
 </script>
