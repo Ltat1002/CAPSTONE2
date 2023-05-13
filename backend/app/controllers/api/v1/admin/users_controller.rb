@@ -3,7 +3,7 @@ class Api::V1::Admin::UsersController < ApplicationController
   before_action :set_user, only: %i[show accept_cv approve_cv deny_cv]
 
   def index
-    @users = User.includes(:repair_equipment).with_all_rich_text
+    @users = User.includes(:repair_equipment).with_all_rich_text.newest
 
     render json: @users
   end
@@ -13,7 +13,8 @@ class Api::V1::Admin::UsersController < ApplicationController
   end
 
   def show_engineer
-    @users = User.includes(:repair_equipment).with_all_rich_text.where(role: :engineer)
+    @users = User.includes(:repair_equipment).with_all_rich_text
+                 .where(status: %i[pending accepted approved]).order(status: :asc, updated_at: :desc)
 
     render json: @users
   end
