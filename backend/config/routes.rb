@@ -32,6 +32,9 @@ Rails.application.routes.draw do
         put 'accept_cv', to: 'users#accept_cv'
         put 'approve_cv', to: 'users#approve_cv'
         put 'deny_cv', to: 'users#deny_cv'
+        put 'activate_user', to: 'users#activate_user'
+        put 'deactivate_user', to: 'users#deactivate_user'
+        put 'edit_user/:id', to: 'users#edit_user'
         resources :repair_equipments, except: :destroy
         resources :reviews, only: %i[index show destroy]
       end
