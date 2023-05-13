@@ -1,55 +1,19 @@
 class Api::V1::RepairEquipmentsController < ApplicationController
-  before_action :set_repair_equipment, only: %i[ show update destroy ]
+  before_action :set_repair_equipment, only: :show
 
-  # GET /repair_equipments
   def index
-    if params[:eq_type] == "hot" || params[:eq_type] == 1
-      @repair_equipments = RepairEquipment.hot
-    else
-      @repair_equipments = RepairEquipment.cold
-    end
+    @repair_equipments = RepairEquipment.with_attached_photo
 
-    render json: @repair_equipments
+    render json: @repair_equipments.as_json(methods: :photo_url)
   end
 
-  # GET /repair_equipments/1
   def show
-    render json: @repair_equipment
-  end
-
-  # POST /repair_equipments
-  def create
-    @repair_equipment = RepairEquipment.new(repair_equipment_params)
-
-    if @repair_equipment.save
-      render json: @repair_equipment, status: :created, location: @repair_equipment
-    else
-      render json: @repair_equipment.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /repair_equipments/1
-  def update
-    if @repair_equipment.update(repair_equipment_params)
-      render json: @repair_equipment
-    else
-      render json: @repair_equipment.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /repair_equipments/1
-  def destroy
-    @repair_equipment.destroy
+    render json: @repair_equipment.as_json.merge(photo: url_for(@repair_equipment.photo))
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_repair_equipment
-      @repair_equipment = RepairEquipment.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def repair_equipment_params
-      params.permit(:name, :eq_type, :price)
-    end
+  def set_repair_equipment
+    @repair_equipment = RepairEquipment.find(params[:id])
+  end
 end

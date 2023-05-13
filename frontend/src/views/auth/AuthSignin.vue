@@ -6,7 +6,13 @@
         class="container a-container"
         id="a-container"
       >
-        <form class="form form_sign_up" id="a-form" method="" action="">
+        <form
+          class="form form_sign_up"
+          id="a-form"
+          @submit.prevent="handleRegister"
+          method=""
+          action=""
+        >
           <h2 class="form_title title">Tạo tài khoản</h2>
           <div class="form__icons">
             <img
@@ -23,16 +29,16 @@
           </div>
           <span class="form__span">hoặc sử dụng email để đăng ký</span>
           <input
-            v-model="register.first_name"
-            class="form__input"
-            type="text"
-            placeholder="Tên"
-          />
-          <input
             v-model="register.last_name"
             class="form__input"
             type="text"
             placeholder="Họ"
+          />
+          <input
+            v-model="register.first_name"
+            class="form__input"
+            type="text"
+            placeholder="Tên"
           />
           <input
             v-model="register.address"
@@ -66,11 +72,10 @@
           />
           <Button
             class="mt-3 sign_up"
-            type="button"
+            type="submit"
             rounded
             label="ĐĂNG KÝ"
             :loading="loading"
-            @click="handleRegister"
           />
         </form>
       </div>
@@ -79,7 +84,13 @@
         class="container b-container"
         id="b-container"
       >
-        <form class="form" id="b-form" method="" action="">
+        <form
+          class="form"
+          id="b-form"
+          method=""
+          @submit.prevent="handleLogin"
+          action=""
+        >
           <h2 class="form_title title">Đăng nhập vào trang Website</h2>
           <div class="form__icons">
             <img
@@ -109,11 +120,10 @@
           /><a class="form__link">Quên mật khẩu?</a>
           <Button
             class="mt-3 sign_up"
-            type="button"
+            type="submit"
             rounded
             label="ĐĂNG NHẬP"
             :loading="loading"
-            @click="handleLogin"
           />
         </form>
       </div>
@@ -170,8 +180,6 @@ const login = reactive({
 const loading = ref(false);
 
 async function handleLogin() {
-  console.log("click");
-  // registerStore.login(login);
   loading.value = true;
   setTimeout(async () => {
     registerStore
@@ -184,8 +192,10 @@ async function handleLogin() {
       })
       .catch(() => {
         toastMessage("error", "Thất bại", "Đăng thất bại");
+      })
+      .finally(() => {
+        loading.value = false;
       });
-    loading.value = false;
   }, 2000);
 }
 
@@ -198,8 +208,7 @@ function handleRegister() {
   setTimeout(() => {
     registerStore
       .register(register)
-      .then((data) => {
-        console.log(data);
+      .then(() => {
         toastMessage("success", "Thành công", "Đăng Ký thành công");
         addClass();
       })
@@ -241,7 +250,6 @@ function mouted() {
     }, 1500);
 
     switchCtn.classList.toggle("is-txr");
-    console.log(switchCtn);
     switchCircle[0].classList.toggle("is-txr");
     switchCircle[1].classList.toggle("is-txr");
 

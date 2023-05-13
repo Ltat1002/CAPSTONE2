@@ -25,7 +25,13 @@
         <div class="position_list">
           <ul>
             <li
-              @click="handleShowInfo(position.formatted_address, position.name)"
+              @click="
+                handleShowInfo(
+                  position.formatted_address,
+                  position.name,
+                  position
+                )
+              "
               v-for="position of positionList"
               :key="position.place_id"
             >
@@ -38,23 +44,33 @@
           </ul>
         </div>
       </div>
+      <div
+        class="none"
+        ref="refPopup"
+        @click="handleShowInfo('', '', '')"
+      ></div>
     </div>
   </div>
 </template>
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
 import { useConfirm } from "primevue/useconfirm";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useRouter } from "vue-router";
 // import { useGeolocation } from "@/helper/useGeolocation";
 import { Loader } from "@googlemaps/js-api-loader";
 import InputText from "primevue/inputtext";
+import { useReportStore } from "@/store/report.js";
+import { useEngineerStore } from "@/store/engineer.js";
+const reportStore = useReportStore();
+const engineerStore = useEngineerStore();
 const GOOGLE_MAPS_API_KEY = "AIzaSyADl3t1Xrjtwf58sZsq4wzqSuyWI1zySbM";
 const searchRef = ref("");
 let positionList = ref([]);
 var markers = [];
 const confirm = useConfirm();
 const router = useRouter();
+const refPopup = ref(null);
 // const input = ref("");
 // const { coords } = useGeolocation();
 // const currPos = computed(() => ({
@@ -73,7 +89,6 @@ onMounted(async () => {
     zoom: 12,
   });
   clickListener = map.value.addListener("click", ({ latLng: { lat, lng } }) => {
-    console.log(event);
     var geocoder = new window.google.maps.Geocoder();
     var latLng = new window.google.maps.LatLng(lat(), lng());
     geocoder.geocode(
@@ -83,8 +98,7 @@ onMounted(async () => {
       function (results, status) {
         if (status == window.google.maps.GeocoderStatus.OK) {
           if (results[1]) {
-            console.log(results[1]);
-            handleShowInfo(results[1].formatted_address);
+            handleShowInfo(results[1].formatted_address, undefined, results[1]);
           } else {
             alert("No results found");
           }
@@ -203,7 +217,6 @@ function handleSearch() {
       results
     ) {
       for (let i = 0; i < results.length; i++) {
-        console.log(results);
         positionList.value = results;
         // createMarker(results[i]);
       }
@@ -212,21 +225,37 @@ function handleSearch() {
     }
   });
 }
-
-const handleShowInfo = (address, name) => {
+const handleShowInfo = (address, name, position) => {
   confirm.require({
-    message: `Địa chỉ của bạn: ${name ? `${name},` : ""} ${address}`,
+    message: `Địa chỉ của bạn: ${
+      address
+        ? name
+          ? `${name},` + address
+          : "" + address
+        : engineerStore.repair.address
+    }`,
     header: "Xác nhận",
     icon: "pi pi-exclamation-triangle",
     accept: () => {
+      reportStore.report = {
+        ...reportStore.report,
+        address: `${name ? `${name},` : ""} ${address}`,
+        latitude: position?.geometry.location.lat(),
+        longitude: position?.geometry.location.lng(),
+      };
+      reportStore.report.address = `${name ? `${name},` : ""} ${address}`;
+      reportStore.report.address = `${name ? `${name},` : ""} ${address}`;
+      engineerStore.setRepair({
+        ...engineerStore.repair,
+        address: `${name ? `${name},` : ""} ${address}`,
+        latitude: position.geometry.location.lat(),
+        longitude: position.geometry.location.lng(),
+      });
       router.push("/preview");
     },
-    reject: () => {
-      console.log("no");
-    },
+    reject: () => {},
   });
 };
-
 var marker;
 function createMarker(place) {
   if (!place.geometry || !place.geometry.location) return;
@@ -243,6 +272,9 @@ function createMarker(place) {
     window.infowindow.open(map.value);
   });
 }
+watch([() => engineerStore.repair.address, refPopup], () => {
+  engineerStore.repair.address && refPopup?.value?.click();
+});
 </script>
 <style lang="scss" scoped>
 :deep(.p-inputtext):focus ~ label {

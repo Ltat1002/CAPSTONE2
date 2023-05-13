@@ -1,4 +1,6 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :password, :password_confirmation, :first_name, :last_name, :mobile,
-             :address, :ward, :district, :city, :technique, :role, :status
+  attributes :id, :email, :first_name, :last_name, :mobile, :address, :longitude, :latitude,
+             :role, :description, :status, :onl_status, :repair_equipment_id, :created_at, :updated_at
+
+  belongs_to :repair_equipment
 end

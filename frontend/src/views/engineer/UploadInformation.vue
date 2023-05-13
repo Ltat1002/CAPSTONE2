@@ -1,21 +1,29 @@
 <template lang="">
-  <div class="wrap my-5">
-    <div class="flex gap-5">
+  <div class="wrap" :class="{ 'my-5': !pathProfile }">
+    <div class="flex gap-5" :class="{ 'flex-col-reverse': pathProfile }">
       <div class="form flex-1 flex flex-col">
-        <MultiSelect
+        <Dropdown
           v-model="selectedDevices"
           :options="deviceList"
           filter
+          optionValue="id"
           optionLabel="name"
           placeholder="Chọn thiết bị"
-          :maxSelectedLabels="3"
           class="w-full md:w-20rem mb-4"
         />
-        <Editor v-model="value" class="flex-1" editorStyle="height: 320px" />
+        <Editor
+          v-model="description"
+          class="flex-1"
+          editorStyle="height: 350px"
+        />
       </div>
       <div class="flex-1 h-[500px]">
         <div class="h-[416px] overflow-hidden">
-          <map-comp @setAddress="setAddress"></map-comp>
+          <map-comp
+            :coor="coor"
+            @setAddress="setAddress"
+            :pathProfile="pathProfile"
+          ></map-comp>
         </div>
         <div
           class="h-[60px] address mt-4 border border-solid border-[#fff] w-full text-white rounded-md px-3 overflow-y-auto flex items-center"
@@ -37,41 +45,88 @@
   </div>
 </template>
 <script setup>
+import Dropdown from "primevue/dropdown";
 import Editor from "primevue/editor";
-import MultiSelect from "primevue/multiselect";
 import MapComp from "./components/MapComp.vue";
 import Button from "primevue/button";
-import { ref, watch } from "vue";
-const value = ref("");
+import { ref, computed } from "vue";
+import { useEquipmentsStore } from "@/store/equipments";
+import { useRegisterStore } from "@/store/register";
+import { toastMessage } from "@/helper/toastMessage";
+import { useRouter, useRoute } from "vue-router";
+const equipmentStore = useEquipmentsStore();
+const register = useRegisterStore();
+const router = useRouter();
+const route = useRoute();
+const pathProfile = computed(() => {
+  return route.path.includes("profile");
+});
+const description = ref("");
 const loading = ref(false);
 const address = ref("");
-const deviceList = ref([
-  { name: "New York", code: "NY" },
-  { name: "Rome", code: "RM" },
-  { name: "London", code: "LDN" },
-  { name: "Istanbul", code: "IST" },
-  { name: "Paris", code: "PRS" },
-]);
+const deviceList = ref([]);
 const selectedDevices = ref([]);
+const coor = ref({});
+let coordinates;
 
-function setAddress(addressProps) {
+function setAddress(addressProps, coor) {
+  console.log(coor);
   address.value = addressProps;
+  coordinates = coor;
 }
 
 function handleRegisterEngineer() {
+  console.log(selectedDevices.value);
   loading.value = true;
+  const data = {
+    repair_equipment_id: selectedDevices.value,
+    latitude: coordinates?.lat || "",
+    longitude: coordinates?.lng || "",
+    description: description.value,
+    role: "engineer",
+    address: address.value,
+    status: 2,
+  };
   setTimeout(() => {
-    loading.value = false;
+    register
+      .updateProfile({ ...register.account, ...data })
+      .then((data) => {
+        console.log(data);
+        router.push("/");
+        register.profile();
+        toastMessage("success", "Thành công", "Đăng ký thành công");
+      })
+      .catch(() => {
+        toastMessage("error", "Thất bại", "Đăng ký thất bại");
+      })
+      .finally(() => {
+        loading.value = false;
+      });
   }, 2000);
 }
 
-watch(value, () => {
-  console.log(value);
+equipmentStore.getEquipments().then((data) => {
+  deviceList.value = data.data;
+  if (pathProfile.value) {
+    console.log(register.account);
+    selectedDevices.value = register.account.repair_equipment_id;
+    description.value = register.account.description.body || "";
+    coor.value = {
+      lat: register.account.latitude,
+      lng: register.account.longitude,
+    };
+    // address.value = register.account.address;
+    setAddress(register.account.address, {
+      lat: register.account.latitude,
+      lng: register.account.longitude,
+    });
+  }
 });
 </script>
 <style lang="scss" scoped>
 .p-editor-container {
   display: flex;
+  min-height: 350px;
   flex-direction: column;
   :deep(.p-editor-content) {
     flex: 1;

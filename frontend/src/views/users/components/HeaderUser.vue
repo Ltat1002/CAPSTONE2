@@ -7,26 +7,52 @@
           alt=""
       /></router-link>
       <ul class="menu">
-        <li><router-link to="/" class="nav-link">Trang chủ</router-link></li>
         <li>
-          <router-link to="/notify" href="#about" class="nav-link"
+          <router-link to="/" active-class="nav-link">Trang chủ</router-link>
+        </li>
+        <li
+          v-if="checkLogin && registerStore.account.status === status.accepted"
+        >
+          <router-link
+            to="/engineer/receive-report"
+            href="#about"
+            active-class="nav-link"
             >Thông báo</router-link
           >
         </li>
         <li>
-          <router-link to="/report-problem" href="#about" class="nav-link"
+          <router-link to="/notify" href="#about" active-class="nav-link"
             >Báo cáo</router-link
           >
         </li>
-        <li v-if="checkLogin">
+        <!-- <li>
+          <router-link
+            to="/report-problem"
+            href="#about"
+            active-class="nav-link"
+            >Báo cáo</router-link
+          >
+        </li> -->
+        <li
+          v-if="checkLogin && registerStore.account.status === status.activate"
+        >
           <router-link
             to="/engineer/upload-information"
             href="#contact"
-            class="nav-link"
+            active-class="nav-link"
           >
-            <!-- <Button label="Trở thành đối tác của HRS" /> -->
             Trở thành đối tác của HRS
           </router-link>
+        </li>
+        <li
+          v-if="checkLogin && registerStore.account.status === status.pending"
+        >
+          <Button label="Chờ duyệt" />
+        </li>
+        <li
+          v-if="checkLogin && registerStore.account.status === status.accepted"
+        >
+          <Button label="Đối tác" />
         </li>
         <li v-if="!checkLogin">
           <router-link to="/auth/login" href="#contact">Đăng nhập</router-link>
@@ -39,10 +65,9 @@
           @click="showDropdown = !showDropdown"
           v-else
         >
-          <img
-            src="https://www.vinamilk.com.vn/sua-bot-nguoi-lon-vinamilk/wp-content/themes/suabotnguoilon/tpl/assets/img/profile/avt-default.jpg"
-            alt=""
-          />
+          <div class="w-[50px] h-[50px] rounded-full overflow-hidden">
+            <the-avt :size="25" />
+          </div>
           <div class="down"><i class="bx bx-check"></i></div>
           <div v-if="showDropdown" class="drop_down">
             <ul>
@@ -54,22 +79,25 @@
               </li>
               <li>
                 <router-link to="/profile">
-                  <i class="bx bxs-contact"></i> Profile
+                  <i class="bx bxs-contact"></i> Hồ sơ
                 </router-link>
               </li>
               <li>
                 <a href="#" @click="handleLogout"
-                  ><i class="bx bxs-log-out"></i>Logout</a
+                  ><i class="bx bxs-log-out"></i>Đăng xuất</a
                 >
               </li>
-              <li class="flex-col items-start status">
+              <li
+                v-if="registerStore.account.role === 'engineer'"
+                class="flex-col items-start status"
+              >
                 <a><i class="bx bxs-analyse"></i>Trạng thái</a>
                 <ul>
-                  <li @click="isOnline = true">
+                  <li @click="handleUpdateOnline">
                     <span class="active"><i class="bx bx-check"></i></span>
                     Online
                   </li>
-                  <li @click="isOnline = false">
+                  <li @click="handleUpdateOffline">
                     <span></span>
                     Offline
                   </li>
@@ -83,18 +111,37 @@
   </div>
 </template>
 <script setup>
+import TheAvt from "@/components/TheAvt.vue";
 import { useRegisterStore } from "@/store/register.js";
-import { ref, computed } from "vue";
+import Button from "primevue/button";
+import { ref, computed, watchEffect } from "vue";
 import { useRouter } from "vue-router";
+import { status } from "@/helper/enumStatus";
 const registerStore = useRegisterStore();
 const checkLogin = computed(() => (registerStore.account?.id ? true : false));
 const showDropdown = ref(false);
 const isOnline = ref(true);
 const router = useRouter();
-
+watchEffect(() => {
+  console.log(registerStore.account);
+});
 function handleLogout() {
   localStorage.removeItem("token");
   router.push("/auth/login");
+}
+
+function handleUpdateOnline() {
+  isOnline.value = true;
+  registerStore.updateProfile({
+    onl_status: 0,
+  });
+}
+
+function handleUpdateOffline() {
+  isOnline.value = false;
+  registerStore.updateProfile({
+    onl_status: 1,
+  });
 }
 </script>
 <style lang="scss" scoped>
@@ -176,9 +223,8 @@ img {
 .drop_down {
   position: absolute;
   top: 100%;
-  left: 50%;
   width: 300px;
-  transform: translateX(-50%);
+  right: 0;
   background-color: #fff;
   border-radius: 5px;
   padding: 0 20px;
@@ -207,7 +253,7 @@ img {
   }
 }
 
-a.router-link-active.router-link-exact-active {
+a.nav-link.router-link-exact-active {
   color: var(--sub-color) !important;
   position: relative;
   &::after {

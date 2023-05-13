@@ -39,13 +39,13 @@ class Api::V1::VouchersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_voucher
-      @voucher = Voucher.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def voucher_params
-      params.require(:voucher).permit(:voucher_code, :sale, :using_date, :giving_date, :expired_date, :user_id, :report_id)
-    end
+  def set_voucher
+    @voucher = Voucher.find(params[:id])
+  end
+
+  def voucher_params
+    params.require(:voucher).permit(:voucher_code, :voucher_value, :using_date, :giving_date,
+                                    :expired_date, :user_id, :report_id)
+  end
 end

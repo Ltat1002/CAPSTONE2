@@ -110,11 +110,10 @@
               HOME REPAIR SERVICE
             </h6>
             <p>
-              HOME REPAIR SERVICE là một doanh nghiệp do một gia đình sở hữu và
-              điều hành trong gần 70 năm. Chúng tôi cam kết chất lượng tay nghề
-              thủ công và sự hài lòng của khách hàng
+              HRS là một trang web cho mọi gia đình sở hữu. Chúng tôi cam kết
+              chất lượng tay nghề thủ công và sự hài lòng của khách hàng. Chúng
+              tôi rất mong được phục vụ bạn.
             </p>
-            <p>Chúng tôi rất mong được phục vụ bạn.</p>
           </div>
           <!-- Products section -->
           <div class="flex-1 px-4">
@@ -126,16 +125,16 @@
                 >Sửa chữa</a
               >
             </p>
-            <p class="mb-4">
+            <!-- <p class="mb-4">
               <a href="#!" class="text-neutral-600 dark:text-neutral-200"
                 >Bảo hành</a
               >
-            </p>
-            <p class="mb-4">
+            </p> -->
+            <!-- <p class="mb-4">
               <a href="#!" class="text-neutral-600 dark:text-neutral-200"
                 >Mua</a
               >
-            </p>
+            </p> -->
           </div>
           <!-- Contact section -->
           <div class="flex-1 px-4">
@@ -158,7 +157,7 @@
                   d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z"
                 />
               </svg>
-              75 Huế
+              Số 24 Trần Phú, quận Hải Châu
             </p>
             <p class="mb-4 flex items-center justify-center md:justify-start">
               <svg
@@ -174,7 +173,7 @@
                   d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"
                 />
               </svg>
-              suachua@gmail.com.vn
+              homerepairservice@gmail.com.vn
             </p>
             <p class="mb-4 flex items-center justify-center md:justify-start">
               <svg
@@ -189,7 +188,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              + 84 7777 777 777
+              + 84 702 113 113
             </p>
             <p class="flex items-center justify-center md:justify-start">
               <svg
@@ -217,8 +216,8 @@
           class="font-semibold text-neutral-600 dark:text-neutral-400"
           href="https://tailwind-elements.com/"
         >
-          Anh Khanh</a
-        >
+          Home Repair Service
+        </a>
       </div>
     </footer>
   </div>

@@ -1,149 +1,297 @@
 <template lang="">
   <div class="wrap">
+    <div
+      v-if="!previewUser"
+      class="mt-4 text-end flex items-center justify-end mr-[-32px] ml-[-32px]"
+    >
+      <span class="p-input-icon-left flex-1 mr-8 ml-8">
+        <i class="pi pi-search" />
+        <InputText v-model="search" placeholder="Tìm kiếm" class="w-full" />
+      </span>
+      <router-link to="/report-problem" class="mr-8 ml-8">
+        <Button label="Tạo báo cáo"
+      /></router-link>
+    </div>
     <div class="list my-5" v-if="!previewUser">
-      <router-link to="/notify/preview">
-        <div class="cursor-pointer rounded-md overflow-hidden item">
-          <div class="lg:flex">
-            <div
-              class="w-48 flex-none bg-cover text-center overflow-hidden"
-              style="
-                background-image: url('https://cdn.tgdd.vn/Files/2014/09/23/568616/broken-iphone-600x400.jpg');
+      <div v-if="loading" class="text-center"><TheLoading /></div>
+      <ul v-else class="wrap">
+        <li v-for="history in historyRepair" :key="history?.id">
+          <router-link :to="`/notify/preview/${history?.id}`">
+            <article
+              class="flex items-center space-x-6 p-6 my-[20px] rounded-lg text-white"
+              :class="
+                history.status === statusReport.finishUser
+                  ? 'bg-[#222a39]'
+                  : 'bg-[#2255a4]'
               "
-              title="Mountain"
-            ></div>
-            <div
-              class="active border-gray-400 lg:border-gray-400 bg-white p-4 flex flex-col justify-between leading-normal flex-1"
             >
-              <div>
-                <div class="flex justify-between">
-                  <div>
-                    <p class="text-sm text-gray-600 flex items-center mb-2">
-                      <box-icon
-                        name="lock-open"
-                        type="solid"
-                        animation="tada"
-                        class="mr-1"
-                        color="#ffffff"
-                      ></box-icon>
-                      Chưa hoàn thành
-                    </p>
-                    <div class="text-gray-900 font-bold text-xl">
-                      Điện thoại
-                    </div>
-                  </div>
-                  <div class="h-full">
-                    <p class="text-sm text-gray-600 flex items-center mb-2">
-                      <box-icon
-                        class="mr-1"
-                        color="#fff"
-                        name="graphql"
-                        type="logo"
-                        animation="spin"
-                        rotate="90"
-                      ></box-icon>
-                      Đánh giá
-                    </p>
-                    <div>
-                      <Rating v-model="rating2" :cancel="false" />
-                    </div>
+              <img
+                :src="history.images"
+                alt=""
+                class="flex-none rounded-md bg-slate-100 h-[130px] w-[160px] object-cover"
+              />
+              <div class="min-w-0 relative flex-auto">
+                <h2 class="font-semibold truncate pr-20">
+                  {{ history.name }}
+                </h2>
+                <dl class="mt-2 flex flex-wrap text-sm leading-6 font-medium">
+                  <div
+                    class="absolute top-0 right-0 flex items-center space-x-1"
+                  >
+                    <dt class="text-sky-500">
+                      <p class="text-sm text-white flex items-center mb-2">
+                        <box-icon
+                          class="mr-1"
+                          color="#fff"
+                          name="graphql"
+                          type="logo"
+                          animation="spin"
+                          rotate="90"
+                        ></box-icon>
+                        Đánh giá
+                      </p>
+                      <div>
+                        <Rating v-model="rating2" :cancel="false" />
+                      </div>
+                    </dt>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-600 flex items-center mb-2">
-                      <i
-                        class="pi pi-spin pi-clock mr-2"
-                        style="font-size: 1rem"
-                      ></i>
-                      Thời gian
-                    </p>
-                    <div class="text-gray-900 text-sm">2:16 30-04-2001</div>
+                    <dt class="sr-only">Rating</dt>
+                    <dd class="px-1.5 ring-1 ring-slate-200 rounded">
+                      {{
+                        history.status === statusReport.finishUser
+                          ? "Hoàn thành"
+                          : "Đang tiến hành"
+                      }}
+                    </dd>
                   </div>
-                </div>
-                <p class="text-gray-700 text-base w-full mt-3">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                </p>
+                  <div class="ml-2">
+                    <dt class="sr-only">Year</dt>
+                    <dd>{{ history.user_send.email }}</dd>
+                  </div>
+                  <div>
+                    <dt class="sr-only">Genre</dt>
+                    <dd class="flex items-center">
+                      <svg
+                        width="2"
+                        height="2"
+                        fill="currentColor"
+                        class="mx-2"
+                        aria-hidden="true"
+                      >
+                        <circle cx="1" cy="1" r="1" />
+                      </svg>
+                      {{ history.repair_equipment.name }}
+                    </dd>
+                  </div>
+                  <div class="ml-2">
+                    <dt class="sr-only">Rating</dt>
+                    <dd>
+                      {{ history.mobile }}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="sr-only">Runtime</dt>
+                    <dd class="flex items-center">
+                      <svg
+                        width="2"
+                        height="2"
+                        fill="currentColor"
+                        class="mx-2 text-slate-300"
+                        aria-hidden="true"
+                      >
+                        <circle cx="1" cy="1" r="1" />
+                      </svg>
+                      {{ history.runtime }}
+                    </dd>
+                  </div>
+                  <div
+                    class="flex w-full justify-between mt-2 font-normal gap-3 items-center"
+                  >
+                    <dt class="sr-only">Cast</dt>
+                    <dd class="line-clamp-2 w-[70%]">
+                      {{ history.description.body }}
+                    </dd>
+                  </div>
+                  <div class="flex justify-between items-center w-full">
+                    <div class="flex">
+                      <p class="mr-2">Ngày tạo đơn:</p>
+                      <dd>
+                        {{
+                          new Date(
+                            history.repair_equipment.created_at
+                          ).toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "numeric",
+                            year: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                          })
+                        }}
+                      </dd>
+                    </div>
+                    <div class="flex gap-3 shrink-0">
+                      <Button
+                        @click.prevent="() => {}"
+                        icon="pi pi-th-large"
+                        v-if="
+                          String(history.status) ===
+                          String(statusReport.enforcementEngineer)
+                        "
+                        size="small"
+                        label="Hợp đồng"
+                        severity="warning"
+                      />
+                      <Button
+                        @click.prevent="
+                          confirmFinish(
+                            history.id,
+                            history?.key || '',
+                            statusReport.finishUser
+                          )
+                        "
+                        icon="pi pi-share-alt"
+                        v-if="
+                          String(history.status) ===
+                          String(statusReport.finishEngineer)
+                        "
+                        size="small"
+                        label="Xác nhận hoàn thành"
+                        severity="warning"
+                      />
+                      <Button
+                        @click.prevent="visible = true"
+                        icon="pi pi-thumbs-up"
+                        v-if="
+                          String(history.status) ===
+                          String(statusReport.finishUser)
+                        "
+                        size="small"
+                        label="Đánh giá"
+                        severity="warning"
+                      />
+                      <div
+                        class="text-[#F59E0B]"
+                        v-if="
+                          String(history.status) !==
+                            String(statusReport.enforcementEngineer) &&
+                          String(history.status) !==
+                            String(statusReport.finishUser) &&
+                          String(history.status) !==
+                            String(statusReport.finishEngineer)
+                        "
+                      >
+                        Đang tiến hành...
+                      </div>
+                    </div>
+                  </div>
+                </dl>
               </div>
-            </div>
-          </div>
+            </article>
+          </router-link>
+        </li>
+        <div
+          class="text-center m-auto leading-[50vh]"
+          v-if="historyRepair.length === 0"
+        >
+          Không có thông báo
         </div>
-      </router-link>
-      <router-link to="/notify/preview">
-        <div class="cursor-pointer rounded-md overflow-hidden item">
-          <div class="lg:flex">
-            <div
-              class="w-48 flex-none bg-cover text-center overflow-hidden"
-              style="
-                background-image: url('https://cdn.tgdd.vn/Files/2014/09/23/568616/broken-iphone-600x400.jpg');
-              "
-              title="Mountain"
-            ></div>
-            <div
-              class="border-gray-400 lg:border-gray-400 bg-white p-4 flex flex-col justify-between leading-normal flex-1"
-            >
-              <div>
-                <div class="flex justify-between">
-                  <div>
-                    <p class="text-sm text-gray-600 flex items-center mb-2">
-                      <box-icon
-                        name="lock"
-                        type="solid"
-                        animation="tada"
-                        class="mr-1"
-                      ></box-icon>
-                      Đã hoàn thành
-                    </p>
-                    <div class="text-gray-900 font-bold text-xl">
-                      Điện thoại
-                    </div>
-                  </div>
-                  <div class="h-full">
-                    <p class="text-sm text-gray-600 flex items-center mb-2">
-                      <box-icon
-                        class="mr-1"
-                        name="graphql"
-                        type="logo"
-                        animation="spin"
-                        rotate="90"
-                      ></box-icon>
-                      Đánh giá
-                    </p>
-                    <div>
-                      <Rating v-model="rating" :cancel="false" readonly />
-                    </div>
-                  </div>
-                  <div>
-                    <p class="text-sm text-gray-600 flex items-center mb-2">
-                      <i
-                        class="pi pi-spin pi-clock mr-2 text-black"
-                        style="font-size: 1rem"
-                        color="#000"
-                      ></i>
-                      Thời gian
-                    </p>
-                    <div class="text-gray-900 text-sm">2:16 30-04-2001</div>
-                  </div>
-                </div>
-                <p class="text-gray-700 text-base w-full mt-3">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </router-link>
+      </ul>
     </div>
     <router-view v-else></router-view>
   </div>
+  <Dialog v-model:visible="visible" modal header="Đánh giá">
+    <TheRating />
+  </Dialog>
 </template>
 <script setup>
+import Dialog from "primevue/dialog";
+import TheRating from "../components/TheRating.vue";
 import Rating from "primevue/rating";
 import { useRoute } from "vue-router";
-import { ref, computed } from "vue";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+import { updateReportById } from "@/helper/realtime.js";
+import { statusReport } from "@/helper/enumStatus";
+import { getReportById } from "@/helper/report.js";
+import TheLoading from "@/components/TheLoading.vue";
+import { ref, computed, watch, onMounted } from "vue";
+import { useReportStore } from "@/store/report";
+import { useEngineerStore } from "@/store/engineer.js";
+const engineerStore = useEngineerStore();
+const reportStore = useReportStore();
 const route = useRoute();
 const previewUser = computed(() => route.path.includes("/notify/preview"));
-const rating = ref(4);
 const rating2 = ref();
+const visible = ref(false);
+const historyRepair = ref([]);
+import { toastMessage } from "@/helper/toastMessage.js";
+import { getReport } from "@/helper/realtime.js";
+const loading = ref(false);
+const report = ref([]);
+onMounted(() => {
+  getReport(report);
+});
+watch(
+  () => report.value,
+  () => {
+    reportHistoryRepair();
+  }
+);
+
+const confirmFinish = (id, key, status) => {
+  engineerStore
+    .receive({
+      id,
+      status: status,
+    })
+    .then(() => {
+      toastMessage("success", "Thành công", "Thao tác thành công");
+      reportHistoryRepair();
+    })
+    .catch(() => {
+      toastMessage("success", "Thất bại", "Thao tác thất bại");
+    });
+  updateReportById(key, {
+    ...getReportById(report.value, key),
+    status: status,
+  });
+};
+const reportHistoryRepair = async () => {
+  await reportStore
+    .reportHistoryRepair()
+    .then((res) => {
+      historyRepair.value = res.data.map((rp) => {
+        const newRp = report.value.find((rprt) => rprt.report_id === rp.id);
+        // console.log(report.value);
+        return {
+          ...rp,
+          key: newRp?.key || "",
+        };
+      });
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+};
+const search = ref("");
+loading.value = true;
+reportHistoryRepair();
+watch(search, () => {
+  reportStore
+    .searchReport(search.value)
+    .then((res) => {
+      historyRepair.value = res.data;
+    })
+    .catch(() => {
+      historyRepair.value = [];
+    });
+});
 </script>
 <style lang="scss" scoped>
+.wrap {
+  min-height: 50vh;
+}
 .item {
   box-shadow: 0 0 8px 2px #ccc;
 }
@@ -162,11 +310,11 @@ const rating2 = ref();
 .active {
   background-color: #577a6d !important;
   :deep(.p-rating .p-rating-item.p-rating-item-active .p-rating-icon) {
-    color: #fff;
+    color: #fad02c;
   }
 
   :deep(.p-rating .p-rating-item .p-rating-icon) {
-    color: #fff;
+    color: #fad02c;
   }
 
   :deep(
@@ -187,6 +335,9 @@ const rating2 = ref();
     color: #fff !important;
   }
 }
+:deep(.p-rating .p-rating-item .p-rating-icon) {
+  color: #fad02c !important;
+}
 .list {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -194,5 +345,9 @@ const rating2 = ref();
 }
 a {
   text-decoration: none;
+}
+:deep(.p-button) {
+  height: 40px !important;
+  width: 220px !important;
 }
 </style>

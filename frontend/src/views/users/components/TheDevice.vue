@@ -1,26 +1,32 @@
 <template lang="">
-  <section>
+  <section class="cursor-pointer" @click="handleClickDevice($event, device.id)">
     <div class="blog-post">
-      <img :src="props.img" alt="Man" />
-      <a href="h#" target="_blank" class="category"> MateBook D 14 </a>
+      <img :src="device.photo_url" :alt="device.name" />
+      <a href="h#" target="_blank" class="category"> {{ device.name }}</a>
       <div class="text-content">
         <h2 class="post-title">
-          vốn cũng là con số tốt cho người tiêu dùng. Máy có khả năng sạc nhanh
-          65W, cho phép bổ sung 43% năng lượng pin chỉ trong nửa giờ.
+          {{ device.description }}
         </h2>
         <div class="tags">
-          <a href="h#" target="_blank">#điện tử</a>
-          <a href="h#" target="_blank">#laptop</a>
+          <a href="h#" target="_blank">#{{ device.name }}</a>
         </div>
       </div>
     </div>
   </section>
 </template>
 <script setup>
-import { defineProps } from "vue";
-const props = defineProps(["img"]);
+import { defineProps, defineEmits } from "vue";
+defineProps(["device"]);
+const emit = defineEmits(["chooseDevice"]);
+function handleClickDevice($event, id) {
+  $event.target.classList.add("active");
+  emit("chooseDevice", id);
+}
 </script>
 <style lang="scss" scoped>
+.active {
+  background-color: chocolate;
+}
 section {
   padding: 10px;
   width: 25%;
@@ -85,7 +91,7 @@ section {
   transition: 0.3s ease;
 }
 .tags a:hover {
-  color: #000;
+  color: #2a5aea;
 }
 @media screen and (max-width: 1100px) {
   .container {

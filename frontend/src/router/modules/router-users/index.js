@@ -1,6 +1,5 @@
 import ReportProblem from "@/views/users/report-problem/ReportProblem.vue";
 import CompHome from "@/views/users/home/CompHome.vue";
-import DeviceType from "@/views/users/report-problem/DeviceType.vue";
 import DeviceName from "@/views/users/report-problem/DeviceName.vue";
 import DeviceLocation from "@/views/users/report-problem/DeviceLocation.vue";
 import DeviceDescription from "@/views/users/report-problem/DeviceDescription.vue";
@@ -27,7 +26,7 @@ export const routerUsers = [
     component: TheHistory,
     children: [
       {
-        path: "preview",
+        path: "preview/:id",
         component: ReportPreview,
       },
     ],
@@ -42,10 +41,6 @@ export const routerUsers = [
     children: [
       {
         path: "",
-        component: DeviceType,
-      },
-      {
-        path: "device",
         component: DeviceName,
       },
       {
@@ -53,7 +48,7 @@ export const routerUsers = [
         component: DeviceLocation,
       },
       {
-        path: "description",
+        path: "description/:id",
         component: DeviceDescription,
       },
     ],

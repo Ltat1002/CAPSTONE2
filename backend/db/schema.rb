@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_17_200834) do
+  create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body", size: :long
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
+
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -41,19 +51,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
 
   create_table "repair_equipments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
-    t.integer "eq_type", default: 0
-    t.decimal "price", precision: 15, scale: 4
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "reports", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "report_mobile"
-    t.string "report_address"
-    t.string "report_ward"
-    t.string "report_district"
-    t.string "report_city"
-    t.string "description"
+    t.string "name"
+    t.string "mobile"
+    t.string "address"
+    t.decimal "longitude", precision: 15, scale: 8
+    t.decimal "latitude", precision: 15, scale: 8
     t.decimal "amount_pay", precision: 15, scale: 4
     t.string "reason"
     t.integer "status", default: 0
@@ -70,12 +78,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
   create_table "reviews", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "rating"
     t.string "comment"
-    t.bigint "user_send_id", null: false
-    t.bigint "user_receive_id", null: false
+    t.bigint "report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_receive_id"], name: "index_reviews_on_user_receive_id"
-    t.index ["user_send_id"], name: "index_reviews_on_user_send_id"
+    t.index ["report_id"], name: "index_reviews_on_report_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -83,12 +89,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
     t.string "last_name"
     t.string "mobile"
     t.string "address"
-    t.string "ward"
-    t.string "district"
-    t.string "city"
-    t.string "technique"
+    t.decimal "longitude", precision: 15, scale: 8
+    t.decimal "latitude", precision: 15, scale: 8
     t.integer "role", default: 0
     t.integer "status", default: 0
+    t.integer "onl_status", default: 0
+    t.bigint "repair_equipment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email", default: "", null: false
@@ -97,12 +103,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["repair_equipment_id"], name: "index_users_on_repair_equipment_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   create_table "vouchers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "voucher_code"
-    t.decimal "sale", precision: 15, scale: 4
+    t.decimal "voucher_value", precision: 15, scale: 4
     t.date "using_date"
     t.date "giving_date"
     t.date "expired_date"
@@ -119,8 +126,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_142733) do
   add_foreign_key "reports", "repair_equipments"
   add_foreign_key "reports", "users", column: "user_receive_id"
   add_foreign_key "reports", "users", column: "user_send_id"
-  add_foreign_key "reviews", "users", column: "user_receive_id"
-  add_foreign_key "reviews", "users", column: "user_send_id"
+  add_foreign_key "reviews", "reports"
+  add_foreign_key "users", "repair_equipments"
   add_foreign_key "vouchers", "reports"
   add_foreign_key "vouchers", "users"
 end

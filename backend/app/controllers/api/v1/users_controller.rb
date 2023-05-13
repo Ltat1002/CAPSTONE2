@@ -1,18 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: %i[ register login ]
-  before_action :set_user, only: %i[ profile destroy ]
-
-  # GET /users
-  def index
-    @users = User.all
-
-    render json: @users
-  end
-
-  # GET /users/1
-  def profile
-    render json: @user
-  end
+  skip_before_action :authenticate_request, only: %i[register login]
+  before_action :set_user, only: %i[edit_profile become_partner]
 
   def register
     @user = User.new(user_params)
@@ -34,39 +22,70 @@ class Api::V1::UsersController < ApplicationController
   def authenticate(email, password)
     command = AuthenticateUser.call(email, password)
     if command.success?
-      render json: {
-        message: 'Login Successful',
-        data: {
-          accessToken: command.result,
-          user: User.find_by(email: params[:email])
-        }
-      }
+      render json: { message: 'Login Successful',
+                     data: { accessToken: command.result,
+                             user: User.find_by(email: params[:email]) } }
     else
       render json: { error: command.errors }, status: :unauthorized
     end
   end
 
+  def profile
+    render json: current_user
+  end
+
   def edit_profile
-    if current_user.update(user_params)
+    current_password = params[:current_password]
+    if current_password.present?
+      change_password(current_password)
+    elsif current_user.update(user_params)
       render json: current_user
     else
       render json: @user.errors, status: :unprocessable_entity
     end
   end
 
-  # DELETE /users/1
-  def destroy
-    @user.destroy
+  def change_password(current_password)
+    user = AuthenticateUser.call(current_user.email, current_password)
+    if user.success? && current_user.update(user_params)
+      render json: current_user
+    else
+      render json: { message: 'Wrong current password' }, status: :unprocessable_entity
+    end
   end
+
+  def become_partner
+    if current_user.update(eng_params)
+      render json: current_user
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
+  def all_engineer
+    @users = User.includes(:repair_equipment).with_all_rich_text.where(role: :engineer)
+
+    render json: @users
+  end
+
+  # DELETE /users/1
+  # def destroy
+  #   @user.destroy
+  # end
 
   private
 
   def set_user
-    @user = User.find_by(id: current_user.id)
+    @user = current_user
   end
 
   def user_params
     params.permit(:email, :password, :password_confirmation, :first_name, :last_name, :mobile,
-                  :address, :ward, :district, :city, :technique, :role, :status)
+                  :address, :longitude, :latitude, :repair_equipment_id, :description, :role, :status)
+  end
+
+  def eng_params
+    params.permit(:role, :repair_equipment_id, :description, :address)
+          .with_defaults(role: :engineer)
   end
 end
