@@ -40,8 +40,12 @@ class Api::V1::Admin::UsersController < ApplicationController
   end
 
   def deactivate_user
-    @user.deactivate!
-    render json: @user
+    if @user.admin?
+      render json: 'NGU'
+    else
+      @user.deactivate!
+      render json: @user
+    end
   end
 
   def edit_user
