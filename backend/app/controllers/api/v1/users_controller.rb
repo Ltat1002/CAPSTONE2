@@ -1,5 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request, only: %i[register login]
+  before_action :check_account_active, only: :login
 
   def register
     @user = User.new(user_params)
@@ -66,11 +67,6 @@ class Api::V1::UsersController < ApplicationController
 
     render json: @users
   end
-
-  # DELETE /users/1
-  # def destroy
-  #   @user.destroy
-  # end
 
   private
 

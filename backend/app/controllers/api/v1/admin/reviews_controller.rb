@@ -3,7 +3,7 @@ class Api::V1::Admin::ReviewsController < ApplicationController
   before_action :set_review, only: %i[show destroy]
 
   def index
-    @reviews = Review.all
+    @reviews = Review.all.newest
 
     render json: @reviews
   end
