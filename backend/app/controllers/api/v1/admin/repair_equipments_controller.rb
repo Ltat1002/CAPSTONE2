@@ -3,7 +3,7 @@ class Api::V1::Admin::RepairEquipmentsController < ApplicationController
   before_action :set_repair_equipment, only: %i[show update]
 
   def index
-    @repair_equipments = RepairEquipment.with_attached_photo
+    @repair_equipments = RepairEquipment.with_attached_photo.newest
 
     render json: @repair_equipments.as_json(methods: :photo_url)
   end
