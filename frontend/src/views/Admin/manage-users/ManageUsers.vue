@@ -11,23 +11,25 @@
         <template #body="slot">
           <div class="flex mx-[-8px]">
             <Button
-              icon="pi pi-file"
+              icon="pi pi-file-edit"
               size="small"
               class="mx-2"
               severity="success"
               @click="handleClickDetail(slot)"
             />
             <Button
-              icon="pi pi-file-edit"
+              icon="pi pi-stop-circle"
               size="small"
               class="mx-2"
               severity="success"
+              @click="handleClickActive(slot)"
             />
             <Button
               icon="pi pi-trash"
               size="small"
               class="mx-2"
               severity="danger"
+              @click="handleClickUnactive(slot)"
             />
           </div>
         </template>
@@ -50,6 +52,7 @@ import Dialog from "primevue/dialog";
 import { useAdminStore } from "@/store/admin";
 import Button from "primevue/button";
 import { ref } from "vue";
+import { toastMessage } from "@/helper/toastMessage.js";
 import AddUser from "./AddUser.vue";
 const visible = ref(false);
 const headerTitle = ref("");
@@ -67,9 +70,27 @@ function handleClickDetail(slot) {
   headerTitle.value = "Chi tiết";
   adminStore.getUser(slot.data.id).then((res) => {
     detailUser.value = res.data;
-    console.log(res);
   });
-  console.log(slot.data.id);
+}
+function handleClickActive(slot) {
+  adminStore
+    .setActiveUser("admin/activate_user", { id: slot.data.id })
+    .then(() => {
+      toastMessage("success", "Thành công", "Thêm thành công");
+    })
+    .catch(() => {
+      toastMessage("error", "Thất bại", "Thêm thất bại");
+    });
+}
+function handleClickUnactive(slot) {
+  adminStore
+    .setActiveUser("admin/deactivate_user", { id: slot.data.id })
+    .then(() => {
+      toastMessage("success", "Thành công", "Xóa thành công");
+    })
+    .catch(() => {
+      toastMessage("error", "Thất bại", "Xóa thất bại");
+    });
 }
 </script>
 <style lang="scss" scoped></style>

@@ -31,5 +31,11 @@ export const useAdminStore = defineStore("admin", {
     setRepair(data) {
       return http.post("admin/repair_equipments", data);
     },
+    getReviewEngineer() {
+      return http.get("admin/reviews");
+    },
+    setActiveUser(url, id) {
+      return http.put(url, id);
+    },
   },
 });

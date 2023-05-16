@@ -83,9 +83,9 @@ function handleRegisterEngineer() {
     latitude: coordinates?.lat || "",
     longitude: coordinates?.lng || "",
     description: description.value,
-    role: "engineer",
+    role: "user",
     address: address.value,
-    status: 2,
+    status: 1,
   };
   setTimeout(() => {
     register
