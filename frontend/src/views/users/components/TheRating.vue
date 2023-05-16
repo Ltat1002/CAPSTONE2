@@ -34,5 +34,5 @@ Leave a message, if you want</textarea
 <script setup>
 import Rating from "primevue/rating";
 import { ref } from "vue";
-const rating = ref(4);
+const rating = ref(0);
 </script>

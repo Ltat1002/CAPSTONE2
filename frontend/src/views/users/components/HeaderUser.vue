@@ -47,12 +47,12 @@
         <li
           v-if="checkLogin && registerStore.account.status === status.pending"
         >
-          <Button label="Chờ xét duyệt CV" />
+          <Button label="Chờ duyệt" />
         </li>
         <li
           v-if="checkLogin && registerStore.account.status === status.accepted"
         >
-          <Button label="Bạn là đối tác của HRS" />
+          <Button label="Đối tác" />
         </li>
         <li v-if="!checkLogin">
           <router-link to="/auth/login" href="#contact">Đăng nhập</router-link>

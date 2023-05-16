@@ -153,7 +153,7 @@ import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
 import { getDistance } from "@/helper/map.js";
 import Button from "primevue/button";
-import { status } from "@/helper/enumStatus";
+import { statusReport } from "@/helper/enumStatus";
 import { useEngineerStore } from "@/store/engineer.js";
 import MapComp from "@/views/engineer/components/MapComp.vue";
 import { toastMessage } from "@/helper/toastMessage.js";
@@ -186,7 +186,17 @@ const timeline = ref([
     color: "#333",
   },
   {
+    status: "Chấp thuận",
+    icon: "bx bx-radar bx-spin bx-flip-vertical",
+    color: "#333",
+  },
+  {
     status: "Hoàn thành",
+    icon: "bx bxl-steam bx-spin",
+    color: "#333",
+  },
+  {
+    status: "Chấp thuận",
     icon: "bx bxs-sun bx-spin",
     color: "#333",
   },
@@ -282,7 +292,7 @@ async function handleConfirm() {
         distance: engineerList.map((item) => item.distance_text).join(", "),
         report_id: report.data.id,
         engineer_id: engineerList.map((item) => item.engineer_id).join(", "),
-        status: status.pending,
+        status: statusReport.pending,
       };
       sendReport(realtimeRp);
     });
