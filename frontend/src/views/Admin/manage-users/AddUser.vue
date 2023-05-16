@@ -1,5 +1,5 @@
 <template lang="">
-  <form action="">
+  <form action="" @submit.prevent="submitAddUser">
     <div class="flex flex-col mt-3">
       <label for="">Email</label>
       <InputText v-model="user.email" />
@@ -22,14 +22,24 @@
     </div>
     <div class="mt-4 flex justify-center">
       <Button label="Hủy" size="small" class="mx-2 w-32" severity="secondary" />
-      <Button label="Lưu" size="small" class="mx-2 w-32" severity="success" />
+      <Button
+        label="Lưu"
+        size="small"
+        type="submit"
+        class="mx-2 w-32"
+        severity="success"
+      />
     </div>
   </form>
 </template>
 <script setup>
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import { ref, defineProps, watchEffect } from "vue";
+import { ref, defineProps, watchEffect, defineEmits } from "vue";
+import { useAdminStore } from "@/store/admin";
+import { toastMessage } from "@/helper/toastMessage.js";
+const adminStore = useAdminStore();
+const emit = defineEmits(["visibi"]);
 const props = defineProps(["edit"]);
 const user = ref({
   email: "",
@@ -44,5 +54,16 @@ watchEffect(() => {
     ...props.edit,
   };
 });
+function submitAddUser() {
+  adminStore
+    .setUser(`admin/edit_user/${user.value.id}`, user.value)
+    .then(() => {
+      toastMessage("success", "Thành công", "Cập nhật thành công");
+    })
+    .catch(() => {
+      toastMessage("error", "Thất bại", "Cập nhật thất bại");
+    });
+  emit("visibi", false);
+}
 </script>
 <style lang="scss" scoped></style>

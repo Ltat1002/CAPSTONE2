@@ -187,7 +187,11 @@ async function handleLogin() {
       .then((data) => {
         localStorage.setItem("token", data.data.data.accessToken);
         registerStore.setAccount(data.data.data.user);
-        router.push("/");
+        if (data.data.data.user.role === "admin") {
+          router.push("/admin/manage-users");
+        } else {
+          router.push("/");
+        }
         toastMessage("success", "Thành công", "Đăng nhập thành công");
       })
       .catch(() => {
@@ -212,8 +216,9 @@ function handleRegister() {
         toastMessage("success", "Thành công", "Đăng Ký thành công");
         addClass();
       })
-      .catch(() => {
+      .catch((error) => {
         toastMessage("error", "Thất bại", "Email đã được sử dụng");
+        console.log(error);
       })
       .finally(() => {
         loading.value = false;

@@ -3,7 +3,7 @@ class Api::V1::Admin::ReportsController < ApplicationController
   before_action :set_report, only: :show
 
   def index
-    @reports = Report.report_relation.newsest
+    @reports = Report.report_relation.newest
 
     render json: @reports.map { |report| report&.show_all_report_json }
   end

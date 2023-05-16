@@ -1,6 +1,6 @@
 class ReportSerializer < ActiveModel::Serializer
   attributes :id, :name, :mobile, :address, :longitude, :latitude, :description, :amount_pay,
-             :reason, :status, :repair_equipment_id, :user_send_id, :user_receive_id, :images,
+             :reason, :status, :repair_equipment_id, :user_send, :user_receive, :images,
              :created_at, :updated_at
 
   belongs_to :repair_equipment

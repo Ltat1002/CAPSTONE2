@@ -1,8 +1,8 @@
 class Api::V1::ReportsController < ApplicationController
-  before_action :set_report, only: %i[show update]
+  before_action :set_report, only: %i[show update confirmed_offer cancel_report]
 
   def index
-    @reports = Report.report_relation.where(user_send_id: current_user.id).newsest
+    @reports = Report.report_relation.where(user_send_id: current_user.id).newest
 
     render json: @reports.map { |report| report&.show_all_report_json }
   end
@@ -43,7 +43,7 @@ class Api::V1::ReportsController < ApplicationController
   end
 
   def search
-    @report_search = Report.report_relation.joins(:rich_text_description).newsest
+    @report_search = Report.report_relation.joins(:rich_text_description).newest
                            .where('(action_text_rich_texts.body like ? or reports.name like ?)
                                     and reports.user_send_id = ?', "%#{params[:search]}%",
                                   "%#{params[:search]}%", current_user.id)
@@ -55,9 +55,23 @@ class Api::V1::ReportsController < ApplicationController
   end
 
   def show_all_report
-    @report_all = Report.report_relation.newsest.where(id: params[:id])
+    @report_all = Report.report_relation.newest.find(params[:id])
 
     render json: @report_all.map { |report| report&.show_all_report_json }
+  end
+
+  def confirmed_offer
+    @report.confirmed!
+    render json: @report.show_report_json
+  end
+
+  def cancel_report
+    if @report.update(reason: params[:reason])
+      @report.cancelled!
+      render json: @report.show_report_json
+    else
+      render json: @report.errors, status: :unprocessable_entity
+    end
   end
 
   private

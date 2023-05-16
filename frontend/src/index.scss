@@ -35,7 +35,7 @@ li {
   --light: #f9f9f9;
   --blue: #3c91e6;
   --light-blue: #cfe8ff;
-  --grey: #f7f6f6;
+  --grey: #d7d5d5;
   --dark-grey: #aaaaaa;
   --dark: #342e37;
   --red: #d90429;
@@ -62,7 +62,6 @@ body {
   width: calc(100% - 60px);
   left: 60px;
 }
-
 .wrap {
   max-width: var(--width-container);
   margin: auto;

@@ -164,6 +164,7 @@ import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 const engineer = useEngineerStore();
+
 const reportStore = useReportStore();
 const preview = ref(engineer.repair);
 const visible = ref(false);

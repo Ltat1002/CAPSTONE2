@@ -4,7 +4,7 @@ class Api::V1::Engineer::ReportsController < ApplicationController
 
   def index
     @reports = Report.report_relation.where(repair_equipment_id: current_user.repair_equipment_id,
-                                            user_receive_id: nil).order(created_at: :desc)
+                                            user_receive_id: nil).order(created_at: :desc).available_report
 
     render json: @reports.map { |report| report&.show_all_report_json }
   end
@@ -18,7 +18,7 @@ class Api::V1::Engineer::ReportsController < ApplicationController
   end
 
   def receive_history
-    @reports = Report.report_relation.where(user_receive_id: current_user.id).newsest
+    @reports = Report.report_relation.where(user_receive_id: current_user.id).newest
 
     render json: @reports.map { |report| report&.show_all_report_json }
   end
