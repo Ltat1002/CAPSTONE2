@@ -37,5 +37,8 @@ export const useAdminStore = defineStore("admin", {
     setActiveUser(url, id) {
       return http.put(url, id);
     },
+    setUser(url, data) {
+      return http.put(url, data);
+    },
   },
 });

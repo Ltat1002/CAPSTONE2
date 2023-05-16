@@ -2,7 +2,7 @@
   <section id="sidebar" :class="{ hide: props.sidebar }">
     <router-link to="/" class="brand">
       <i class="bx bxs-smile"></i>
-      <span class="text">Repair service</span>
+      <span class="text whitespace-pre">Repair service</span>
     </router-link>
     <ul class="side-menu top">
       <li :class="{ active: currentPage.includes('/manage-users') }">
@@ -172,11 +172,5 @@ const currentPage = computed(() => route.path);
   min-width: calc(60px - ((4px + 6px) * 2));
   display: flex;
   justify-content: center;
-}
-
-@media screen and (max-width: 768px) {
-  #sidebar {
-    width: 200px;
-  }
 }
 </style>

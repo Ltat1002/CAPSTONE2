@@ -188,7 +188,7 @@ async function handleLogin() {
         localStorage.setItem("token", data.data.data.accessToken);
         registerStore.setAccount(data.data.data.user);
         if (data.data.data.user.role === "admin") {
-          router.push("/admin");
+          router.push("/admin/manage-users");
         } else {
           router.push("/");
         }
