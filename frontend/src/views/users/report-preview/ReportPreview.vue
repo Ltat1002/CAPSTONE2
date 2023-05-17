@@ -237,16 +237,51 @@ watch(preview, () => {
     }
   }
 });
+reportStore.report.images = [];
+function base64ToFile() {
+  const data = engineer.repair.img.map((data, index) => {
+    const file = dataURLtoFile(data, index);
+    // await axios.get(data, { responseType: "blob" }).then((blob) => {
+    //   const file = new File([blob], "File name", { type: "image/png" });
+    // const f = URL.createObjectURL(file);
+    // console.log(f);
+    reportStore.report.images.push(file);
+    // });
+  });
+  return data;
+}
+function dataURLtoFile(dataurl, filename) {
+  var arr = dataurl.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], filename, { type: mime });
+}
+base64ToFile();
 async function handleConfirm() {
-  engineer.setRepair({});
+  const datas = {
+    ...reportStore.report,
+    ...engineer.repair,
+    images: reportStore.report.images,
+  };
+  console.log(datas.images.length);
+  console.log(datas.images[0]);
   const formData = new FormData();
-  Object.keys(reportStore.report).forEach((val) => {
+  Object.keys(datas).forEach((val) => {
+    console.log(datas["images"]);
     if (val === "images") {
-      reportStore.report["images"].forEach((e) => {
-        formData.append(`images[]`, e, e.name);
+      datas["images"].forEach((e) => {
+        console.log(e);
+        formData.append(`images[]`, e);
       });
     } else if (val !== "img") {
-      formData.append(val, reportStore.report[val]);
+      formData.append(val, datas[val]);
     }
   });
   try {
@@ -298,6 +333,7 @@ async function handleConfirm() {
     });
     router.push("/notify");
     toastMessage("success", "thanh cong", "report");
+    engineer.setRepair({});
   } catch (err) {
     toastMessage("error", "Thất bại", "report");
   }
