@@ -9,7 +9,7 @@
     <Column field="repair_equipment.name" header="Thiết bị"></Column>
     <Column header="Mô tả">
       <template #body="slot">
-        <div v-html="slot.data.description.body"></div>
+        <div v-html="slot.data.description.body" class="description"></div>
       </template>
     </Column>
     <Column header="hành động">
@@ -23,7 +23,7 @@
             @click="handleClickAccept(slot)"
           />
           <Button
-            icon="pi pi-trash"
+            icon="pi pi-file"
             size="small"
             class="mx-2"
             severity="success"
@@ -102,4 +102,15 @@ function handleClickDetail(slot) {
   router.push(`/admin/manage-engineer/detail-cv/${slot.data.id}`);
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.description {
+  display: -webkit-box;
+  max-height: 3.2rem;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  -webkit-line-clamp: 2;
+  line-height: 1.6rem;
+}
+</style>

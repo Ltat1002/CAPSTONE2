@@ -67,7 +67,7 @@ function setAddress(addressProps, coor) {
   coordinates = coor;
 }
 function fetchData() {
-  adminStore.getReport(route.params.id).then((data) => {
+  adminStore.getUserDetail(route.params.id).then((data) => {
     description.value = data.data.description.body;
     selectedDevices.value = data.data.repair_equipment_id;
     address.value = data.data.address;
