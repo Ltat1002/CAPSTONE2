@@ -154,10 +154,8 @@
                         "
                         icon="pi pi-thumbs-up"
                         v-if="
-                          String(history.status) ===
-                            String(statusReport.finishEngineer) ||
-                          String(history.status) ===
-                            String(statusReport.enforcementEngineer)
+                          history.status === statusReport.finishEngineer ||
+                          history.status === statusReport.enforcementEngineer
                         "
                         size="small"
                         label="Từ chối"
@@ -170,8 +168,7 @@
                         @click.prevent="() => handleShowContract(history, 0)"
                         icon="pi pi-th-large"
                         v-if="
-                          String(history.status) ===
-                          String(statusReport.enforcementEngineer)
+                          history.status === statusReport.enforcementEngineer
                         "
                         size="small"
                         label="Đơn giá"
@@ -190,10 +187,7 @@
                           )
                         "
                         icon="pi pi-share-alt"
-                        v-if="
-                          String(history.status) ===
-                          String(statusReport.finishEngineer)
-                        "
+                        v-if="history.status === statusReport.finishEngineer"
                         size="small"
                         label="Xác nhận hoàn thành"
                         severity="warning"
@@ -204,10 +198,7 @@
                         "
                         @click.prevent="() => handleRating(history, 2)"
                         icon="pi pi-thumbs-up"
-                        v-if="
-                          String(history.status) >=
-                          String(statusReport.finishUser)
-                        "
+                        v-if="history.status >= statusReport.finishUser"
                         size="small"
                         :label="
                           history.status > statusReport.finishUser
@@ -219,13 +210,10 @@
                       <div
                         class="text-[#F59E0B]"
                         v-if="
-                          String(history.status) !==
-                            String(statusReport.enforcementEngineer) &&
-                          String(history.status) !==
-                            String(statusReport.finishUser) &&
-                          String(history.status) !==
-                            String(statusReport.finishEngineer) &&
-                          String(history.status) !== String(statusReport.rating)
+                          history.status !== statusReport.enforcementEngineer &&
+                          history.status !== statusReport.finishUser &&
+                          history.status !== statusReport.finishEngineer &&
+                          history.status !== statusReport.rating
                         "
                       >
                         Đang tiến hành...

@@ -111,12 +111,12 @@
                   </dd>
                 </div>
                 <div class="flex gap-3 shrink-0">
+                  {{ receive.status }}
+                  {{ statusReport.pending }}
                   <Button
                     :loading="loadingBtnList[0]"
                     icon="pi pi-send"
-                    v-if="
-                      String(receive.status) === String(statusReport.pending)
-                    "
+                    v-if="receive.status === statusReport.pending"
                     size="small"
                     label="Chấp nhận"
                     @click.stop.prevent="
@@ -133,10 +133,7 @@
                   />
                   <Button
                     icon="pi pi-wrench"
-                    v-if="
-                      String(receive.status) ===
-                      String(statusReport.acceptedEngineer)
-                    "
+                    v-if="receive.status === statusReport.acceptedEngineer"
                     size="small"
                     label="Tiến hành"
                     @click.stop.prevent="
@@ -150,10 +147,8 @@
                     icon="pi pi-tags"
                     @click.prevent="() => {}"
                     v-if="
-                      String(receive.status) ===
-                        String(statusReport.enforcementEngineer) ||
-                      String(receive.status) ===
-                        String(statusReport.finishEngineer)
+                      receive.status === statusReport.enforcementEngineer ||
+                      receive.status === statusReport.finishEngineer
                     "
                     size="small"
                     label="Đang chờ"
@@ -162,10 +157,7 @@
                   <Button
                     :loading="loadingBtnList[1]"
                     icon="pi pi-verified"
-                    v-if="
-                      String(receive.status) ===
-                      String(statusReport.acceptedUser)
-                    "
+                    v-if="receive.status === statusReport.acceptedUser"
                     size="small"
                     label="Hoàn thành"
                     @click.stop.prevent="
@@ -183,9 +175,7 @@
                   <Button
                     @click.stop.prevent="() => {}"
                     icon="pi pi-share-alt"
-                    v-if="
-                      String(receive.status) >= String(statusReport.finishUser)
-                    "
+                    v-if="receive.status >= statusReport.finishUser"
                     size="small"
                     label="Đã hoàn thành"
                     severity="warning"
@@ -258,6 +248,7 @@ const profile = asyncComputed(
 );
 onMounted(() => {
   getReport(report);
+  console.log(profile.value);
 });
 watchEffect(async () => {
   getReports();
@@ -290,6 +281,8 @@ const handleClickSuccess = async (id, key, status, stt) => {
 };
 async function getReports() {
   const ReportIdList = report.value.reduce((accumulator, currenValue) => {
+    console.log(currenValue.user_receive_id);
+    console.log(profile.value.id);
     if (
       currenValue.engineer_id.split(", ").includes(String(profile.value.id)) &&
       (currenValue.status === statusReport.pending ||

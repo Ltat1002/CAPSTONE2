@@ -24,7 +24,7 @@ export const useReportStore = defineStore("reports", {
     getReportDetail(path, id) {
       const pt = path.includes("admin")
         ? "admin/reports"
-        : path.includes("enginner")
+        : path.includes("engineer")
         ? "engineer/reports"
         : "reports";
       return http.get(`${pt}/${id}`);
