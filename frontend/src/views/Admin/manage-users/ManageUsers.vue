@@ -5,7 +5,23 @@
       <Column field="fullname" header="Họ và tên"></Column>
       <Column field="mobile" header="Số điện thoại"></Column>
       <Column field="address" header="Địa chỉ"></Column>
-      <Column field="status" header="Địa chỉ"></Column>
+      <Column field="status" header="Trạng thái">
+        <template #body="slot">
+          <div
+            v-if="slot.data.status === 'activate'"
+            class="bg-green-600 text-white p-2 rounded-[26px] text-center"
+          >
+            activate
+          </div>
+          <div
+            v-else-if="slot.data.status === 'deactivate'"
+            class="bg-red-600 text-white p-2 rounded-[26px] text-center"
+          >
+            deactivate
+          </div>
+          <div v-else class="text-red">{{ slot.data.status }}</div>
+        </template>
+      </Column>
       <Column header="hành động">
         <template #body="slot">
           <div class="flex mx-[-8px]">
@@ -21,9 +37,11 @@
               size="small"
               class="mx-2"
               severity="success"
+              v-if="slot.data.status !== 'activate'"
               @click="handleClickActive(slot)"
             />
             <Button
+              v-else
               icon="pi pi-trash"
               size="small"
               class="mx-2"

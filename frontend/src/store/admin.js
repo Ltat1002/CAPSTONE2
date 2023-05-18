@@ -23,7 +23,7 @@ export const useAdminStore = defineStore("admin", {
       return http.get(`admin/reports/${id}`);
     },
     setAcceptCv(id) {
-      return http.put("admin/accept_cv", { ...id });
+      return http.put("admin/approve_cv", { ...id });
     },
     getRepairEquipment() {
       return http.get("/admin/repair_equipments");
@@ -39,6 +39,15 @@ export const useAdminStore = defineStore("admin", {
     },
     setUser(url, data) {
       return http.put(url, data);
+    },
+    setDeny(id) {
+      return http.put("admin/deny_cv", { ...id });
+    },
+    getUserDetail(id) {
+      return http.get("admin/users/" + id);
+    },
+    getReport(id) {
+      return http.get("admin/reports/" + id);
     },
   },
 });

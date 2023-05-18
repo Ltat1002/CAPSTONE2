@@ -21,8 +21,13 @@ export const useReportStore = defineStore("reports", {
     reportHistoryRepair() {
       return http.get("/reports");
     },
-    getReportDetail(id) {
-      return http.get(`/reports/${id}`);
+    getReportDetail(path, id) {
+      const pt = path.includes("admin")
+        ? "admin/reports"
+        : path.includes("enginner")
+        ? "engineer/reports"
+        : "reports";
+      return http.get(`${pt}/${id}`);
     },
     searchReport(search) {
       return http.get(`/search?search=${search}`);

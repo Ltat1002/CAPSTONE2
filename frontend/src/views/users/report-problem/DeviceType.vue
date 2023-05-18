@@ -22,47 +22,7 @@
 <script setup>
 import { ref } from "vue";
 let indexActive = ref(null);
-const deviceTypeList = [
-  {
-    imageUrl: "https://cdn-icons-png.flaticon.com/512/806/806281.png",
-    type: "Thiết bị điện tử",
-    description:
-      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
-  },
-  {
-    imageUrl: "https://cdn-icons-png.flaticon.com/512/432/432797.png",
-    type: "Thiết bị điện tử",
-    description:
-      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
-  },
-  {
-    imageUrl: "https://cdn-icons-png.flaticon.com/512/1028/1028907.png",
-    type: "Thiết bị điện tử",
-    description:
-      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
-  },
-  {
-    imageUrl: "https://cdn-icons-png.flaticon.com/512/2824/2824790.png",
-    type: "Thiết bị điện tử",
-    description:
-      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
-  },
-  {
-    imageUrl: "https://cdn-icons-png.flaticon.com/512/603/603157.png",
-    type: "Thiết bị điện tử",
-    description:
-      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
-  },
-  {
-    imageUrl: "https://cdn-icons-png.flaticon.com/512/1205/1205495.png",
-    type: "Thiết bị điện tử",
-    description:
-      "Have you been always searching for the trustful company that can do all the electrician deals for you?",
-  },
-];
-
 const deviceType = ref(null);
-
 function handleActive(index) {
   indexActive.value = index;
 }

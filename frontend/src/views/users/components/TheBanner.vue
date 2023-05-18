@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="overflow-x-hidden slider">
+  <div class="slider">
     <!-- slides -->
     <div class="slider__slides">
       <div class="slide s--active">

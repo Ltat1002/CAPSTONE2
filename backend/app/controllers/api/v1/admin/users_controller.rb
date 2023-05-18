@@ -14,7 +14,7 @@ class Api::V1::Admin::UsersController < ApplicationController
 
   def show_engineer
     @users = User.includes(:repair_equipment).with_all_rich_text
-                 .where(status: %i[pending accepted approved]).order(status: :asc, updated_at: :desc)
+                 .where(status: :pending).order(status: :asc, updated_at: :desc)
 
     render json: @users
   end

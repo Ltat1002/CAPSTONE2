@@ -240,16 +240,20 @@ const handleShowInfo = (address, name, position) => {
       reportStore.report = {
         ...reportStore.report,
         address: `${name ? `${name},` : ""} ${address}`,
-        latitude: position?.geometry.location.lat(),
-        longitude: position?.geometry.location.lng(),
+        latitude: position?.geometry?.location.lat(),
+        longitude: position?.geometry?.location.lng(),
       };
       reportStore.report.address = `${name ? `${name},` : ""} ${address}`;
       reportStore.report.address = `${name ? `${name},` : ""} ${address}`;
       engineerStore.setRepair({
         ...engineerStore.repair,
-        address: `${name ? `${name},` : ""} ${address}`,
-        latitude: position.geometry.location.lat(),
-        longitude: position.geometry.location.lng(),
+        address: address
+          ? `${name ? `${name},` : ""} ${address}`
+          : engineerStore.repair.address,
+        latitude:
+          position?.geometry?.location.lat() || engineerStore.repair.latitude,
+        longitude:
+          position?.geometry?.location.lng() || engineerStore.repair.longitude,
       });
       router.push("/preview");
     },
