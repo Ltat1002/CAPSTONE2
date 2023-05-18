@@ -11,7 +11,7 @@
           <router-link to="/" active-class="nav-link">Trang chủ</router-link>
         </li>
         <li
-          v-if="checkLogin && registerStore.account.status === status.accepted"
+          v-if="checkLogin && registerStore.account.status === status.approved"
         >
           <router-link
             to="/engineer/receive-report"
@@ -50,7 +50,7 @@
           <Button label="Chờ duyệt" />
         </li>
         <li
-          v-if="checkLogin && registerStore.account.status === status.accepted"
+          v-if="checkLogin && registerStore.account.status === status.approved"
         >
           <Button label="Đối tác" />
         </li>
