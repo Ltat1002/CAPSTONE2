@@ -1,6 +1,6 @@
 <template lang="">
   <TheNavbar :sidebar="sidebar"></TheNavbar>
-  <TheHeader @click="handleSide">
+  <TheHeader @sidebar="handleSide">
     <router-view />
   </TheHeader>
 </template>

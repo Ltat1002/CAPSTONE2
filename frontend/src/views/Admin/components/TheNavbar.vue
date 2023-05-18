@@ -13,26 +13,20 @@
       </li>
       <li :class="{ active: currentPage.includes('/manage-enginee') }">
         <router-link to="/admin/manage-engineer">
-          <i class="bx bxs-shopping-bag-alt"></i>
-          <span class="text">Quản lý Kỹ sư</span>
+          <i class="pi pi-briefcase"></i>
+          <span class="text">Quản lý CV</span>
         </router-link>
       </li>
       <li :class="{ active: currentPage.includes('/manage-report') }">
         <router-link to="/admin/manage-report">
-          <i class="bx bxs-shopping-bag-alt"></i>
+          <i class="pi pi-book"></i>
           <span class="text">Báo Cáo</span>
         </router-link>
       </li>
       <li :class="{ active: currentPage.includes('/repair-equipments') }">
         <router-link to="/admin/repair-equipments">
-          <i class="bx bxs-shopping-bag-alt"></i>
+          <i class="pi pi-briefcase"></i>
           <span class="text">Quản lý thiết bị</span>
-        </router-link>
-      </li>
-      <li :class="{ active: currentPage.includes('/manage-reportsss') }">
-        <router-link to="/admin/manage-report">
-          <i class="bx bxs-shopping-bag-alt"></i>
-          <span class="text">Quản lý kỹ sư</span>
         </router-link>
       </li>
     </ul>
@@ -101,7 +95,7 @@ const currentPage = computed(() => route.path);
   padding-bottom: 20px;
   box-sizing: content-box;
 }
-#sidebar .brand .bx {
+#sidebar .brand i {
   min-width: 60px;
   display: flex;
   justify-content: center;
@@ -168,7 +162,7 @@ const currentPage = computed(() => route.path);
 #sidebar .side-menu.top li a:hover {
   color: var(--blue);
 }
-#sidebar .side-menu li a .bx {
+#sidebar .side-menu li a i {
   min-width: calc(60px - ((4px + 6px) * 2));
   display: flex;
   justify-content: center;

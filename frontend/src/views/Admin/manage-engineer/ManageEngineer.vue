@@ -1,11 +1,17 @@
 <template lang="">
-  <DataTable :value="listEngineer">
-    <Column field="id" header="Mã"></Column>
-    <Column field="email" header="Email"></Column>
-    <Column field="last_name" header="Họ"></Column>
-    <Column field="first_name" header="Tên"></Column>
+  <DataTable
+    :value="listEngineer"
+    v-if="!route.fullPath.includes('/detail-cv')"
+  >
+    <Column field="fullname" header="Họ và tên"></Column>
     <Column field="mobile" header="Số điện thoại"></Column>
     <Column field="address" header="Địa chỉ"></Column>
+    <Column field="repair_equipment.name" header="Thiết bị"></Column>
+    <Column header="Mô tả">
+      <template #body="slot">
+        <div v-html="slot.data.description.body"></div>
+      </template>
+    </Column>
     <Column header="hành động">
       <template #body="slot">
         <div class="flex mx-[-8px]">
@@ -21,20 +27,23 @@
             size="small"
             class="mx-2"
             severity="success"
-            @click="handleClickAccept(slot)"
+            @click="handleClickDetail(slot)"
+          />
+          <Button
+            icon="pi pi-trash"
+            size="small"
+            class="mx-2"
+            severity="success"
+            @click="handleClickDeny(slot)"
           />
         </div>
       </template>
     </Column>
+    <template #empty>
+      <div class="text-center">Không có dữ liệu</div>
+    </template>
   </DataTable>
-  <!-- <Dialog
-    v-model:visible="visible"
-    modal
-    :header="headerTitle"
-    :style="{ width: '50vw' }"
-  >
-    <AddUser :edit="detailUser" />
-  </Dialog> -->
+  <router-view v-else></router-view>
 </template>
 <script setup>
 import DataTable from "primevue/datatable";
@@ -42,26 +51,55 @@ import Column from "primevue/column";
 import { toastMessage } from "@/helper/toastMessage";
 import { useAdminStore } from "@/store/admin";
 import Button from "primevue/button";
-import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { ref, onMounted } from "vue";
 const adminStore = useAdminStore();
+const router = useRouter();
+const route = useRoute();
+console.log(route.fullPath);
 const listEngineer = ref([]);
 function getAllEngineer() {
   adminStore.getAllEngineer().then((res) => {
-    listEngineer.value = res.data;
+    listEngineer.value = res.data.map((data) => {
+      return {
+        ...data,
+        fullname: data.last_name + " " + data.first_name,
+      };
+    });
   });
 }
-getAllEngineer();
+onMounted(() => {
+  getAllEngineer();
+});
+
 function handleClickAccept(slot) {
-  console.log(slot);
   adminStore
     .setAcceptCv({ id: slot.data.id })
     .then(() => {
       toastMessage("success", "Thành công", "Trở thành engineer thành công");
+      getAllEngineer();
     })
     .catch(() => {
       toastMessage("error", "Thất bại", "Trở thành engineer thất bại");
     });
-  console.log(slot.data.id);
+}
+function handleClickDeny(slot) {
+  adminStore
+    .setDeny({ id: slot.data.id })
+    .then(() => {
+      getAllEngineer();
+      toastMessage(
+        "success",
+        "Thành công",
+        "Hủy bỏ trở thành Engineer thành công"
+      );
+    })
+    .catch(() => {
+      toastMessage("error", "Thất bại", "Hủy bỏ trở thành Engineer thất bại");
+    });
+}
+function handleClickDetail(slot) {
+  router.push(`/admin/manage-engineer/detail-cv/${slot.data.id}`);
 }
 </script>
 <style lang="scss" scoped></style>

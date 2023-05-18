@@ -291,6 +291,7 @@ import { asyncComputed } from "@vueuse/core";
 import { useRegisterStore } from "@/store/register.js";
 import { ref, watch, reactive, onMounted } from "vue";
 import { toastMessage } from "@/helper/toastMessage.js";
+import ProgressBar from "primevue/progressbar";
 const load = ref(false);
 const registerStore = useRegisterStore();
 const password = reactive({

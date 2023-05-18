@@ -100,7 +100,7 @@
             </template>
           </Timeline>
         </div>
-        <div class="p-2">
+        <div class="p-2" v-if="!checkAdmin">
           <h3 class="text-[20px] text-[#333] font-semibold mb-2"></h3>
           <div class="flex flex-wrap justify-end mx-[-5px]">
             <span
@@ -201,14 +201,17 @@ const timeline = ref([
     color: "#333",
   },
 ]);
+const checkAdmin = computed(() => route.fullPath.includes("admin"));
 watchEffect(async () => {
-  await reportStore.getReportDetail(route.params.id).then((res) => {
-    preview.value = {
-      ...res.data,
-      description: res.data.description.body,
-      img: [...res.data.images],
-    };
-  });
+  await reportStore
+    .getReportDetail(route.fullPath, route.params.id)
+    .then((res) => {
+      preview.value = {
+        ...res.data,
+        description: res.data.description.body,
+        img: [...res.data.images],
+      };
+    });
 });
 watch(preview, () => {
   for (let key in timeline.value) {

@@ -2,7 +2,7 @@
   <section class="cursor-pointer" @click="handleClickDevice($event, device.id)">
     <div class="blog-post">
       <img :src="device.photo_url" :alt="device.name" />
-      <a href="h#" target="_blank" class="category"> {{ device.name }}</a>
+      <p class="category">{{ device.name }}</p>
       <div class="text-content">
         <h2 class="post-title">
           {{ device.description }}

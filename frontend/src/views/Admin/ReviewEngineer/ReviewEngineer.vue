@@ -33,6 +33,9 @@
         </div>
       </template>
     </Column>
+    <template #empty>
+      <div class="text-center">Không có dữ liệu</div>
+    </template>
   </DataTable>
 </template>
 <script setup>
