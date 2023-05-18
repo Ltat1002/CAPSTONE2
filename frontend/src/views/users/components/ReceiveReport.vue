@@ -6,9 +6,9 @@
     <li v-for="receive in listReceive" :key="receive.id">
       <router-link :to="`/engineer/receive-report/preview/${receive.id}`">
         <article
-          class="flex items-center space-x-6 p-6 bg-[#89cdfa] my-[20px] rounded-lg"
+          class="flex items-center space-x-6 p-6 my-[20px] rounded-lg"
           :class="
-            receive.status === statusReport.finishUser
+            receive.status >= statusReport.finishUser
               ? 'bg-[#222a39] text-[#fff]'
               : 'bg-[#89cdfa] text-black'
           "
@@ -34,10 +34,16 @@
                       animation="spin"
                       rotate="90"
                     ></box-icon>
-                    Đánh giá
+                    {{
+                      receive?.review?.rating ? "Đã đánh giá" : "Chưa đánh giá"
+                    }}
                   </p>
                   <div>
-                    <Rating v-model="rating2" :cancel="false" />
+                    <Rating
+                      :modelValue="receive?.review?.rating || 0"
+                      readonly
+                      :cancel="false"
+                    />
                   </div>
                 </dt>
               </div>
@@ -94,9 +100,7 @@
                   <p class="mr-2">Ngày tạo đơn:</p>
                   <dd>
                     {{
-                      new Date(
-                        receive.repair_equipment.created_at
-                      ).toLocaleDateString("en-GB", {
+                      new Date(receive.created_at).toLocaleDateString("en-GB", {
                         day: "numeric",
                         month: "numeric",
                         year: "numeric",
@@ -108,6 +112,7 @@
                 </div>
                 <div class="flex gap-3 shrink-0">
                   <Button
+                    :loading="loadingBtnList[0]"
                     icon="pi pi-send"
                     v-if="
                       String(receive.status) === String(statusReport.pending)
@@ -119,30 +124,12 @@
                         handleClickSuccess(
                           receive.id,
                           receive.key,
-                          statusReport.acceptedEngineer
+                          statusReport.acceptedEngineer,
+                          0
                         );
                       }
                     "
                     severity="danger"
-                  />
-                  <Button
-                    icon="pi pi-verified"
-                    v-if="
-                      String(receive.status) ===
-                      String(statusReport.acceptedUser)
-                    "
-                    size="small"
-                    label="Hoàn thành"
-                    @click.stop.prevent="
-                      () => {
-                        handleClickSuccess(
-                          receive.id,
-                          receive.key,
-                          statusReport.finishEngineer
-                        );
-                      }
-                    "
-                    severity="success"
                   />
                   <Button
                     icon="pi pi-wrench"
@@ -173,10 +160,31 @@
                     severity="help"
                   />
                   <Button
-                    @click.prevent="() => {}"
+                    :loading="loadingBtnList[1]"
+                    icon="pi pi-verified"
+                    v-if="
+                      String(receive.status) ===
+                      String(statusReport.acceptedUser)
+                    "
+                    size="small"
+                    label="Hoàn thành"
+                    @click.stop.prevent="
+                      () => {
+                        handleClickSuccess(
+                          receive.id,
+                          receive.key,
+                          statusReport.finishEngineer,
+                          1
+                        );
+                      }
+                    "
+                    severity="success"
+                  />
+                  <Button
+                    @click.stop.prevent="() => {}"
                     icon="pi pi-share-alt"
                     v-if="
-                      String(receive.status) === String(statusReport.finishUser)
+                      String(receive.status) >= String(statusReport.finishUser)
                     "
                     size="small"
                     label="Đã hoàn thành"
@@ -207,6 +215,7 @@
       @setVisible="
         (val) => {
           visible = val;
+          getReports();
         }
       "
       :idBill="idBill"
@@ -219,17 +228,21 @@ import { useEngineerStore } from "@/store/engineer.js";
 import Button from "primevue/button";
 import { useRoute } from "vue-router";
 import { asyncComputed } from "@vueuse/core";
+import Rating from "primevue/rating";
 import { getReport, updateReportById } from "@/helper/realtime.js";
 import { statusReport } from "@/helper/enumStatus";
 import { toastMessage } from "@/helper/toastMessage.js";
 import Dialog from "primevue/dialog";
 import BillMoney from "@/views/engineer/components/BillMoney.vue";
 import { useRegisterStore } from "@/store/register.js";
+// import { useReportStore } from "@/store/report";
+const engineerStore = useEngineerStore();
+// const reportStore = useReportStore();
 const route = useRoute();
 const visible = ref(false);
-const engineerStore = useEngineerStore();
 const listReceive = ref([]);
 const report = ref([]);
+const loadingBtnList = ref([false, false]);
 
 const profile = asyncComputed(
   async () => {
@@ -250,31 +263,30 @@ watchEffect(async () => {
   getReports();
 });
 
-const handleClickSuccess = async (id, key, status) => {
-  engineerStore
-    .receive({
-      id,
-      status: status,
-    })
-    .then(() => {
-      toastMessage("success", "Thành công", "Thao tác thành công");
-      getReports();
-    })
-    .catch(() => {
-      toastMessage("success", "Thất bại", "Thao tác thất bại");
-    });
-
-  updateReportById(key, {
-    ...report.value.find((item) => {
-      return String(item.report_id) === String(id);
-    }),
-    status: status,
-    user_receive_id: String(profile.value.id),
-  }).then((snapshot) => {
-    if (snapshot.exists()) {
-      console.log(snapshot.val());
-    }
-  });
+const handleClickSuccess = async (id, key, status, stt) => {
+  loadingBtnList.value[stt] = true;
+  setTimeout(() => {
+    engineerStore
+      .receive({
+        id,
+        status: status,
+      })
+      .then(() => {
+        updateReportById(key, {
+          ...report.value.find((item) => {
+            return String(item.report_id) === String(id);
+          }),
+          status: status,
+          user_receive_id: String(profile.value.id),
+        }).then(() => {
+          toastMessage("success", "Thành công", "Thao tác thành công");
+          loadingBtnList.value[stt] = false;
+        });
+      })
+      .catch(() => {
+        toastMessage("success", "Thất bại", "Thao tác thất bại");
+      });
+  }, 2000);
 };
 async function getReports() {
   const ReportIdList = report.value.reduce((accumulator, currenValue) => {
@@ -317,5 +329,11 @@ function handleClickProceed(id, key) {
 :deep(.p-button) {
   height: 40px !important;
   width: 220px !important;
+}
+:deep(.p-rating .p-rating-item.p-rating-item-active .p-rating-icon) {
+  color: #f59e0b;
+}
+:deep(.p-rating) {
+  justify-content: end;
 }
 </style>

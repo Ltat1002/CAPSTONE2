@@ -13,4 +13,5 @@ export const statusReport = {
   acceptedUser: 3,
   finishEngineer: 4,
   finishUser: 5,
+  rating: 6,
 };

@@ -20,7 +20,7 @@
             <article
               class="flex items-center space-x-6 p-6 my-[20px] rounded-lg text-white"
               :class="
-                history.status === statusReport.finishUser
+                history.status >= statusReport.finishUser
                   ? 'bg-[#222a39]'
                   : 'bg-[#2255a4]'
               "
@@ -48,10 +48,18 @@
                           animation="spin"
                           rotate="90"
                         ></box-icon>
-                        Đánh giá
+                        {{
+                          history?.review?.rating
+                            ? "Đã đánh giá"
+                            : "Chưa đánh giá"
+                        }}
                       </p>
                       <div>
-                        <Rating v-model="rating2" :cancel="false" />
+                        <Rating
+                          :modelValue="history?.review?.rating || 0"
+                          readonly
+                          :cancel="false"
+                        />
                       </div>
                     </dt>
                   </div>
@@ -59,7 +67,7 @@
                     <dt class="sr-only">Rating</dt>
                     <dd class="px-1.5 ring-1 ring-slate-200 rounded">
                       {{
-                        history.status === statusReport.finishUser
+                        history.status >= statusReport.finishUser
                           ? "Hoàn thành"
                           : "Đang tiến hành"
                       }}
@@ -118,36 +126,67 @@
                       <p class="mr-2">Ngày tạo đơn:</p>
                       <dd>
                         {{
-                          new Date(
-                            history.repair_equipment.created_at
-                          ).toLocaleDateString("en-GB", {
-                            day: "numeric",
-                            month: "numeric",
-                            year: "numeric",
-                            hour: "numeric",
-                            minute: "2-digit",
-                          })
+                          new Date(history.created_at).toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "numeric",
+                              month: "numeric",
+                              year: "numeric",
+                              hour: "numeric",
+                              minute: "2-digit",
+                            }
+                          )
                         }}
                       </dd>
                     </div>
                     <div class="flex gap-3 shrink-0">
                       <Button
-                        @click.prevent="() => {}"
+                        :loading="
+                          loadingBtnList[3] && reportActive.id === history.id
+                        "
+                        @click.prevent="
+                          confirmFinish(
+                            history.id,
+                            history?.key || '',
+                            history.status - 1,
+                            3
+                          )
+                        "
+                        icon="pi pi-thumbs-up"
+                        v-if="
+                          String(history.status) ===
+                            String(statusReport.finishEngineer) ||
+                          String(history.status) ===
+                            String(statusReport.enforcementEngineer)
+                        "
+                        size="small"
+                        label="Từ chối"
+                        severity="danger"
+                      />
+                      <Button
+                        :loading="
+                          loadingBtnList[0] && reportActive.id === history.id
+                        "
+                        @click.prevent="() => handleShowContract(history, 0)"
                         icon="pi pi-th-large"
                         v-if="
                           String(history.status) ===
                           String(statusReport.enforcementEngineer)
                         "
                         size="small"
-                        label="Hợp đồng"
+                        label="Đơn giá"
                         severity="warning"
                       />
                       <Button
+                        :loading="
+                          loadingBtnList[1] && reportActive.id === history.id
+                        "
                         @click.prevent="
                           confirmFinish(
                             history.id,
                             history?.key || '',
-                            statusReport.finishUser
+                            statusReport.finishUser,
+                            1
                           )
                         "
                         icon="pi pi-share-alt"
@@ -160,14 +199,21 @@
                         severity="warning"
                       />
                       <Button
-                        @click.prevent="visible = true"
+                        :loading="
+                          loadingBtnList[2] && reportActive.id === history.id
+                        "
+                        @click.prevent="() => handleRating(history, 2)"
                         icon="pi pi-thumbs-up"
                         v-if="
-                          String(history.status) ===
+                          String(history.status) >=
                           String(statusReport.finishUser)
                         "
                         size="small"
-                        label="Đánh giá"
+                        :label="
+                          history.status > statusReport.finishUser
+                            ? 'Thay đổi đánh giá'
+                            : 'Đánh giá'
+                        "
                         severity="warning"
                       />
                       <div
@@ -178,7 +224,8 @@
                           String(history.status) !==
                             String(statusReport.finishUser) &&
                           String(history.status) !==
-                            String(statusReport.finishEngineer)
+                            String(statusReport.finishEngineer) &&
+                          String(history.status) !== String(statusReport.rating)
                         "
                       >
                         Đang tiến hành...
@@ -201,33 +248,39 @@
     <router-view v-else></router-view>
   </div>
   <Dialog v-model:visible="visible" modal header="Đánh giá">
-    <TheRating />
+    <TheRating @confirmFinish="confirmFinish" :reportActive="reportActive" />
+  </Dialog>
+  <Dialog v-model:visible="displayContract" modal header="Chi phí thanh toán">
+    <TheContract @confirmFinish="confirmFinish" :reportActive="reportActive" />
   </Dialog>
 </template>
 <script setup>
 import Dialog from "primevue/dialog";
 import TheRating from "../components/TheRating.vue";
+import TheContract from "./TheContract.vue";
 import Rating from "primevue/rating";
 import { useRoute } from "vue-router";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import { updateReportById } from "@/helper/realtime.js";
-import { statusReport } from "@/helper/enumStatus";
 import { getReportById } from "@/helper/report.js";
+import { statusReport } from "@/helper/enumStatus";
 import TheLoading from "@/components/TheLoading.vue";
 import { ref, computed, watch, onMounted } from "vue";
+import { useEngineerStore } from "@/store/engineer";
+import { toastMessage } from "@/helper/toastMessage.js";
+import { getReport } from "@/helper/realtime.js";
 import { useReportStore } from "@/store/report";
-import { useEngineerStore } from "@/store/engineer.js";
 const engineerStore = useEngineerStore();
 const reportStore = useReportStore();
 const route = useRoute();
 const previewUser = computed(() => route.path.includes("/notify/preview"));
-const rating2 = ref();
 const visible = ref(false);
+const displayContract = ref(false);
+const reportActive = ref(null);
 const historyRepair = ref([]);
-import { toastMessage } from "@/helper/toastMessage.js";
-import { getReport } from "@/helper/realtime.js";
 const loading = ref(false);
+const loadingBtnList = ref([false, false, false, false]);
 const report = ref([]);
 onMounted(() => {
   getReport(report);
@@ -239,36 +292,70 @@ watch(
   }
 );
 
-const confirmFinish = (id, key, status) => {
-  engineerStore
-    .receive({
-      id,
-      status: status,
-    })
-    .then(() => {
-      toastMessage("success", "Thành công", "Thao tác thành công");
-      reportHistoryRepair();
-    })
-    .catch(() => {
-      toastMessage("success", "Thất bại", "Thao tác thất bại");
-    });
-  updateReportById(key, {
-    ...getReportById(report.value, key),
-    status: status,
-  });
+const handleRating = (rp, stt) => {
+  reportActive.value = {
+    ...rp,
+    stt: stt,
+  };
+  visible.value = true;
+};
+
+// const hiddenDialog = () => {
+//   visible.value = false;
+//   displayContract.value = false;
+// };
+
+const handleShowContract = (rp, stt) => {
+  displayContract.value = true;
+  reportActive.value = {
+    ...rp,
+    stt: stt,
+  };
+};
+
+const confirmFinish = (id, key, status, stt) => {
+  reportActive.value = {
+    id: id,
+  };
+  console.log("ok");
+  loadingBtnList.value[stt] = true;
+  visible.value = false;
+  displayContract.value = false;
+  setTimeout(() => {
+    engineerStore
+      .receive({
+        id,
+        status: status,
+      })
+      .then(() => {
+        updateReportById(key, {
+          ...getReportById(report.value, key),
+          status: status,
+        }).then(() => {
+          reportHistoryRepair();
+          toastMessage("success", "Thành công", "Thao tác thành công");
+          loadingBtnList.value[stt] = false;
+        });
+      })
+      .catch(() => {
+        toastMessage("error", "Thất bại", "Thao tác thất bại");
+        loadingBtnList.value[stt] = false;
+      });
+  }, 2000);
 };
 const reportHistoryRepair = async () => {
   await reportStore
     .reportHistoryRepair()
     .then((res) => {
-      historyRepair.value = res.data.map((rp) => {
-        const newRp = report.value.find((rprt) => rprt.report_id === rp.id);
-        // console.log(report.value);
-        return {
-          ...rp,
-          key: newRp?.key || "",
-        };
-      });
+      historyRepair.value =
+        res.data?.map((rp) => {
+          const newRp = report.value.find((rprt) => rprt.report_id === rp.id);
+          // console.log(report.value);
+          return {
+            ...rp,
+            key: newRp?.key || "",
+          };
+        }) || [];
     })
     .finally(() => {
       loading.value = false;
@@ -349,5 +436,8 @@ a {
 :deep(.p-button) {
   height: 40px !important;
   width: 220px !important;
+}
+:deep(.p-rating) {
+  justify-content: end;
 }
 </style>

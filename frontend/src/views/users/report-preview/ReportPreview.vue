@@ -56,11 +56,13 @@
           </template>
         </Galleria>
         <div class="w-[40%]">
-          <map-comp></map-comp>
+          <map-comp
+            :coor="{ lat: preview.latitude, lng: preview.longitude }"
+          ></map-comp>
         </div>
       </div>
       <div class="flex flex-col mt-4">
-        <div class="w-[30%]">
+        <div>
           <h3 class="text-[20px] text-[#333] font-semibold mb-2">Thiết bị</h3>
           <ul class="ml-[2.7rem]">
             <li class="list-disc">
@@ -68,13 +70,22 @@
             </li>
           </ul>
         </div>
-
-        <div class="p-2 flex justify-between flex-col">
-          <div class="p-2 mt-4">
+        <div class="mt-4">
+          <h3 class="text-[20px] text-[#333] font-semibold mb-2">Địa chỉ</h3>
+          <ul class="ml-[2.7rem]">
+            <li class="list-disc">
+              <span></span><span>{{ preview.address }}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="flex justify-between flex-col">
+          <div class="mt-4">
             <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
-            <p class="ml-4">
-              {{ preview.description }}
-            </p>
+            <ul class="ml-[2.7rem]">
+              <li class="list-disc">
+                <span></span><span>{{ preview.description }}</span>
+              </li>
+            </ul>
           </div>
 
           <Timeline :value="timeline" layout="horizontal" align="top">
@@ -159,6 +170,7 @@ import MapComp from "@/views/engineer/components/MapComp.vue";
 import { toastMessage } from "@/helper/toastMessage.js";
 import BillMoney from "@/views/engineer/components/BillMoney.vue";
 import { sendReport } from "@/helper/realtime.js";
+import { useRegisterStore } from "@/store/register";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
@@ -259,8 +271,12 @@ async function handleConfirm() {
         },
       }
     );
-    const engineerRes = await engineer.getAllEngineer();
+    let engineerRes = await engineer.getAllEngineer();
     console.log(engineerRes);
+    engineerRes.data = engineerRes.data.filter(
+      (item) => item.id !== useRegisterStore().account.id
+    );
+    console.log(engineerRes.data);
     const engineerList = await engineerRes.data.map(async (item) => {
       const distance = await getDistance(
         {
@@ -308,7 +324,7 @@ onMounted(() => {
 
 const galleria = ref();
 const images = computed(() => {
-  return preview.value.img.map((val, index) => {
+  return preview.value.img?.map((val, index) => {
     return {
       itemImageSrc: val,
       thumbnailImageSrc: val,

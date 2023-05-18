@@ -5,7 +5,7 @@
   margin: 0;
   border: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 @tailwind base;
 @tailwind components;
@@ -31,7 +31,7 @@ li {
 :root {
   --poppins: "Poppins", sans-serif;
   --lato: "Lato", sans-serif;
-  --primary-color: #6366F1 !important;
+  --primary-color: #6366f1 !important;
   --light: #f9f9f9;
   --blue: #3c91e6;
   --light-blue: #cfe8ff;
@@ -45,7 +45,7 @@ li {
   --light-orange: #ffe0d3;
   --color-title: #0969f8;
   --width-container: 1100px;
-  --sub-color: #6366F1;
+  --sub-color: #6366f1;
 }
 
 body {
@@ -66,4 +66,8 @@ body {
 .wrap {
   max-width: var(--width-container);
   margin: auto;
+}
+
+a:hover {
+  text-decoration: none;
 }
