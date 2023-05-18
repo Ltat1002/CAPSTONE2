@@ -111,7 +111,7 @@
             </template>
           </Timeline>
         </div>
-        <div class="p-2">
+        <div class="p-2" v-if="!checkAdmin">
           <h3 class="text-[20px] text-[#333] font-semibold mb-2"></h3>
           <div class="flex flex-wrap justify-end mx-[-5px]">
             <span
@@ -176,6 +176,7 @@ import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 const engineer = useEngineerStore();
+
 const reportStore = useReportStore();
 const preview = ref(engineer.repair);
 const visible = ref(false);
@@ -212,14 +213,17 @@ const timeline = ref([
     color: "#333",
   },
 ]);
+const checkAdmin = computed(() => route.fullPath.includes("admin"));
 watchEffect(async () => {
-  await reportStore.getReportDetail(route.params.id).then((res) => {
-    preview.value = {
-      ...res.data,
-      description: res.data.description.body,
-      img: [...res.data.images],
-    };
-  });
+  await reportStore
+    .getReportDetail(route.fullPath, route.params.id)
+    .then((res) => {
+      preview.value = {
+        ...res.data,
+        description: res.data.description.body,
+        img: [...res.data.images],
+      };
+    });
 });
 watch(preview, () => {
   for (let key in timeline.value) {
@@ -248,16 +252,51 @@ watch(preview, () => {
     }
   }
 });
+reportStore.report.images = [];
+function base64ToFile() {
+  const data = engineer.repair.img.map((data, index) => {
+    const file = dataURLtoFile(data, index);
+    // await axios.get(data, { responseType: "blob" }).then((blob) => {
+    //   const file = new File([blob], "File name", { type: "image/png" });
+    // const f = URL.createObjectURL(file);
+    // console.log(f);
+    reportStore.report.images.push(file);
+    // });
+  });
+  return data;
+}
+function dataURLtoFile(dataurl, filename) {
+  var arr = dataurl.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], filename, { type: mime });
+}
+base64ToFile();
 async function handleConfirm() {
-  engineer.setRepair({});
+  const datas = {
+    ...reportStore.report,
+    ...engineer.repair,
+    images: reportStore.report.images,
+  };
+  console.log(datas.images.length);
+  console.log(datas.images[0]);
   const formData = new FormData();
-  Object.keys(reportStore.report).forEach((val) => {
+  Object.keys(datas).forEach((val) => {
+    console.log(datas["images"]);
     if (val === "images") {
-      reportStore.report["images"].forEach((e) => {
-        formData.append(`images[]`, e, e.name);
+      datas["images"].forEach((e) => {
+        console.log(e);
+        formData.append(`images[]`, e);
       });
     } else if (val !== "img") {
-      formData.append(val, reportStore.report[val]);
+      formData.append(val, datas[val]);
     }
   });
   try {
@@ -313,6 +352,7 @@ async function handleConfirm() {
     });
     router.push("/notify");
     toastMessage("success", "thanh cong", "report");
+    engineer.setRepair({});
   } catch (err) {
     toastMessage("error", "Thất bại", "report");
   }

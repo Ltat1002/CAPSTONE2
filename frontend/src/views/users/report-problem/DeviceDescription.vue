@@ -79,8 +79,13 @@ function blobToBase64(blob) {
 }
 const customBase64Uploader = async (event) => {
   const file = event.files;
+  console.log(file);
   file.forEach((el) => {
     description.images.push(el);
+    engineerStore.setRepair({
+      ...engineerStore.repair,
+      images: [...engineerStore.repair.images, el],
+    });
     blobToBase64(el).then((data) => {
       description.img.push(data);
     });

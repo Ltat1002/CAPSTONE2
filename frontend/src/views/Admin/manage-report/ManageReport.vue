@@ -1,8 +1,7 @@
 <template lang="">
   <div v-if="!route.path.includes('manage-report/detail-report')">
     <DataTable :value="listUser">
-      <Column field="user_send.first_name" header="Họ"></Column>
-      <Column field="user_send.last_name" header="Tên"></Column>
+      <Column field="fullName" header="Họ và tên"></Column>
       <Column field="user_send.email" header="Email"></Column>
       <Column field="repair_equipment.name" header="Tên thiết bị"></Column>
       <Column field="mobile" header="SDT"></Column>
@@ -17,21 +16,12 @@
               severity="success"
               @click="handleClickDetail(slot)"
             />
-            <Button
-              icon="pi pi-file-edit"
-              size="small"
-              class="mx-2"
-              severity="success"
-            />
-            <Button
-              icon="pi pi-trash"
-              size="small"
-              class="mx-2"
-              severity="danger"
-            />
           </div>
         </template>
       </Column>
+      <template #empty>
+        <div class="text-center">Không có dữ liệu</div>
+      </template>
     </DataTable>
   </div>
   <div v-else>
@@ -51,7 +41,13 @@ const route = useRoute();
 const listUser = ref();
 function getAllReport() {
   adminStore.getAllReport().then((res) => {
-    listUser.value = res.data;
+    listUser.value = res.data.map((value) => {
+      console.log(value);
+      return {
+        ...value,
+        fullName: value.user_send.last_name + " " + value.user_send.first_name,
+      };
+    });
   });
 }
 getAllReport();

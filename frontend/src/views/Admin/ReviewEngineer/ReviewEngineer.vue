@@ -8,7 +8,7 @@
       severity="success"
     />
   </div>
-  <DataTable :value="listRepairEquipment">
+  <DataTable :value="listReview">
     <Column field="id" header="Mã"></Column>
     <Column field="name" header="Tên thiết bị"></Column>
     <Column field="description" header="mô tả"></Column>
@@ -37,42 +37,29 @@
       <div class="text-center">Không có dữ liệu</div>
     </template>
   </DataTable>
-  <Dialog
-    v-model:visible="adminStore.repair"
-    modal
-    :header="headerTitle"
-    :style="{ width: '50vw' }"
-  >
-    <AddRepair :edit="detail" :check="check" />
-  </Dialog>
 </template>
 <script setup>
 import DataTable from "primevue/datatable";
-import AddRepair from "./AddRepair.vue";
 import Column from "primevue/column";
-// import { toastMessage } from "@/helper/toastMessage";
 import { useAdminStore } from "@/store/admin";
 import Button from "primevue/button";
-import Dialog from "primevue/dialog";
 import { ref, watchEffect } from "vue";
 const detail = ref();
 const headerTitle = ref();
 const adminStore = useAdminStore();
-const listRepairEquipment = ref([]);
-function getRepairEquipment() {
-  adminStore.getRepairEquipment().then((res) => {
-    listRepairEquipment.value = res.data;
+const listReview = ref([]);
+function getReviewEngineer() {
+  adminStore.getReviewEngineer().then((res) => {
+    listReview.value = res.data;
   });
 }
 watchEffect(() => {
-  getRepairEquipment();
+  getReviewEngineer();
 });
 const check = ref();
 function addRepair() {
   check.value = true;
   adminStore.repair = true;
-  detail.value = { name: "", photo: "", description: "" };
-
   headerTitle.value = "Thêm thiết bị";
 }
 function handleClickUpdate(slot) {

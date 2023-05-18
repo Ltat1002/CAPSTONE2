@@ -32,28 +32,20 @@
         </div>
       </div>
     </div>
-    <div class="text-end">
-      <Button
-        class="mt-3 sign_up"
-        type="button"
-        label="ĐĂNG KÝ"
-        size="small"
-        :loading="loading"
-        @click="handleRegisterEngineer"
-      />
-    </div>
+    <div class="text-end hidden" @click="handleRegisterEngineer"></div>
   </div>
 </template>
 <script setup>
 import Dropdown from "primevue/dropdown";
 import Editor from "primevue/editor";
-import MapComp from "./components/MapComp.vue";
-import Button from "primevue/button";
-import { ref, computed } from "vue";
+import MapComp from "@/views/engineer/components/MapComp.vue";
+import { ref, computed, onMounted } from "vue";
 import { useEquipmentsStore } from "@/store/equipments";
 import { useRegisterStore } from "@/store/register";
 import { toastMessage } from "@/helper/toastMessage";
 import { useRouter, useRoute } from "vue-router";
+import { useAdminStore } from "@/store/admin.js";
+const adminStore = useAdminStore();
 const equipmentStore = useEquipmentsStore();
 const register = useRegisterStore();
 const router = useRouter();
@@ -65,7 +57,7 @@ const description = ref("");
 const loading = ref(false);
 const address = ref("");
 const deviceList = ref([]);
-const selectedDevices = ref([]);
+const selectedDevices = ref();
 const coor = ref({});
 let coordinates;
 
@@ -74,7 +66,14 @@ function setAddress(addressProps, coor) {
   address.value = addressProps;
   coordinates = coor;
 }
-
+function fetchData() {
+  adminStore.getReport(route.params.id).then((data) => {
+    description.value = data.data.description.body;
+    selectedDevices.value = data.data.repair_equipment_id;
+    address.value = data.data.address;
+    console.log(data);
+  });
+}
 function handleRegisterEngineer() {
   console.log(selectedDevices.value);
   loading.value = true;
@@ -121,6 +120,9 @@ equipmentStore.getEquipments().then((data) => {
       lng: register.account.longitude,
     });
   }
+});
+onMounted(() => {
+  fetchData();
 });
 </script>
 <style lang="scss" scoped>
