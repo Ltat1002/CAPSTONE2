@@ -2,7 +2,7 @@
   <ConfirmDialog> </ConfirmDialog>
   <div class="rounded overflow-hidden relative h-full">
     <div ref="mapDiv" style="width: 100%; height: 100%"></div>
-    <div class="form">
+    <div v-if="!route.fullPath.includes('preview')" class="form">
       <div class="wrap_form_search">
         <span class="form_search p-float-label p-input-icon-left">
           <i class="pi pi-search" />
@@ -68,17 +68,17 @@ import { useGeolocation } from "@/helper/useGeolocation.js";
 import { Loader } from "@googlemaps/js-api-loader";
 import InputText from "primevue/inputtext";
 import { defineProps } from "vue";
+import { useRoute } from "vue-router";
 const GOOGLE_MAPS_API_KEY = "AIzaSyADl3t1Xrjtwf58sZsq4wzqSuyWI1zySbM";
 const emit = defineEmits(["setAddress"]);
 let showPopup = ref(false);
-// const a = defineExpose({ input });
-// console.log(a);
 const searchRef = ref("");
 let positionList = ref([]);
 var markers = [];
+const route = useRoute();
 const confirm = useConfirm();
 const input = ref("");
-const props = defineProps(["coor"]);
+const props = defineProps(["coor", "pathProfile"]);
 const { coords } = useGeolocation();
 const currPos = computed(() => ({
   lat: coords.value.latitude,
@@ -95,32 +95,44 @@ onMounted(async () => {
     center: new window.google.maps.LatLng(16.0545, 108.217),
     zoom: 12,
   });
-  clickListener = map.value.addListener("click", ({ latLng: { lat, lng } }) => {
-    var geocoder = new window.google.maps.Geocoder();
-    var latLng = new window.google.maps.LatLng(lat(), lng());
-    geocoder.geocode(
-      {
-        latLng: latLng,
-      },
-      function (results, status) {
-        if (status == window.google.maps.GeocoderStatus.OK) {
-          if (results[1]) {
-            handleShowInfo(
-              results[1].formatted_address,
-              undefined,
-              results[1].geometry.location.lat(),
-              results[1].geometry.location.lng()
-            );
-          } else {
-            alert("No results found");
+  if (!route.fullPath.includes("preview")) {
+    clickListener = map.value.addListener(
+      "click",
+      ({ latLng: { lat, lng } }) => {
+        var geocoder = new window.google.maps.Geocoder();
+        var latLng = new window.google.maps.LatLng(lat(), lng());
+        geocoder.geocode(
+          {
+            latLng: latLng,
+          },
+          function (results, status) {
+            if (status == window.google.maps.GeocoderStatus.OK) {
+              if (results[1]) {
+                handleShowInfo(
+                  results[1].formatted_address,
+                  undefined,
+                  results[1].geometry.location.lat(),
+                  results[1].geometry.location.lng()
+                );
+              } else {
+                alert("No results found");
+              }
+            } else {
+              alert("Geocoder failed due to: " + status);
+            }
           }
-        } else {
-          alert("Geocoder failed due to: " + status);
-        }
+        );
+        return (otherPos.value = { lat: lat(), lng: lng() });
       }
     );
-    return (otherPos.value = { lat: lat(), lng: lng() });
-  });
+  } else {
+    if (props.coor?.lat && props.coor?.lng) {
+      map.value = new window.google.maps.Map(mapDiv.value, {
+        center: new window.google.maps.LatLng(props.coor?.lat, props.coor?.lng),
+        zoom: 12,
+      });
+    }
+  }
 });
 
 onUnmounted(async () => {
@@ -131,42 +143,54 @@ let newDistance = null;
 // var directionsDisplay;
 var myMarker;
 var otherMarker;
-watch([map, currPos, otherPos, props.coor], () => {
+watch([map, currPos, otherPos, () => props.coor], () => {
   if (otherMarker) {
     otherMarker.setMap(null);
   }
   handleSetMarkerUpdate();
-  var origin1 = new window.google.maps.LatLng(
-    currPos.value.lat,
-    currPos.value.lng
-  );
-  var origin2 = new window.google.maps.LatLng(
-    otherPos.value?.lat,
-    otherPos.value?.lng
-  );
+  if (!route.fullPath.includes("preview")) {
+    var origin1 = new window.google.maps.LatLng(
+      currPos.value.lat,
+      currPos.value.lng
+    );
 
-  myMarker = new window.google.maps.Marker({
-    position: origin1,
-    title: "My location!",
-    icon: createIcon(
-      "https://images.squarespace-cdn.com/content/v1/5e24773c72c72a5f12fe787d/1644781864949-3CL50TS4DXV9K1MOQ5FA/IMG-8008.PNG"
-    ),
-  });
-  myMarker.setMap(map.value);
-  otherMarker = new window.google.maps.Marker({
-    position: origin2,
-    title: "New location!",
-  });
-  otherMarker.setMap(map.value);
-  newDistance = new window.google.maps.DistanceMatrixService();
-  newDistance.getDistanceMatrix(
-    {
-      origins: [origin1],
-      destinations: [origin2],
-      travelMode: "DRIVING",
-    },
-    getDistance
-  );
+    myMarker = new window.google.maps.Marker({
+      position: origin1,
+      title: "My location!",
+      icon: createIcon(
+        "https://images.squarespace-cdn.com/content/v1/5e24773c72c72a5f12fe787d/1644781864949-3CL50TS4DXV9K1MOQ5FA/IMG-8008.PNG"
+      ),
+    });
+    myMarker.setMap(map.value);
+    var origin2 = new window.google.maps.LatLng(
+      otherPos.value?.lat,
+      otherPos.value?.lng
+    );
+    otherMarker = new window.google.maps.Marker({
+      position: origin2,
+      title: "New location!",
+    });
+    otherMarker.setMap(map.value);
+    newDistance = new window.google.maps.DistanceMatrixService();
+    newDistance.getDistanceMatrix(
+      {
+        origins: [origin1],
+        destinations: [origin2],
+        travelMode: "DRIVING",
+      },
+      getDistance
+    );
+  }
+  // else {
+  //   var coor = new window.google.maps.LatLng(props.coor?.lat, props.coor?.lng);
+  //   console.log(coor);
+  //   myMarker = new window.google.maps.Marker({
+  //     position: coor,
+  //     title: "My location!",
+  //   });
+  //   myMarker.setMap(map.value);
+  // }
+
   //   var directionsService = new window.google.maps.DirectionsService();
 
   //   function dogetRedirect_map(position, roomLatlng) {
@@ -248,6 +272,7 @@ const handleShowInfo = (address, name, lat, lng) => {
     header: "Xác nhận",
     icon: "pi pi-exclamation-triangle",
     accept: () => {
+      console.log(lat, lng);
       emit("setAddress", `${name ? `${name},` : ""} ${address}`, {
         lat: lat || props.coor.lat,
         lng: lng || props.coor.lng,
@@ -275,8 +300,7 @@ function createMarker(place) {
 }
 
 function handleSetMarkerUpdate() {
-  if (props.coor?.lat && props.coor.lng) {
-    console.log(props.coor?.lat, props.coor.lng);
+  if (props.coor?.lat && props.coor?.lng) {
     var origin3 = new window.google.maps.LatLng(
       props.coor?.lat,
       props.coor?.lng

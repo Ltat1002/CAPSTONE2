@@ -65,14 +65,14 @@ class Api::V1::ReportsController < ApplicationController
     render json: @report.show_report_json
   end
 
-  def cancel_report
-    if @report.update(reason: params[:reason])
-      @report.cancelled!
-      render json: @report.show_report_json
-    else
-      render json: @report.errors, status: :unprocessable_entity
-    end
-  end
+  # def cancel_report
+  #   if @report.update(reason: params[:reason])
+  #     @report.cancelled!
+  #     render json: @report.show_report_json
+  #   else
+  #     render json: @report.errors, status: :unprocessable_entity
+  #   end
+  # end
 
   private
 
@@ -87,6 +87,7 @@ class Api::V1::ReportsController < ApplicationController
   end
 
   def report_update_params
-    params.permit(:name, :mobile, :address, :longitude, :latitude, :description, images: [])
+    params.permit(:name, :mobile, :address, :longitude, :latitude, :description, :amount_pay,
+                  :reason, :status, :repair_equipment_id, images: [])
   end
 end

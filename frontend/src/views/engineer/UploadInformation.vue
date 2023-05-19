@@ -6,6 +6,7 @@
           v-model="selectedDevices"
           :options="deviceList"
           filter
+          optionValue="id"
           optionLabel="name"
           placeholder="Chọn thiết bị"
           class="w-full md:w-20rem mb-4"
@@ -18,7 +19,11 @@
       </div>
       <div class="flex-1 h-[500px]">
         <div class="h-[416px] overflow-hidden">
-          <map-comp :coor="coor" @setAddress="setAddress"></map-comp>
+          <map-comp
+            :coor="coor"
+            @setAddress="setAddress"
+            :pathProfile="pathProfile"
+          ></map-comp>
         </div>
         <div
           class="h-[60px] address mt-4 border border-solid border-[#fff] w-full text-white rounded-md px-3 overflow-y-auto flex items-center"
@@ -44,12 +49,12 @@ import Dropdown from "primevue/dropdown";
 import Editor from "primevue/editor";
 import MapComp from "./components/MapComp.vue";
 import Button from "primevue/button";
-import { ref, watch, computed } from "vue";
+import { ref, computed } from "vue";
 import { useEquipmentsStore } from "@/store/equipments";
 import { useRegisterStore } from "@/store/register";
 import { toastMessage } from "@/helper/toastMessage";
 import { useRouter, useRoute } from "vue-router";
-const equipments = useEquipmentsStore();
+const equipmentStore = useEquipmentsStore();
 const register = useRegisterStore();
 const router = useRouter();
 const route = useRoute();
@@ -64,25 +69,17 @@ const selectedDevices = ref([]);
 const coor = ref({});
 let coordinates;
 
-if (pathProfile.value) {
-  selectedDevices.value = register.account.repair_equipment;
-  description.value = register.account?.description?.body || "";
-  coor.value = {
-    lat: register.account.latitude,
-    lng: register.account.longitude,
-  };
-  address.value = register.account.address;
-}
-
 function setAddress(addressProps, coor) {
+  console.log(coor);
   address.value = addressProps;
   coordinates = coor;
 }
 
 function handleRegisterEngineer() {
+  console.log(selectedDevices.value);
   loading.value = true;
   const data = {
-    repair_equipment_id: selectedDevices.value.id,
+    repair_equipment_id: selectedDevices.value,
     latitude: coordinates?.lat || "",
     longitude: coordinates?.lng || "",
     description: description.value,
@@ -90,10 +87,9 @@ function handleRegisterEngineer() {
     address: address.value,
     status: 2,
   };
-  console.log(data);
   setTimeout(() => {
     register
-      .updateProfile(data)
+      .updateProfile({ ...register.account, ...data })
       .then((data) => {
         console.log(data);
         router.push("/");
@@ -109,12 +105,22 @@ function handleRegisterEngineer() {
   }, 2000);
 }
 
-equipments.getEquipments().then((data) => {
+equipmentStore.getEquipments().then((data) => {
   deviceList.value = data.data;
-});
-
-watch(selectedDevices, () => {
-  console.log(selectedDevices.value);
+  if (pathProfile.value) {
+    console.log(register.account);
+    selectedDevices.value = register.account.repair_equipment_id;
+    description.value = register.account.description.body || "";
+    coor.value = {
+      lat: register.account.latitude,
+      lng: register.account.longitude,
+    };
+    // address.value = register.account.address;
+    setAddress(register.account.address, {
+      lat: register.account.latitude,
+      lng: register.account.longitude,
+    });
+  }
 });
 </script>
 <style lang="scss" scoped>

@@ -2,19 +2,31 @@
   <section id="sidebar" :class="{ hide: props.sidebar }">
     <router-link to="/" class="brand">
       <i class="bx bxs-smile"></i>
-      <span class="text">Repair service</span>
+      <span class="text whitespace-pre">Repair service</span>
     </router-link>
     <ul class="side-menu top">
-      <li :class="{ active: currentPage.includes('/report-problem') }">
-        <router-link to="engineer/history">
+      <li :class="{ active: currentPage.includes('/manage-users') }">
+        <router-link to="/admin/manage-users">
           <i class="bx bxs-user"></i>
-          <span class="text">Lịch sử báo cáo</span>
+          <span class="text">Quản lý người dùng</span>
         </router-link>
       </li>
-      <li :class="{ active: currentPage.includes('/voucher') }">
-        <router-link to="/voucher">
-          <i class="bx bxs-shopping-bag-alt"></i>
-          <span class="text">...</span>
+      <li :class="{ active: currentPage.includes('/manage-enginee') }">
+        <router-link to="/admin/manage-engineer">
+          <i class="pi pi-briefcase"></i>
+          <span class="text">Quản lý CV</span>
+        </router-link>
+      </li>
+      <li :class="{ active: currentPage.includes('/manage-report') }">
+        <router-link to="/admin/manage-report">
+          <i class="pi pi-book"></i>
+          <span class="text">Báo Cáo</span>
+        </router-link>
+      </li>
+      <li :class="{ active: currentPage.includes('/repair-equipments') }">
+        <router-link to="/admin/repair-equipments">
+          <i class="pi pi-briefcase"></i>
+          <span class="text">Quản lý thiết bị</span>
         </router-link>
       </li>
     </ul>
@@ -83,7 +95,7 @@ const currentPage = computed(() => route.path);
   padding-bottom: 20px;
   box-sizing: content-box;
 }
-#sidebar .brand .bx {
+#sidebar .brand i {
   min-width: 60px;
   display: flex;
   justify-content: center;
@@ -100,7 +112,7 @@ const currentPage = computed(() => route.path);
   padding: 4px;
 }
 #sidebar .side-menu li.active {
-  background: var(--grey);
+  background: #d7d5d5;
   position: relative;
 }
 #sidebar .side-menu li.active::before {
@@ -150,15 +162,9 @@ const currentPage = computed(() => route.path);
 #sidebar .side-menu.top li a:hover {
   color: var(--blue);
 }
-#sidebar .side-menu li a .bx {
+#sidebar .side-menu li a i {
   min-width: calc(60px - ((4px + 6px) * 2));
   display: flex;
   justify-content: center;
-}
-
-@media screen and (max-width: 768px) {
-  #sidebar {
-    width: 200px;
-  }
 }
 </style>

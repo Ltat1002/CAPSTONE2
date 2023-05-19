@@ -1,18 +1,14 @@
 <template lang="">
   <section class="cursor-pointer" @click="handleClickDevice($event, device.id)">
     <div class="blog-post">
-      <img
-        src="https://dt24h.com/wp-content/uploads/2022/02/Blackview-A95-1.jpg"
-        :alt="device.name"
-      />
-      <a href="h#" target="_blank" class="category"> {{ device.name }}</a>
+      <img :src="device.photo_url" :alt="device.name" />
+      <p class="category">{{ device.name }}</p>
       <div class="text-content">
         <h2 class="post-title">
           {{ device.description }}
         </h2>
         <div class="tags">
-          <a href="h#" target="_blank">#điện tử</a>
-          <a href="h#" target="_blank">#laptop</a>
+          <a href="h#" target="_blank">#{{ device.name }}</a>
         </div>
       </div>
     </div>
@@ -95,7 +91,7 @@ section {
   transition: 0.3s ease;
 }
 .tags a:hover {
-  color: #000;
+  color: #2a5aea;
 }
 @media screen and (max-width: 1100px) {
   .container {

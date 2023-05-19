@@ -56,34 +56,39 @@
           </template>
         </Galleria>
         <div class="w-[40%]">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d251637.95196238213!2d105.6189045!3d9.779349!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1681275081254!5m2!1svi!2s"
-            width="100%"
-            height="100%"
-            style="border: 0"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
+          <map-comp
+            :coor="{ lat: preview.latitude, lng: preview.longitude }"
+          ></map-comp>
         </div>
       </div>
-      <div class="flex flex-col">
-        <div class="p-2 mt-4">
-          <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
-          <p class="ml-4">
-            {{ preview.description }}
-          </p>
+      <div class="flex flex-col mt-4">
+        <div>
+          <h3 class="text-[20px] text-[#333] font-semibold mb-2">Thiết bị</h3>
+          <ul class="ml-[2.7rem]">
+            <li class="list-disc">
+              <span>Thiết bị:</span><span>{{ preview.name }}</span>
+            </li>
+          </ul>
         </div>
-        <div class="p-2 flex justify-between mt-4">
-          <div class="w-[30%]">
-            <h3 class="text-[20px] text-[#333] font-semibold mb-2">Thiết bị</h3>
+        <div class="mt-4">
+          <h3 class="text-[20px] text-[#333] font-semibold mb-2">Địa chỉ</h3>
+          <ul class="ml-[2.7rem]">
+            <li class="list-disc">
+              <span></span><span>{{ preview.address }}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="flex justify-between flex-col">
+          <div class="mt-4">
+            <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
             <ul class="ml-[2.7rem]">
               <li class="list-disc">
-                <span>Thiết bị:</span><span>{{ preview.name }}</span>
+                <span></span><span>{{ preview.description }}</span>
               </li>
             </ul>
           </div>
-          <Timeline :value="events" layout="horizontal" align="top">
+
+          <Timeline :value="timeline" layout="horizontal" align="top">
             <template #marker="slotProps">
               <span
                 class="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1 p-[8px] rounded-[50%]"
@@ -106,23 +111,34 @@
             </template>
           </Timeline>
         </div>
-        <div class="p-2">
+        <div class="p-2" v-if="!checkAdmin">
           <h3 class="text-[20px] text-[#333] font-semibold mb-2"></h3>
-          <div class="flex flex-wrap justify-end mx-[-5px]">
-            <span
-              class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
+          <div class="flex flex-wrap gap-3 justify-end mx-[-5px]">
+            <Button
+              :loading="loading"
+              v-if="route.path === '/preview'"
+              class="bg-[#6366F1]"
               @click="handleConfirm"
-              ><i class="bx bx-check-circle mr-1"></i>Xác nhận</span
-            >
-            <span
+              label="Đăng"
+            ></Button>
+            <!-- <Button
+              v-if="route.path.includes('notify/preview/4')"
+              label="Xác nhận"
+              class="bg-[#6366F1]"
+              @click="handleConfirm"
+            ></Button>
+            <Button
+              v-if="route.path.includes('notify/preview')"
               @click="visible = !visible"
-              class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
-              ><i class="bx bxs-message-rounded-dots mr-1"></i>Đánh giá</span
-            >
-            <span
-              class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
-              ><i class="bx bx-message-alt-x mr-1"></i>Hủy</span
-            >
+              label="Đánh giá"
+              severity="warning"
+              class="bg-[#6366F1]"
+            ></Button>
+            <Button
+              v-if="!route.path.includes('notify/preview')"
+              label="Hủy"
+              class="bg-[#6366F1]"
+            ></Button> -->
           </div>
         </div>
       </div>
@@ -131,81 +147,227 @@
   <Dialog v-model:visible="visible" modal header="Đánh giá">
     <TheRating />
   </Dialog>
+  <Dialog
+    v-model:visible="bill"
+    modal
+    header="Tiến hành"
+    :style="{ width: '50vw' }"
+  >
+    <BillMoney />
+  </Dialog>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import Button from "primevue/button";
+import { ref, watchEffect, watch, computed, onMounted } from "vue";
 import Dialog from "primevue/dialog";
 import Timeline from "primevue/timeline";
 import { useReportStore } from "@/store/report.js";
 import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
-import Button from "primevue/button";
+import { getDistance } from "@/helper/map.js";
+import { statusReport } from "@/helper/enumStatus";
+import { useEngineerStore } from "@/store/engineer.js";
+import MapComp from "@/views/engineer/components/MapComp.vue";
 import { toastMessage } from "@/helper/toastMessage.js";
+import BillMoney from "@/views/engineer/components/BillMoney.vue";
+import { sendReport } from "@/helper/realtime.js";
+import { useRegisterStore } from "@/store/register";
 import axios from "axios";
+import { useRoute, useRouter } from "vue-router";
+const router = useRouter();
+const route = useRoute();
+const engineer = useEngineerStore();
+const loading = ref(false);
 const reportStore = useReportStore();
-const preview = ref(reportStore.report);
+const preview = ref(engineer.repair);
 const visible = ref(false);
-const events = ref([
+const bill = ref(false);
+const timeline = ref([
   {
     status: "Gửi yêu cầu",
-    date: "15/10/2020 16:15",
     icon: "bx bxs-compass bx-spin",
-    color: "#6366F1",
+    color: "#333",
   },
   {
     status: "Xác nhận",
-    date: "15/10/2020 10:30",
     icon: "bx bx-cog bx-spin",
-    color: "#6366F1",
-    image: "game-controller.jpg",
+    color: "#333",
   },
   {
     status: "Tiến hành",
-    date: "15/10/2020 14:00",
     icon: "bx bx-bolt-circle bx-spin",
-    color: "#6366F1",
+    color: "#333",
+  },
+  {
+    status: "Chấp thuận",
+    icon: "bx bx-radar bx-spin bx-flip-vertical",
+    color: "#333",
   },
   {
     status: "Hoàn thành",
+    icon: "bx bxl-steam bx-spin",
+    color: "#333",
+  },
+  {
+    status: "Chấp thuận",
     icon: "bx bxs-sun bx-spin",
     color: "#333",
   },
 ]);
-function handleConfirm() {
+const checkAdmin = computed(() => route.fullPath.includes("admin"));
+watchEffect(async () => {
+  await reportStore
+    .getReportDetail(route.fullPath, route.params.id)
+    .then((res) => {
+      preview.value = {
+        ...res.data,
+        description: res.data.description.body,
+        img: [...res.data.images],
+      };
+    });
+});
+watch(preview, () => {
+  for (let key in timeline.value) {
+    if (Number(key) === preview.value.status) {
+      timeline.value[key] = {
+        ...timeline.value[key],
+        date: new Date(preview.value.created_at).toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+        }),
+        color: "#6366F1",
+      };
+    }
+    if (Number(key) < preview.value.status) {
+      timeline.value[key] = {
+        ...timeline.value[key],
+        color: "#6366F1",
+      };
+    }
+    if (Number(key) > preview.value.status) {
+      timeline.value[key] = {
+        ...timeline.value[key],
+        color: "#333",
+      };
+    }
+  }
+});
+reportStore.report.images = [];
+function base64ToFile() {
+  const data = engineer.repair.img?.map((data, index) => {
+    const file = dataURLtoFile(data, index);
+    // await axios.get(data, { responseType: "blob" }).then((blob) => {
+    //   const file = new File([blob], "File name", { type: "image/png" });
+    // const f = URL.createObjectURL(file);
+    // console.log(f);
+    reportStore.report.images.push(file);
+    // });
+  });
+  return data;
+}
+function dataURLtoFile(dataurl, filename) {
+  var arr = dataurl.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], filename, { type: mime });
+}
+base64ToFile();
+async function handleConfirm() {
+  loading.value = true;
+  const datas = {
+    ...reportStore.report,
+    ...engineer.repair,
+    images: reportStore.report.images,
+  };
   const formData = new FormData();
-  Object.keys(reportStore.report).forEach((val) => {
+  Object.keys(datas).forEach((val) => {
+    console.log(datas["images"]);
     if (val === "images") {
-      console.log(reportStore.report[val]);
-      reportStore.report["images"].forEach((e) => {
-        formData.append(`images[]`, e, e.name);
+      datas["images"].forEach((e) => {
+        console.log(e);
+        formData.append(`images[]`, e);
       });
     } else if (val !== "img") {
-      formData.append(val, reportStore.report[val]);
+      formData.append(val, datas[val]);
     }
   });
-  const localToken = localStorage.getItem("token") || "";
-  axios
-    .post("http://localhost:3000/api/v1/reports", formData, {
-      headers: {
-        Authorization: `Bearer ${localToken}`,
-      },
-    })
-    .then((res) => {
-      console.log(res);
-      toastMessage("success", "thanh cong", "report");
-    })
-    .catch(() => {
-      toastMessage("error", "thanh cong", "report");
+  try {
+    const localToken = localStorage.getItem("token") || "";
+    const report = await axios.post(
+      "http://localhost:3000/api/v1/reports",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localToken}`,
+        },
+      }
+    );
+    let engineerRes = await engineer.getAllEngineer();
+    console.log(engineerRes);
+    engineerRes.data = engineerRes.data.filter(
+      (item) => item.id !== useRegisterStore().account.id
+    );
+    console.log(engineerRes.data);
+    const engineerList = await engineerRes.data.map(async (item) => {
+      const distance = await getDistance(
+        {
+          lat: item.latitude,
+          lng: item.longitude,
+        },
+        {
+          lat: report.data.latitude,
+          lng: report.data.longitude,
+        }
+      );
+      console.log(distance);
+      return {
+        duration: distance.rows[0].elements[0].distance?.value || 0,
+        duration_text: distance.rows[0].elements[0].duration?.text || 0,
+        distance_text: distance.rows[0].elements[0].duration?.text || 0,
+        engineer_id: item.id,
+      };
     });
+
+    Promise.all(engineerList).then((data) => {
+      data.sort((a, b) => {
+        return a.duration - b.duration;
+      });
+      const engineerList = data.filter((item, index) => index < 2);
+      const realtimeRp = {
+        duration: engineerList.map((item) => item.duration_text).join(", "),
+        distance: engineerList.map((item) => item.distance_text).join(", "),
+        report_id: report.data.id,
+        engineer_id: engineerList.map((item) => item.engineer_id).join(", "),
+        status: statusReport.pending,
+      };
+      sendReport(realtimeRp);
+    });
+    router.push("/notify");
+    toastMessage("success", "thanh cong", "report");
+    loading.value = false;
+    engineer.setRepair({});
+  } catch (err) {
+    toastMessage("error", "Thất bại", "report");
+    loading.value = false;
+  }
 }
+
 onMounted(() => {
   bindDocumentListeners();
 });
 
 const galleria = ref();
 const images = computed(() => {
-  return reportStore.report.img.map((val, index) => {
+  return preview.value.img?.map((val, index) => {
     return {
       itemImageSrc: val,
       thumbnailImageSrc: val,
@@ -222,6 +384,7 @@ const fullScreen = ref(false);
 const onThumbnailButtonClick = () => {
   showThumbnails.value = !showThumbnails.value;
 };
+
 const toggleFullScreen = () => {
   if (fullScreen.value) {
     closeFullScreen();
@@ -281,6 +444,12 @@ const fullScreenIcon = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+:deep(.custom-galleria .p-galleria-thumbnail-wrapper) {
+  top: 0;
+}
+:deep(.p-galleria-thumbnail-container) {
+  height: 100%;
+}
 :deep(.p-timeline-event-opposite) {
   padding: 0;
 }
@@ -297,6 +466,10 @@ const fullScreenIcon = computed(() => {
   display: 2px;
 }
 
+:deep(.p-button) {
+  height: 40px !important;
+  width: 220px !important;
+}
 .preview {
   margin-right: -10px;
   margin-left: -10px;
@@ -368,10 +541,17 @@ const fullScreenIcon = computed(() => {
   padding: 0px 10px;
   .p-galleria-thumbnail-item-content {
     height: 100%;
+    > div {
+      &:first-child {
+        overflow-y: hidden;
+      }
+    }
   }
 }
 :deep(.p-galleria-thumbnail-items) {
   margin-right: -10px;
   margin-left: -10px;
+  height: 100%;
+  overflow-y: hidden;
 }
 </style>

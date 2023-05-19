@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { http } from "@/configs/httpCommon";
-export const useReportStore = defineStore("equipments", {
+export const useReportStore = defineStore("reports", {
   state: () => {
     return {
       report: {
@@ -9,7 +9,7 @@ export const useReportStore = defineStore("equipments", {
         mobile: "",
         address: "",
         description: "",
-        images: "",
+        images: [],
         img: [],
       },
     };
@@ -20,6 +20,23 @@ export const useReportStore = defineStore("equipments", {
     },
     reportHistoryRepair() {
       return http.get("/reports");
+    },
+    getReportDetail(path, id) {
+      const pt = path.includes("admin")
+        ? "admin/reports"
+        : path.includes("engineer")
+        ? "engineer/reports"
+        : "reports";
+      return http.get(`${pt}/${id}`);
+    },
+    searchReport(search) {
+      return http.get(`/search?search=${search}`);
+    },
+    createRating(data) {
+      return http.post("reviews", data);
+    },
+    updateReport(data, id) {
+      return http.put(`reports/${id}`, data);
     },
   },
 });

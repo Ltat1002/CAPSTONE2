@@ -1,7 +1,7 @@
 <template lang="">
   <keep-alive>
     <div class="description">
-      <div>
+      <div class="flex flex-col">
         <span class="p-float-label">
           <InputText id="name" v-model="description.name" />
           <label for="name">Tên chi tiết</label>
@@ -46,8 +46,9 @@ import FileUpload from "primevue/fileupload";
 import Image from "primevue/image";
 import InputText from "primevue/inputtext";
 import { useReportStore } from "@/store/report.js";
-import { reactive, watch } from "vue";
-
+import { reactive, watch, watchEffect } from "vue";
+import { useEngineerStore } from "@/store/engineer.js";
+const engineerStore = useEngineerStore();
 const reportStore = useReportStore();
 const description = reactive({
   name: "",
@@ -55,6 +56,7 @@ const description = reactive({
   description: "",
   images: [],
   img: [],
+  ...engineerStore.repair,
 });
 watch(description, () => {
   reportStore.report = {
@@ -62,11 +64,31 @@ watch(description, () => {
     ...description,
   };
 });
+watchEffect(() => {
+  engineerStore.setRepair({
+    ...engineerStore.repair,
+    ...description,
+  });
+});
+function blobToBase64(blob) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+}
 const customBase64Uploader = async (event) => {
   const file = event.files;
+  console.log(file);
   file.forEach((el) => {
     description.images.push(el);
-    description.img.push(el.objectURL);
+    engineerStore.setRepair({
+      ...engineerStore.repair,
+      images: [...engineerStore.repair.images, el],
+    });
+    blobToBase64(el).then((data) => {
+      description.img.push(data);
+    });
   });
 };
 </script>
@@ -107,7 +129,6 @@ const customBase64Uploader = async (event) => {
   display: flex;
   height: 500px;
   justify-content: space-between;
-  align-items: center;
   margin-top: 40px;
   .p-inputtextarea,
   .p-inputtext {
@@ -116,8 +137,14 @@ const customBase64Uploader = async (event) => {
   }
 }
 .p-float-label {
-  margin-top: 30px;
   margin-bottom: 30px;
+  &:last-child {
+    flex: 1;
+    margin-bottom: 0;
+    :deep(.p-inputtextarea) {
+      height: 100%;
+    }
+  }
 }
 .upload_image {
   position: absolute;
