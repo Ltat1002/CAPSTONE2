@@ -40,6 +40,9 @@ Rails.application.routes.draw do
         resources :repair_equipments, except: :destroy
         resources :reviews, except: :create
         get 'show_all_engineers', to: 'users#show_all_engineers'
+        get 'report_counting', to: 'reports#report_counting'
+        get 'user_counting', to: 'users#user_counting'
+        get 'amount_pay_counting', to: 'reports#amount_pay_counting'
       end
     end
   end

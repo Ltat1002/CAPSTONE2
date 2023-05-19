@@ -1,6 +1,6 @@
 class Api::V1::Admin::UsersController < ApplicationController
   before_action :check_admin
-  before_action :set_user, except: %i[index show_engineer show_all_engineers]
+  before_action :set_user, except: %i[index show_engineer show_all_engineers user_counting]
 
   def index
     @users = User.includes(:repair_equipment).with_all_rich_text.newest.where(role: :user)
@@ -60,6 +60,13 @@ class Api::V1::Admin::UsersController < ApplicationController
     @users = User.includes(:repair_equipment).with_all_rich_text.newest.where(role: :engineer)
 
     render json: @users
+  end
+
+  def user_counting
+    @end_user = User.where(role: :user).count
+    @engineer = User.where(role: :engineer).count
+
+    render json: { user: @end_user, engineer: @engineer }
   end
 
   private
