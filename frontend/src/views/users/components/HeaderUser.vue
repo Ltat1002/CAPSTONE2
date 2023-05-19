@@ -10,20 +10,32 @@
         <li>
           <router-link to="/" active-class="nav-link">Trang chủ</router-link>
         </li>
-        <li>
-          <router-link to="/notify" href="#about" active-class="nav-link"
+        <li
+          v-if="checkLogin && registerStore.account.status === status.approved"
+        >
+          <router-link
+            to="/engineer/receive-report"
+            href="#about"
+            active-class="nav-link"
             >Thông báo</router-link
           >
         </li>
         <li>
+          <router-link to="/notify" href="#about" active-class="nav-link"
+            >Báo cáo</router-link
+          >
+        </li>
+        <!-- <li>
           <router-link
             to="/report-problem"
             href="#about"
             active-class="nav-link"
             >Báo cáo</router-link
           >
-        </li>
-        <li v-if="checkLogin && registerStore.account.status === 0">
+        </li> -->
+        <li
+          v-if="checkLogin && registerStore.account.status === status.activate"
+        >
           <router-link
             to="/engineer/upload-information"
             href="#contact"
@@ -32,11 +44,15 @@
             Trở thành đối tác của HRS
           </router-link>
         </li>
-        <li v-if="checkLogin && registerStore.account.status === 1">
-          <Button label="Chờ xét duyệt CV" />
+        <li
+          v-if="checkLogin && registerStore.account.status === status.pending"
+        >
+          <Button label="Chờ duyệt" />
         </li>
-        <li v-if="checkLogin && registerStore.account.role === 'engineer'">
-          <Button label="Bạn là đối tác của HRS" />
+        <li
+          v-if="checkLogin && registerStore.account.status === status.approved"
+        >
+          <Button label="Đối tác" />
         </li>
         <li v-if="!checkLogin">
           <router-link to="/auth/login" href="#contact">Đăng nhập</router-link>
@@ -98,14 +114,17 @@
 import TheAvt from "@/components/TheAvt.vue";
 import { useRegisterStore } from "@/store/register.js";
 import Button from "primevue/button";
-import { ref, computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import { useRouter } from "vue-router";
+import { status } from "@/helper/enumStatus";
 const registerStore = useRegisterStore();
 const checkLogin = computed(() => (registerStore.account?.id ? true : false));
 const showDropdown = ref(false);
 const isOnline = ref(true);
 const router = useRouter();
-
+watchEffect(() => {
+  console.log(registerStore.account);
+});
 function handleLogout() {
   localStorage.removeItem("token");
   router.push("/auth/login");
@@ -204,9 +223,8 @@ img {
 .drop_down {
   position: absolute;
   top: 100%;
-  left: 50%;
   width: 300px;
-  transform: translateX(-50%);
+  right: 0;
   background-color: #fff;
   border-radius: 5px;
   padding: 0 20px;

@@ -70,6 +70,10 @@ class Api::V1::UsersController < ApplicationController
 
   private
 
+  def set_user
+    @user = current_user
+  end
+
   def user_params
     params.permit(:email, :password, :password_confirmation, :first_name, :last_name, :mobile,
                   :address, :longitude, :latitude, :repair_equipment_id, :description, :role, :status)

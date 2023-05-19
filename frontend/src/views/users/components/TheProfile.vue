@@ -9,7 +9,7 @@
             <the-avt :size="80" />
           </div>
           <div class="user-box">
-            <h2>{{ profile.first_name + " " + profile.last_name }}</h2>
+            <h2>{{ profile?.first_name + " " + profile?.last_name }}</h2>
             <p>Ngày tham gia: 24/5/2021</p>
           </div>
         </div>
@@ -17,20 +17,20 @@
           <div class="info-sub">
             <div>
               <div>
-                <h2>{{ profile.mobile }}</h2>
+                <h2>{{ profile?.mobile }}</h2>
               </div>
               <p>Số điện thoại</p>
             </div>
             <div>
               <div class="w-full overflow-hidden">
-                <h2>{{ profile.email }}</h2>
+                <h2>{{ profile?.email }}</h2>
               </div>
               <p>Email</p>
             </div>
 
             <div>
               <div>
-                <h2>{{ profile.address }}</h2>
+                <h2>{{ profile?.address }}</h2>
               </div>
               <p>Địa chỉ</p>
             </div>
@@ -219,7 +219,7 @@
                     id="floating_password"
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
-                    v-model="password.password"
+                    v-model="password.current_password"
                   />
                   <label
                     for="floating_password"
@@ -234,7 +234,7 @@
                     id="floating_repeat_password"
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
-                    v-model="password.new_password"
+                    v-model="password.password"
                   />
                   <label
                     for="floating_repeat_password"
@@ -249,7 +249,7 @@
                     id="floating_repeat_password"
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
-                    v-model="password.confirm_new_password"
+                    v-model="password.password_confirmation"
                   />
                   <label
                     for="floating_repeat_password"
@@ -291,25 +291,40 @@ import { asyncComputed } from "@vueuse/core";
 import { useRegisterStore } from "@/store/register.js";
 import { ref, watch, reactive, onMounted } from "vue";
 import { toastMessage } from "@/helper/toastMessage.js";
+import ProgressBar from "primevue/progressbar";
 const load = ref(false);
 const registerStore = useRegisterStore();
 const password = reactive({
+  current_password: "",
   password: "",
-  new_password: "",
-  confirm_new_password: "",
+  password_confirmation: "",
 });
 const handleUpdateProfile = async () => {
-  await registerStore
-    .updateProfile({
-      ...editProfile.value,
-    })
-    .then(() => {
-      toastMessage("success", "Thành công", "Cập nhật Hồ sơ");
-    })
-    .catch(() => {
-      toastMessage("error", "Thất bại", "Cập nhật Hồ sơ");
-    });
-  await registerStore.profile();
+  if (checkPassword.value && password.current_password) {
+    await registerStore
+      .updateProfile({
+        ...editProfile.value,
+        ...password,
+      })
+      .then(() => {
+        toastMessage("success", "Thành công", "Cập nhật Hồ sơ");
+      })
+      .catch(() => {
+        toastMessage("error", "Thất bại", "Cập nhật Hồ sơ");
+      });
+  } else {
+    await registerStore
+      .updateProfile({
+        ...editProfile.value,
+      })
+      .then(() => {
+        toastMessage("success", "Thành công", "Cập nhật Hồ sơ");
+      })
+      .catch(() => {
+        toastMessage("error", "Thất bại", "Cập nhật Hồ sơ");
+      });
+    await registerStore.profile();
+  }
 };
 
 onMounted(() => {
@@ -317,10 +332,25 @@ onMounted(() => {
     load.value = false;
   }, 4000);
 });
-const profile = asyncComputed(async () => {
-  return await registerStore.account;
-}, null);
-const editProfile = ref();
+const profile = asyncComputed(
+  async () => {
+    return await registerStore.account;
+  },
+  {
+    email: "",
+    first_name: "",
+    last_name: "",
+    mobile: "",
+    address: "",
+  }
+);
+const editProfile = ref({
+  email: "",
+  first_name: "",
+  last_name: "",
+  mobile: "",
+  address: "",
+});
 const checkPassword = ref(false);
 watch(profile, () => {
   editProfile.value = { ...profile.value };
