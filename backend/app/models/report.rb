@@ -16,7 +16,7 @@ class Report < ApplicationRecord
       .with_attached_images
       .with_all_rich_text
   }
-  # scope :available_report, -> { where.not(status: :cancelled) }
+  scope :available_report, -> { where.not(status: '7') }
 
   def show_report_json
     as_json(include: %i[user_send user_receive repair_equipment vouchers description review])

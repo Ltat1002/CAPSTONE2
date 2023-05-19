@@ -1,9 +1,9 @@
 class Api::V1::Admin::UsersController < ApplicationController
   before_action :check_admin
-  before_action :set_user, except: %i[index show_engineer]
+  before_action :set_user, except: %i[index show_engineer show_all_engineers]
 
   def index
-    @users = User.includes(:repair_equipment).with_all_rich_text.newest
+    @users = User.includes(:repair_equipment).with_all_rich_text.newest.where(role: :user)
 
     render json: @users
   end
@@ -54,6 +54,12 @@ class Api::V1::Admin::UsersController < ApplicationController
     else
       render json: @user.errors, status: :unprocessable_entity
     end
+  end
+
+  def show_all_engineers
+    @users = User.includes(:repair_equipment).with_all_rich_text.newest.where(role: :engineer)
+
+    render json: @users
   end
 
   private

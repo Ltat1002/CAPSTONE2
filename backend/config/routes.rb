@@ -39,6 +39,7 @@ Rails.application.routes.draw do
         put 'edit_user/:id', to: 'users#edit_user'
         resources :repair_equipments, except: :destroy
         resources :reviews, except: :create
+        get 'show_all_engineers', to: 'users#show_all_engineers'
       end
     end
   end
