@@ -61,18 +61,20 @@ class Api::V1::ReportsController < ApplicationController
   end
 
   def confirmed_offer
-    @report.confirmed!
-    render json: @report.show_report_json
+    if @report.update(report_update_params)
+      render json: @report.show_report_json
+    else
+      render json: @report.errors, status: :unprocessable_entity
+    end
   end
 
-  # def cancel_report
-  #   if @report.update(reason: params[:reason])
-  #     @report.cancelled!
-  #     render json: @report.show_report_json
-  #   else
-  #     render json: @report.errors, status: :unprocessable_entity
-  #   end
-  # end
+  def cancel_report
+    if @report.update(report_update_params)
+      render json: @report.show_report_json
+    else
+      render json: @report.errors, status: :unprocessable_entity
+    end
+  end
 
   private
 

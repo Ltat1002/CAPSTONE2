@@ -15,8 +15,8 @@ Rails.application.routes.draw do
       get 'search', to: 'reports#search'
       get 'all_engineer', to: 'users#all_engineer'
       post 'show_all_report', to: 'reports#show_all_report'
-      put 'confirmed_offer', to: 'reports#confirmed_offer'
-      put 'cancel_report', to: 'reports#cancel_report'
+      put 'confirmed_offer/:id', to: 'reports#confirmed_offer'
+      put 'cancel_report/:id', to: 'reports#cancel_report'
 
       namespace :engineer do
         resources :reports
