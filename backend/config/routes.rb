@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       devise_for :users
       resources :vouchers
-      resources :reviews, only: :create
+      resources :reviews, only: %i[create update]
       resources :reports
       resources :repair_equipments, only: %i[index show]
 
@@ -38,7 +38,7 @@ Rails.application.routes.draw do
         put 'deactivate_user', to: 'users#deactivate_user'
         put 'edit_user/:id', to: 'users#edit_user'
         resources :repair_equipments, except: :destroy
-        resources :reviews, only: %i[index show destroy]
+        resources :reviews, except: :create
       end
     end
   end
