@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap_main">
+  <div class="wrap_main h-[100vh]">
     <div class="main">
       <div
         :class="handleSubmitLogin ? 'is-txl' : ''"
@@ -48,7 +48,7 @@
             v-model="register.mobile"
             class="form__input"
             type="text"
-            placeholder="Sdt"
+            placeholder="Số điện thoại"
           />
           <p class="text-red-800 w-[350px] text-start">
             {{ v$$.mobile?.$errors[0]?.$message }}

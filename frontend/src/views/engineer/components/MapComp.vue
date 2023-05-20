@@ -95,7 +95,11 @@ onMounted(async () => {
     center: new window.google.maps.LatLng(16.0545, 108.217),
     zoom: 12,
   });
-  if (!route.fullPath.includes("preview")) {
+  console.log(route.fullPath);
+  if (
+    route.fullPath.includes("engineer/receive-report/preview") ||
+    !route.fullPath.includes("preview")
+  ) {
     clickListener = map.value.addListener(
       "click",
       ({ latLng: { lat, lng } }) => {
@@ -140,15 +144,19 @@ onUnmounted(async () => {
 });
 // var iconBase = "https://maps.google.com/mapfiles/kml/shapes/";
 let newDistance = null;
-// var directionsDisplay;
+var directionsDisplay;
 var myMarker;
 var otherMarker;
 watch([map, currPos, otherPos, () => props.coor], () => {
+  var coor = new window.google.maps.LatLng(props.coor?.lat, props.coor?.lng);
   if (otherMarker) {
     otherMarker.setMap(null);
   }
   handleSetMarkerUpdate();
-  if (!route.fullPath.includes("preview")) {
+  if (
+    route.fullPath.includes("engineer/receive-report/preview") ||
+    !route.fullPath.includes("preview")
+  ) {
     var origin1 = new window.google.maps.LatLng(
       currPos.value.lat,
       currPos.value.lng
@@ -180,50 +188,48 @@ watch([map, currPos, otherPos, () => props.coor], () => {
       },
       getDistance
     );
+  } else {
+    console.log(coor);
+    myMarker = new window.google.maps.Marker({
+      position: coor,
+      title: "My location!",
+    });
+    myMarker.setMap(map.value);
   }
-  // else {
-  //   var coor = new window.google.maps.LatLng(props.coor?.lat, props.coor?.lng);
-  //   console.log(coor);
-  //   myMarker = new window.google.maps.Marker({
-  //     position: coor,
-  //     title: "My location!",
-  //   });
-  //   myMarker.setMap(map.value);
-  // }
 
-  //   var directionsService = new window.google.maps.DirectionsService();
+  var directionsService = new window.google.maps.DirectionsService();
 
-  //   function dogetRedirect_map(position, roomLatlng) {
-  //     if (directionsDisplay) {
-  //       directionsDisplay.setMap(null);
-  //     }
-  //     directionsDisplay = new window.google.maps.DirectionsRenderer({
-  //       suppressMarkers: true,
-  //     });
-  //     var request = {
-  //       origin: position,
-  //       destination: roomLatlng,
-  //       travelMode: window.google.maps.TravelMode.DRIVING,
-  //     };
-  //     directionsDisplay.setMap(map.value); // map là biến google maps được tạo ở đoạn code bài trước
-  //     directionsService.route(request, function (response, status) {
-  //       if (status == window.google.maps.DirectionsStatus.OK) {
-  //         directionsDisplay.setOptions({
-  //           preserveViewport: true,
-  //           suppressMarkers: true,
-  //         });
-  //         directionsDisplay.setDirections(response);
-  //         // var myroute = response.routes[0]; // Kết quả trả về
-  //         // var time = myroute.legs[0].duration.text; // Thời gian duy chuyển
-  //         // var total = myroute.legs[0].distance.text; // Chiều dài đoạn đường duy chuyển
-  //         // var from = myroute.legs[0].start_address; // Điểm xuất phát
-  //         // var to = myroute.legs[0].end_address; // Điểm đến
-  //       } else {
-  //         console.log(status);
-  //       }
-  //     });
-  //   }
-  //   dogetRedirect_map(origin1, origin2);
+  function dogetRedirect_map(position, roomLatlng) {
+    if (directionsDisplay) {
+      directionsDisplay.setMap(null);
+    }
+    directionsDisplay = new window.google.maps.DirectionsRenderer({
+      suppressMarkers: true,
+    });
+    var request = {
+      origin: position,
+      destination: roomLatlng,
+      travelMode: window.google.maps.TravelMode.DRIVING,
+    };
+    directionsDisplay.setMap(map.value); // map là biến google maps được tạo ở đoạn code bài trước
+    directionsService.route(request, function (response, status) {
+      if (status == window.google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setOptions({
+          preserveViewport: true,
+          suppressMarkers: true,
+        });
+        directionsDisplay.setDirections(response);
+        // var myroute = response.routes[0]; // Kết quả trả về
+        // var time = myroute.legs[0].duration.text; // Thời gian duy chuyển
+        // var total = myroute.legs[0].distance.text; // Chiều dài đoạn đường duy chuyển
+        // var from = myroute.legs[0].start_address; // Điểm xuất phát
+        // var to = myroute.legs[0].end_address; // Điểm đến
+      } else {
+        console.log(status);
+      }
+    });
+  }
+  dogetRedirect_map(origin1, coor);
 });
 
 function createIcon(url) {
@@ -234,6 +240,9 @@ function createIcon(url) {
     anchor: new window.google.maps.Point(0, 0), // anchor
   };
 }
+
+// function handleDirect() {
+// }
 
 const getDistance = (response, status) => {
   console.log(response, status);

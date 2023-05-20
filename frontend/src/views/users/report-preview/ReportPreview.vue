@@ -312,11 +312,13 @@ async function handleConfirm() {
       }
     );
     let engineerRes = await engineer.getAllEngineer();
-    console.log(engineerRes);
-    engineerRes.data = engineerRes.data.filter(
-      (item) => item.id !== useRegisterStore().account.id
-    );
-    console.log(engineerRes.data);
+    engineerRes.data = engineerRes.data.filter((item) => {
+      return (
+        item.id !== useRegisterStore().account.id &&
+        Number(item.repair_equipment_id) ===
+          Number(report.data.repair_equipment_id)
+      );
+    });
     const engineerList = await engineerRes.data.map(async (item) => {
       const distance = await getDistance(
         {
@@ -338,6 +340,7 @@ async function handleConfirm() {
     });
 
     Promise.all(engineerList).then((data) => {
+      console.log(data);
       data.sort((a, b) => {
         return a.duration - b.duration;
       });

@@ -311,10 +311,13 @@ const confirmFinish = (id, key, status, stt) => {
   displayContract.value = false;
   setTimeout(() => {
     engineerStore
-      .receive({
-        id,
-        status: status,
-      })
+      .updateRPForUser(
+        {
+          id,
+          status: status,
+        },
+        id
+      )
       .then(() => {
         updateReportById(key, {
           ...getReportById(report.value, key),

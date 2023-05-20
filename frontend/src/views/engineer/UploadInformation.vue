@@ -85,7 +85,7 @@ function handleRegisterEngineer() {
     description: description.value,
     role: "engineer",
     address: address.value,
-    status: 2,
+    status: 3,
   };
   setTimeout(() => {
     register
