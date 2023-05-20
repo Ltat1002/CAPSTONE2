@@ -56,11 +56,13 @@
           </template>
         </Galleria>
         <div class="w-[40%]">
-          <map-comp></map-comp>
+          <map-comp
+            :coor="{ lat: preview.latitude, lng: preview.longitude }"
+          ></map-comp>
         </div>
       </div>
       <div class="flex flex-col mt-4">
-        <div class="w-[30%]">
+        <div>
           <h3 class="text-[20px] text-[#333] font-semibold mb-2">Thiết bị</h3>
           <ul class="ml-[2.7rem]">
             <li class="list-disc">
@@ -68,13 +70,22 @@
             </li>
           </ul>
         </div>
-
-        <div class="p-2 flex justify-between flex-col">
-          <div class="p-2 mt-4">
+        <div class="mt-4">
+          <h3 class="text-[20px] text-[#333] font-semibold mb-2">Địa chỉ</h3>
+          <ul class="ml-[2.7rem]">
+            <li class="list-disc">
+              <span></span><span>{{ preview.address }}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="flex justify-between flex-col">
+          <div class="mt-4">
             <h3 class="text-[20px] text-[#333] font-semibold mb-2">Mô tả</h3>
-            <p class="ml-4">
-              {{ preview.description }}
-            </p>
+            <ul class="ml-[2.7rem]">
+              <li class="list-disc">
+                <span></span><span>{{ preview.description }}</span>
+              </li>
+            </ul>
           </div>
 
           <Timeline :value="timeline" layout="horizontal" align="top">
@@ -102,30 +113,32 @@
         </div>
         <div class="p-2" v-if="!checkAdmin">
           <h3 class="text-[20px] text-[#333] font-semibold mb-2"></h3>
-          <div class="flex flex-wrap justify-end mx-[-5px]">
-            <span
-              v-if="route.path.includes('/preview')"
-              class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
+          <div class="flex flex-wrap gap-3 justify-end mx-[-5px]">
+            <Button
+              :loading="loading"
+              v-if="route.path === '/preview'"
+              class="bg-[#6366F1]"
               @click="handleConfirm"
-              ><i class="bx bx-check-circle mr-1"></i>Đăng</span
-            >
-            <span
+              label="Đăng"
+            ></Button>
+            <!-- <Button
               v-if="route.path.includes('notify/preview/4')"
-              class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
+              label="Xác nhận"
+              class="bg-[#6366F1]"
               @click="handleConfirm"
-              ><i class="bx bx-check-circle mr-1"></i>Xác nhận</span
-            >
-            <span
+            ></Button>
+            <Button
               v-if="route.path.includes('notify/preview')"
               @click="visible = !visible"
-              class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
-              ><i class="bx bxs-message-rounded-dots mr-1"></i>Đánh giá</span
-            >
-            <span
+              label="Đánh giá"
+              severity="warning"
+              class="bg-[#6366F1]"
+            ></Button>
+            <Button
               v-if="!route.path.includes('notify/preview')"
-              class="bg-[#6366F1] rounded-[26px] px-2 py-1 text-[#fff] text-[14px] cursor-pointer mx-[5px] flex items-center"
-              ><i class="bx bx-message-alt-x mr-1"></i>Hủy</span
-            >
+              label="Hủy"
+              class="bg-[#6366F1]"
+            ></Button> -->
           </div>
         </div>
       </div>
@@ -145,6 +158,7 @@
 </template>
 
 <script setup>
+import Button from "primevue/button";
 import { ref, watchEffect, watch, computed, onMounted } from "vue";
 import Dialog from "primevue/dialog";
 import Timeline from "primevue/timeline";
@@ -152,19 +166,19 @@ import { useReportStore } from "@/store/report.js";
 import TheRating from "../components/TheRating.vue";
 import Galleria from "primevue/galleria";
 import { getDistance } from "@/helper/map.js";
-import Button from "primevue/button";
 import { statusReport } from "@/helper/enumStatus";
 import { useEngineerStore } from "@/store/engineer.js";
 import MapComp from "@/views/engineer/components/MapComp.vue";
 import { toastMessage } from "@/helper/toastMessage.js";
 import BillMoney from "@/views/engineer/components/BillMoney.vue";
 import { sendReport } from "@/helper/realtime.js";
+import { useRegisterStore } from "@/store/register";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 const engineer = useEngineerStore();
-
+const loading = ref(false);
 const reportStore = useReportStore();
 const preview = ref(engineer.repair);
 const visible = ref(false);
@@ -269,13 +283,12 @@ function dataURLtoFile(dataurl, filename) {
 }
 base64ToFile();
 async function handleConfirm() {
+  loading.value = true;
   const datas = {
     ...reportStore.report,
     ...engineer.repair,
     images: reportStore.report.images,
   };
-  console.log(datas.images.length);
-  console.log(datas.images[0]);
   const formData = new FormData();
   Object.keys(datas).forEach((val) => {
     console.log(datas["images"]);
@@ -299,8 +312,12 @@ async function handleConfirm() {
         },
       }
     );
-    const engineerRes = await engineer.getAllEngineer();
+    let engineerRes = await engineer.getAllEngineer();
     console.log(engineerRes);
+    engineerRes.data = engineerRes.data.filter(
+      (item) => item.id !== useRegisterStore().account.id
+    );
+    console.log(engineerRes.data);
     const engineerList = await engineerRes.data.map(async (item) => {
       const distance = await getDistance(
         {
@@ -337,9 +354,11 @@ async function handleConfirm() {
     });
     router.push("/notify");
     toastMessage("success", "thanh cong", "report");
+    loading.value = false;
     engineer.setRepair({});
   } catch (err) {
     toastMessage("error", "Thất bại", "report");
+    loading.value = false;
   }
 }
 
@@ -448,6 +467,10 @@ const fullScreenIcon = computed(() => {
   display: 2px;
 }
 
+:deep(.p-button) {
+  height: 40px !important;
+  width: 220px !important;
+}
 .preview {
   margin-right: -10px;
   margin-left: -10px;

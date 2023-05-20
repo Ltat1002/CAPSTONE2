@@ -32,5 +32,11 @@ export const useReportStore = defineStore("reports", {
     searchReport(search) {
       return http.get(`/search?search=${search}`);
     },
+    createRating(data) {
+      return http.post("reviews", data);
+    },
+    updateReport(data, id) {
+      return http.put(`reports/${id}`, data);
+    },
   },
 });

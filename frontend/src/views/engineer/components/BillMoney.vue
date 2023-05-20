@@ -10,14 +10,9 @@
         locale="en-US"
         :minFractionDigits="3"
       />
-      <label for="value">Nội dung</label>
-      <Textarea
-        id="value"
-        v-model="billMoney.description"
-        class="w-full h-40"
-      />
       <div class="text-center mt-3">
         <Button
+          :loading="loading"
           type="submit"
           label="Submit"
           @click="handleClickOffer"
@@ -29,40 +24,43 @@
 </template>
 <script setup>
 import Button from "primevue/button";
-import Textarea from "primevue/textarea";
 import InputNumber from "primevue/inputnumber";
-import { reactive, defineProps, defineEmits } from "vue";
+import { reactive, defineProps, defineEmits, ref } from "vue";
 import { updateReportById } from "@/helper/realtime.js";
 import { useEngineerStore } from "@/store/engineer.js";
 import { toastMessage } from "@/helper/toastMessage.js";
 import { statusReport } from "@/helper/enumStatus";
-
+const loading = ref(false);
 const engineerStore = useEngineerStore();
 const props = defineProps(["idBill"]);
 const emit = defineEmits(["setVisible"]);
 const billMoney = reactive({ amount_pay: "", description: "" });
 
 function handleClickOffer() {
-  engineerStore
-    .offer({
-      ...billMoney,
-      id: props.idBill.id,
-      status: statusReport.enforcementEngineer,
-    })
-    .then(() => {
-      toastMessage("success", "Thành công", "Tiến hành thành công");
-    })
-    .catch(() => {
-      toastMessage("error", "Thất bại", "Tiến hành thất bại");
-    })
-    .finally(() => {
-      emit("setVisible", false);
-    });
-
-  updateReportById(props.idBill.key, {
-    ...props.idBill.reportRealtime,
-    status: statusReport.enforcementEngineer,
-  });
+  loading.value = true;
+  setTimeout(() => {
+    engineerStore
+      .offer({
+        ...billMoney,
+        id: props.idBill.id,
+        status: statusReport.enforcementEngineer,
+      })
+      .then(() => {
+        updateReportById(props.idBill.key, {
+          ...props.idBill.reportRealtime,
+          status: statusReport.enforcementEngineer,
+        }).then(() => {
+          toastMessage("success", "Thành công", "Tiến hành thành công");
+        });
+      })
+      .catch(() => {
+        toastMessage("error", "Thất bại", "Tiến hành thất bại");
+      })
+      .finally(() => {
+        emit("setVisible", false);
+        loading.value = false;
+      });
+  }, 2000);
 }
 </script>
 <style lang="scss"></style>
