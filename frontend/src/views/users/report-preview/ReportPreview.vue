@@ -228,6 +228,7 @@ watchEffect(async () => {
     });
 });
 watch(preview, () => {
+  console.log(preview.value.status);
   for (let key in timeline.value) {
     if (Number(key) === preview.value.status) {
       timeline.value[key] = {

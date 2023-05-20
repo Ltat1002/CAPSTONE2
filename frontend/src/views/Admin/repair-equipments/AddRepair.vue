@@ -3,10 +3,16 @@
     <div class="flex flex-col mt-3">
       <label for="">Tên thiết bị</label>
       <InputText v-model="dataRepair.name" />
+      <p class="text-red-800 w-[350px] text-start">
+        {{ v$.name?.$errors[0]?.$message }}
+      </p>
     </div>
     <div class="flex flex-col mt-3">
       <label for="">Mô tả</label>
       <Textarea v-model="dataRepair.description" />
+      <p class="text-red-800 w-[350px] text-start">
+        {{ v$.description?.$errors[0]?.$message }}
+      </p>
     </div>
     <div class="flex flex-col mt-3">
       <label for="">Ảnh</label>
@@ -49,10 +55,12 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import Textarea from "primevue/textarea";
 import FileUpload from "primevue/fileupload";
-import { ref, defineProps, watchEffect } from "vue";
+import { ref, defineProps, watchEffect, computed } from "vue";
 import { toastMessage } from "@/helper/toastMessage";
 import axios from "axios";
 import { useAdminStore } from "@/store/admin";
+import { useVuelidate } from "@vuelidate/core";
+import { required, helpers } from "@vuelidate/validators";
 const adminStore = useAdminStore();
 const props = defineProps(["edit", "check"]);
 const dataRepair = ref({
@@ -60,50 +68,67 @@ const dataRepair = ref({
   photo: "",
   description: "",
 });
+const ruleDataRepair = computed(() => {
+  return {
+    name: {
+      required: helpers.withMessage(`Tên Không để trống`, required),
+    },
+    description: {
+      required: helpers.withMessage(`Mô tả Không để trống`, required),
+    },
+  };
+});
+const v$ = useVuelidate(ruleDataRepair, dataRepair);
 const img = ref("");
 const handleSubmit = async () => {
-  const form_data = new FormData();
-  for (let key in dataRepair.value) {
-    if (key === "photo" && dataRepair.value[key]) {
-      console.log(dataRepair.value[key]);
-      form_data.append("photo", dataRepair.value[key]);
-    } else if (key !== "photo") {
-      form_data.append(key, dataRepair.value[key]);
+  const result = await v$.value.$validate();
+  if (result) {
+    const form_data = new FormData();
+    for (let key in dataRepair.value) {
+      if (key === "photo" && dataRepair.value[key]) {
+        form_data.append("photo", dataRepair.value[key]);
+      } else if (key !== "photo") {
+        form_data.append(key, dataRepair.value[key]);
+      }
     }
-  }
-  const localToken = localStorage.getItem("token") || "";
-  if (props.check) {
-    await axios
-      .post("http://localhost:3000/api/v1/admin/repair_equipments", form_data, {
-        headers: {
-          Authorization: `Bearer ${localToken}`,
-        },
-      })
-      .then(() => {
-        toastMessage("success", "Thành công", "Thêm thiết bị thành công");
-        adminStore.repair = false;
-      })
-      .catch(() => {
-        toastMessage("error", "Thất bại", "Thêm thiết bị thất bại");
-      });
-  } else {
-    await axios
-      .put(
-        `http://localhost:3000/api/v1/admin/repair_equipments/${props.edit.id}`,
-        form_data,
-        {
-          headers: {
-            Authorization: `Bearer ${localToken}`,
-          },
-        }
-      )
-      .then(() => {
-        toastMessage("success", "Thành công", "Cập nhật thiết bị thành công");
-        adminStore.repair = false;
-      })
-      .catch(() => {
-        toastMessage("error", "Thất bại", "Cập nhật thiết bị thất bại");
-      });
+    const localToken = localStorage.getItem("token") || "";
+    if (props.check) {
+      await axios
+        .post(
+          "http://localhost:3000/api/v1/admin/repair_equipments",
+          form_data,
+          {
+            headers: {
+              Authorization: `Bearer ${localToken}`,
+            },
+          }
+        )
+        .then(() => {
+          toastMessage("success", "Thành công", "Thêm thiết bị thành công");
+          adminStore.repair = false;
+        })
+        .catch(() => {
+          toastMessage("error", "Thất bại", "Thêm thiết bị thất bại");
+        });
+    } else {
+      await axios
+        .put(
+          `http://localhost:3000/api/v1/admin/repair_equipments/${props.edit.id}`,
+          form_data,
+          {
+            headers: {
+              Authorization: `Bearer ${localToken}`,
+            },
+          }
+        )
+        .then(() => {
+          toastMessage("success", "Thành công", "Cập nhật thiết bị thành công");
+          adminStore.repair = false;
+        })
+        .catch(() => {
+          toastMessage("error", "Thất bại", "Cập nhật thiết bị thất bại");
+        });
+    }
   }
 };
 function handleUploadFile() {

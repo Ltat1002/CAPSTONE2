@@ -24,6 +24,8 @@ export const useReportStore = defineStore("reports", {
     getReportDetail(path, id) {
       const pt = path.includes("admin")
         ? "admin/reports"
+        : path.includes("engineer/my-report/preview")
+        ? "engineer/receive_history"
         : path.includes("engineer")
         ? "engineer/reports"
         : "reports";

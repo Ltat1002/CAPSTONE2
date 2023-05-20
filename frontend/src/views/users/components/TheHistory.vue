@@ -8,7 +8,11 @@
         <i class="pi pi-search" />
         <InputText v-model="search" placeholder="Tìm kiếm" class="w-full" />
       </span>
-      <router-link to="/report-problem" class="mr-8 ml-8">
+      <router-link
+        v-if="useRegisterStore().account.role !== 'engineer'"
+        to="/report-problem"
+        class="mr-8 ml-8"
+      >
         <Button label="Tạo báo cáo"
       /></router-link>
     </div>
@@ -259,6 +263,7 @@ import { useEngineerStore } from "@/store/engineer";
 import { toastMessage } from "@/helper/toastMessage.js";
 import { getReport } from "@/helper/realtime.js";
 import { useReportStore } from "@/store/report";
+import { useRegisterStore } from "@/store/register";
 const engineerStore = useEngineerStore();
 const reportStore = useReportStore();
 const route = useRoute();
@@ -305,7 +310,6 @@ const confirmFinish = (id, key, status, stt) => {
   reportActive.value = {
     id: id,
   };
-  console.log("ok");
   loadingBtnList.value[stt] = true;
   visible.value = false;
   displayContract.value = false;

@@ -15,26 +15,24 @@
           />
           <div class="service">
             <box-icon name="like" size="lg"></box-icon>
-            <h3>CERTIFIED SERVICE Approved Roof Repairing</h3>
+            <h3>Dịch vụ sửa chửa tại nhà</h3>
           </div>
         </div>
       </div>
       <div class="about--description">
         <div>
           <div class="border-left"></div>
-          <h5>CERTIFIED SERVICE Approved Roof Repairing</h5>
+          <h5>Chứng nhận sửa chữa</h5>
         </div>
-        <h2>Committed to Give Quality Roof Repairing</h2>
-        <h3>
-          Commercial & Residential Clients across Sydney Repairs for their fast
-          and reliable 24 hour Roofing Repair services.
-        </h3>
+        <h2>Nên lựa chọn các dịch vụ sửa thiết bị gia dụng tại nhà?</h2>
+        <p>1. Tiết kiệm thời gian</p>
+        <p>2. Tiết kiệm công sức</p>
         <p>
-          Leverage agile frameworks to provide a robust synopsis for high level
-          overviews. Iterative approaches to corporate strategy foster
-          collaborative thinking to further the overall value proposition.
-          Organically grow the holistic world view of disruptive innovation via
-          workplace diversity and empowerment.
+          3. Tranh thủ được thời gian rảnh của bạn Hãy đến với website HRS của
+          chúng tôi, các bạn sẽ không phải đắn đo và ngồi mò từng cửa hàng sửa
+          chưa thiết bị gia dụng. Thay vào đó người dùng chỉ cần chọn lọc thiết
+          bị cần sửa và tự đặt cho mình một dịch vụ sửa thiết bị gia dụng tại
+          nhà
         </p>
         <div class="signature">
           <div class="left">

@@ -3,7 +3,8 @@ import TheHistory from "@/views/users/components/TheHistory.vue";
 import ShowReport from "@/views/engineer/components/ShowReport.vue";
 import CompHome from "@/views/users/home/CompHome.vue";
 import UploadInformation from "@/views/engineer/UploadInformation.vue";
-import ReceiveReport from "@/views/users/components/ReceiveReport.vue";
+const ReceiveReport = () =>
+  import("@/views/users/components/ReceiveReport.vue");
 export const routerEngineer = [
   {
     path: "",
@@ -24,6 +25,17 @@ export const routerEngineer = [
     component: UploadInformation,
   },
   {
+    path: "my-report",
+    name: "my-report",
+    component: ReceiveReport,
+    children: [
+      {
+        path: "preview/:id",
+        component: ReportPreview,
+      },
+    ],
+  },
+  {
     path: "receive-report",
     name: "receive-report",
     component: ReceiveReport,
@@ -34,6 +46,7 @@ export const routerEngineer = [
       },
     ],
   },
+
   {
     path: "show-report",
     name: "Show-report",

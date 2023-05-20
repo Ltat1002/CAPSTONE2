@@ -13,15 +13,17 @@
         <li
           v-if="checkLogin && registerStore.account.status === status.approved"
         >
-          <router-link
-            to="/engineer/receive-report"
-            href="#about"
-            active-class="nav-link"
+          <router-link to="/engineer/receive-report" active-class="nav-link"
             >Thông báo</router-link
           >
         </li>
         <li>
-          <router-link to="/notify" href="#about" active-class="nav-link"
+          <router-link to="/engineer/my-report" active-class="nav-link"
+            >Đơn của tôi</router-link
+          >
+        </li>
+        <li>
+          <router-link to="/notify" active-class="nav-link"
             >Báo cáo</router-link
           >
         </li>

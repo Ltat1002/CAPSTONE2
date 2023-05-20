@@ -6,6 +6,7 @@ import RepairEquipments from "@/views/Admin/repair-equipments/RepairEquipments.v
 import ReviewEngineer from "@/views/Admin/ReviewEngineer/ReviewEngineer.vue";
 import ReportPreview from "@/views/users/report-preview/ReportPreview.vue";
 import DetailCV from "@/views/Admin/manage-engineer/DetailCV.vue";
+import TheRevenue from "@/views/Admin/Dashboard/TheRevenue.vue";
 export const routerAdmin = [
   {
     path: "manage-users",
@@ -45,5 +46,10 @@ export const routerAdmin = [
     path: "review-engineer",
     name: "review-engineer",
     component: ReviewEngineer,
+  },
+  {
+    path: "revenue",
+    name: "revenue",
+    component: TheRevenue,
   },
 ];
