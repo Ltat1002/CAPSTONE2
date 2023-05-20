@@ -5,40 +5,46 @@
       <div class="slide s--active">
         <div class="slide__inner">
           <div class="slide__content">
-            <h2 class="slide__heading">Clip-Path Revealing Slider</h2>
-            <p class="slide__text">Greetings, Traveler!</p>
+            <h2 class="slide__heading">Giá rẻ cho mọi dịch vụ</h2>
+            <!-- <p class="slide__text">Greetings, Traveler!</p> -->
           </div>
         </div>
       </div>
       <div class="slide">
         <div class="slide__inner">
           <div class="slide__content">
-            <h2 class="slide__heading">Simple Animation</h2>
-            <p class="slide__text">Clip-path magic!</p>
+            <h2 class="slide__heading">
+              Bạn đã cho tôi thấy ,Tôi có thể làm được
+            </h2>
+            <!-- <p class="slide__text">Clip-path magic!</p> -->
           </div>
         </div>
       </div>
       <div class="slide">
         <div class="slide__inner">
           <div class="slide__content">
-            <h2 class="slide__heading">Very Stylish Effect!</h2>
-            <p class="slide__text">It looks cool, isn't it?</p>
+            <h2 class="slide__heading">
+              Giúp cho cuộc sống gia đình bạn tốt hơn mỗi ngày
+            </h2>
+            <!-- <p class="slide__text">It looks cool, isn't it?</p> -->
           </div>
         </div>
       </div>
       <div class="slide">
         <div class="slide__inner">
           <div class="slide__content">
-            <h2 class="slide__heading">Limited browser support</h2>
-            <p class="slide__text">Forget about IE/Edge and FF</p>
+            <h2 class="slide__heading">Giá rẻ cho mọi dịch vụ</h2>
+            <!-- <p class="slide__text">Forget about IE/Edge and FF</p> -->
           </div>
         </div>
       </div>
       <div class="slide s--prev">
         <div class="slide__inner">
           <div class="slide__content">
-            <h2 class="slide__heading">Check my other stuff!</h2>
-            <p class="slide__text">
+            <h2 class="slide__heading">
+              Giúp cho cuộc sống gia đình bạn tốt hơn mỗi ngày
+            </h2>
+            <!-- <p class="slide__text">
               <a href="https://codepen.io/suez/pens/public/" target="_blank"
                 >Other demos</a
               >
@@ -46,7 +52,7 @@
               <a href="https://twitter.com/NikolayTalanov" target="_blank"
                 >Twitter</a
               >
-            </p>
+            </p> -->
           </div>
         </div>
       </div>

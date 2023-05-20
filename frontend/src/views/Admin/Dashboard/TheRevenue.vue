@@ -15,8 +15,10 @@
   </div>
 </template>
 <script setup>
+import { useAdminStore } from "@/store/admin";
 import Button from "primevue/button";
 import CustomTitle from "@/components/CustomTitle.vue";
+
 import {
   Chart as ChartJS,
   Title,
@@ -28,9 +30,9 @@ import {
   ArcElement,
 } from "chart.js";
 import { Bar } from "vue-chartjs";
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { Pie } from "vue-chartjs";
-
+const adminStore = useAdminStore();
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -40,15 +42,25 @@ ChartJS.register(
   Legend,
   ArcElement
 );
-const pie = {
-  labels: ["Thành công", "Thất bại"],
-  datasets: [
-    {
-      backgroundColor: ["#41B883", "#E46651"],
-      data: [40, 20],
-    },
-  ],
-};
+const dataReport = ref([0, 0]);
+onMounted(() => {
+  adminStore.getDashboard("/admin/report_counting").then((data) => {
+    dataReport.value = [data.data.cancel || 0, data.data.done || 0];
+  });
+});
+
+const pie = computed(() => {
+  return {
+    labels: ["Thành công", "Thất bại"],
+    datasets: [
+      {
+        backgroundColor: ["#41B883", "#E46651"],
+        data: [...dataReport.value],
+      },
+    ],
+  };
+});
+
 const data = ref({
   labels: [
     "January",
