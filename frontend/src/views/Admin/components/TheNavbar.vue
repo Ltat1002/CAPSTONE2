@@ -29,14 +29,14 @@
           <span class="text">Quản lý thiết bị</span>
         </router-link>
       </li>
-    </ul>
-    <ul class="side-menu">
-      <li>
-        <router-link to="/">
-          <i class="bx bxs-cog"></i>
-          <span class="text">Settings</span>
+      <li :class="{ active: currentPage.includes('/revenue') }">
+        <router-link to="/admin/revenue">
+          <i class="pi pi-briefcase"></i>
+          <span class="text">Dashboard</span>
         </router-link>
       </li>
+    </ul>
+    <ul class="side-menu">
       <li>
         <router-link to="/auth" class="logout">
           <i class="bx bxs-log-out-circle"></i>

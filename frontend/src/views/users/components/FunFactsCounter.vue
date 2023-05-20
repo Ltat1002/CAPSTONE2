@@ -2,45 +2,54 @@
   <main class="counter-container wrap">
     <div class="social">
       <div class="social-icon">
-        <box-icon name="youtube" type="logo" color="red" size="60px"></box-icon>
+        <box-icon
+          name="universal-access"
+          type="solid"
+          animation="spin"
+          color="#060af5"
+          size="60px"
+        ></box-icon>
       </div>
-      <p>Subscribers</p>
+      <p>Tài khoản</p>
       <h3 class="counter" data-count="21035">0</h3>
     </div>
     <div class="social">
       <div class="social-icon">
         <box-icon
           type="logo"
-          name="twitter"
-          color="blue"
+          name="trip-advisor"
+          animation="spin"
+          color="green"
           size="60px"
         ></box-icon>
       </div>
-      <p>Followers</p>
+      <p>Tổng số đơn</p>
       <h3 class="counter" data-count="8025">0</h3>
     </div>
     <div class="social">
       <div class="social-icon">
         <box-icon
-          type="logo"
-          name="facebook-circle"
-          color="blue"
+          type="solid"
+          name="analyse"
+          animation="spin"
+          color="yellow"
           size="60px"
         ></box-icon>
       </div>
-      <p>Likes</p>
+      <p>Số đơn hoàn thành</p>
       <h3 class="counter" data-count="125312">0</h3>
     </div>
     <div class="social">
       <div class="social-icon">
         <box-icon
-          type="logo"
-          name="linkedin-square"
-          color="blue"
+          type="solid"
+          name="sad"
+          animation="spin"
+          color="red"
           size="60px"
         ></box-icon>
       </div>
-      <p>Connections</p>
+      <p>Số đơn hủy</p>
       <h3 class="counter" data-count="625">0</h3>
     </div>
   </main>
