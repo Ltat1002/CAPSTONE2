@@ -111,8 +111,6 @@
                   </dd>
                 </div>
                 <div class="flex gap-3 shrink-0">
-                  {{ receive.status }}
-                  {{ statusReport.pending }}
                   <Button
                     :loading="loadingBtnList[0]"
                     icon="pi pi-send"
@@ -280,7 +278,7 @@ const handleClickSuccess = async (id, key, status, stt) => {
   }, 2000);
 };
 async function getReports() {
-  const ReportIdList = report.value.reduce((accumulator, currenValue) => {
+  const ReportIdList = report.value?.reduce((accumulator, currenValue) => {
     console.log(currenValue.user_receive_id);
     console.log(profile.value.id);
     if (
