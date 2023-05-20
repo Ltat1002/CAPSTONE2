@@ -1,18 +1,19 @@
 <template lang="">
   <div class="item">
-    <box-icon name="laptop" class="active" size="70px"></box-icon>
-    <h3>Lap Top</h3>
+    <div>
+      <img class="w-full h-[200px] mb-2" :src="props.data.photo_url" alt="" />
+      <h3>{{ props.data.name }}</h3>
+    </div>
   </div>
 </template>
-<script setup></script>
+<script setup>
+import { defineProps } from "vue";
+const props = defineProps(["data"]);
+</script>
 <style lang="scss" scoped>
 .item {
-  border-radius: 7px;
-  width: 16%;
-  background-color: #fff;
-  margin-right: 10px;
-  margin-left: 10px;
-  padding: 26px;
+  width: 25%;
+  margin-top: 10px;
   font-size: 20px;
   display: flex;
   align-items: center;
@@ -20,36 +21,29 @@
   justify-content: center;
   position: relative;
   z-index: 10;
+  padding: 10px;
+  div {
+    padding: 10px;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    width: 100%;
+    text-align: center;
+  }
   h3 {
     position: relative;
-  }
-  &::after {
-    content: "";
-    position: absolute;
-    height: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #d90429;
-    transition: height 200ms linear;
-    z-index: -1;
-    border-radius: 7px;
-  }
-  &::before {
-    content: "";
-    position: absolute;
-    width: 0px;
-    height: 0px;
-    left: 0;
-    bottom: -15px;
-    right: 0;
+    display: block;
+    display: -webkit-box;
+    max-width: 100%;
+    height: 24px;
     margin: 0 auto;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-top: 15px solid #d90429;
-    z-index: 1;
-    transition: transform 0.4s ease, -webkit-transform 0.4s ease;
-    display: none;
+    font-size: 19px;
+    line-height: 1;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &:hover::after {
     height: 100%;

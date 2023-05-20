@@ -4,23 +4,33 @@
       <div class="content">
         <div class="head_repair">
           <div class="border-left"></div>
-          <h5>OUR SERVICES</h5>
+          <h5>DỊCH VỤ CỦA CHÚNG TÔI</h5>
         </div>
-        <h2>What We Do</h2>
-        <p>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque laudantium totam rem aperiam, eaque ipsa quae
-          ab illo inventore veritatis et quasi.
-        </p>
+        <h2>Chúng tôi sẽ làm gì</h2>
       </div>
-      <div class="service">
-        <service-item v-for="index in 5" :key="index" />
+      <div class="service wrap">
+        <service-item
+          v-for="(value, index) in dataRe"
+          :key="index"
+          :data="value"
+        />
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import ServiceItem from "./ServiceItem.vue";
+import { useReportStore } from "@/store/report";
+import { onMounted, ref } from "vue";
+const reportStore = useReportStore();
+const dataRe = ref([]);
+onMounted(() => {
+  reportStore.repairEquipments().then((data) => {
+    dataRe.value = data.data.filter((e, index) => {
+      return index < 8;
+    });
+  });
+});
 </script>
 <style lang="scss" scoped>
 .content {
@@ -36,7 +46,6 @@ import ServiceItem from "./ServiceItem.vue";
   flex-wrap: wrap;
   margin-right: -10px;
   margin-left: -10px;
-  justify-content: space-between;
 }
 .repair {
   background-color: #222431;
@@ -46,8 +55,8 @@ import ServiceItem from "./ServiceItem.vue";
   display: flex;
   align-items: center;
   h5 {
-    font-size: 14px;
-    line-height: 24px;
+    font-size: 45px;
+    line-height: 75px;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0;
@@ -55,7 +64,7 @@ import ServiceItem from "./ServiceItem.vue";
   }
 }
 h2 {
-  font-size: 45px;
+  font-size: 1.8rem;
   line-height: 1.2em;
   font-weight: 900;
   text-transform: none;

@@ -24,13 +24,19 @@ export const useReportStore = defineStore("reports", {
     getReportDetail(path, id) {
       const pt = path.includes("admin")
         ? "admin/reports"
-        : path.includes("enginner")
+        : path.includes("engineer")
         ? "engineer/reports"
         : "reports";
       return http.get(`${pt}/${id}`);
     },
     searchReport(search) {
       return http.get(`/search?search=${search}`);
+    },
+    createRating(data) {
+      return http.post("reviews", data);
+    },
+    updateReport(data, id) {
+      return http.put(`reports/${id}`, data);
     },
   },
 });

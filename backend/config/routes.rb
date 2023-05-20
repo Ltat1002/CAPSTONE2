@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       devise_for :users
       resources :vouchers
-      resources :reviews, only: :create
+      resources :reviews, only: %i[create update]
       resources :reports
       resources :repair_equipments, only: %i[index show]
 
@@ -15,8 +15,8 @@ Rails.application.routes.draw do
       get 'search', to: 'reports#search'
       get 'all_engineer', to: 'users#all_engineer'
       post 'show_all_report', to: 'reports#show_all_report'
-      put 'confirmed_offer', to: 'reports#confirmed_offer'
-      put 'cancel_report', to: 'reports#cancel_report'
+      put 'confirmed_offer/:id', to: 'reports#confirmed_offer'
+      put 'cancel_report/:id', to: 'reports#cancel_report'
 
       namespace :engineer do
         resources :reports
@@ -38,7 +38,11 @@ Rails.application.routes.draw do
         put 'deactivate_user', to: 'users#deactivate_user'
         put 'edit_user/:id', to: 'users#edit_user'
         resources :repair_equipments, except: :destroy
-        resources :reviews, only: %i[index show destroy]
+        resources :reviews, except: :create
+        get 'show_all_engineers', to: 'users#show_all_engineers'
+        get 'report_counting', to: 'reports#report_counting'
+        get 'user_counting', to: 'users#user_counting'
+        get 'amount_pay_counting', to: 'reports#amount_pay_counting'
       end
     end
   end

@@ -1,4 +1,6 @@
 <template lang="">
+  <CustomTitle title="Quản lý thiết bị" />
+
   <div class="flex justify-end mb-4">
     <Button
       icon="pi pi-plus"
@@ -12,8 +14,32 @@
     <Column field="id" header="Mã"></Column>
     <Column field="name" header="Tên thiết bị"></Column>
     <Column field="description" header="mô tả"></Column>
-    <Column field="created_at" header="Ngày tạo"></Column>
-    <Column field="updated_at" header="Ngày sửa"></Column>
+    <Column field="created_at" header="Ngày tạo">
+      <template #body="slot">
+        <div>
+          {{
+            new Date(slot.data.created_at).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "numeric",
+              year: "numeric",
+            })
+          }}
+        </div>
+      </template>
+    </Column>
+    <Column field="updated_at" header="Ngày sửa">
+      <template #body="slot">
+        <div>
+          {{
+            new Date(slot.data.updated_at).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "numeric",
+              year: "numeric",
+            })
+          }}
+        </div>
+      </template>
+    </Column>
     <Column header="hành động">
       <template #body="slot">
         <div class="flex mx-[-8px]">
@@ -51,10 +77,12 @@ import DataTable from "primevue/datatable";
 import AddRepair from "./AddRepair.vue";
 import Column from "primevue/column";
 // import { toastMessage } from "@/helper/toastMessage";
+import CustomTitle from "@/components/CustomTitle.vue";
+
 import { useAdminStore } from "@/store/admin";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
-import { ref, watchEffect } from "vue";
+import { ref, watch, onMounted } from "vue";
 const detail = ref();
 const headerTitle = ref();
 const adminStore = useAdminStore();
@@ -64,7 +92,13 @@ function getRepairEquipment() {
     listRepairEquipment.value = res.data;
   });
 }
-watchEffect(() => {
+watch(
+  () => adminStore.repair,
+  () => {
+    getRepairEquipment();
+  }
+);
+onMounted(() => {
   getRepairEquipment();
 });
 const check = ref();
@@ -72,7 +106,6 @@ function addRepair() {
   check.value = true;
   adminStore.repair = true;
   detail.value = { name: "", photo: "", description: "" };
-
   headerTitle.value = "Thêm thiết bị";
 }
 function handleClickUpdate(slot) {

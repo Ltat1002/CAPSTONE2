@@ -83,7 +83,7 @@ function handleRegisterEngineer() {
     latitude: coordinates?.lat || "",
     longitude: coordinates?.lng || "",
     description: description.value,
-    role: "user",
+    role: "engineer",
     address: address.value,
     status: 1,
   };

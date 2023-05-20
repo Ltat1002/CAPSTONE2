@@ -1,16 +1,6 @@
 class Api::V1::ReviewsController < ApplicationController
-  # before_action :set_review, only: :show
+  before_action :set_review, only: :update
   before_action :set_review_for_report, only: :create
-
-  # def index
-  #   @reviews = Review.all
-
-  #   render json: @reviews
-  # end
-
-  # def show
-  #   render json: @review
-  # end
 
   def create
     @review = Review.new(review_params)
@@ -19,6 +9,14 @@ class Api::V1::ReviewsController < ApplicationController
       render json: { message: 'Already review' }, status: :unprocessable_entity
     elsif @review.save
       render json: @review, status: :created
+    else
+      render json: @review.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @review.update(review_params)
+      render json: @review
     else
       render json: @review.errors, status: :unprocessable_entity
     end

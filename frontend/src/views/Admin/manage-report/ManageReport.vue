@@ -1,5 +1,7 @@
 <template lang="">
   <div v-if="!route.path.includes('manage-report/detail-report')">
+    <CustomTitle title="Quản lý báo cáo" />
+
     <DataTable :value="listUser">
       <Column field="fullName" header="Họ và tên"></Column>
       <Column field="user_send.email" header="Email"></Column>
@@ -34,6 +36,8 @@ import Column from "primevue/column";
 import { useAdminStore } from "@/store/admin";
 import Button from "primevue/button";
 import { ref } from "vue";
+import CustomTitle from "@/components/CustomTitle.vue";
+
 import { useRouter, useRoute } from "vue-router";
 const adminStore = useAdminStore();
 const router = useRouter();

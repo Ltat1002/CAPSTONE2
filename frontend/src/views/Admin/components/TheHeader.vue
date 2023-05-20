@@ -1,21 +1,7 @@
 <template>
   <section id="content">
-    <nav>
+    <nav class="flex justify-between">
       <i class="bx bx-menu" @click="handleClickSidebar"></i>
-      <form>
-        <div class="form-input">
-          <input type="search" placeholder="Search..." />
-          <button type="submit" class="search-btn">
-            <i class="bx bx-search"></i>
-          </button>
-        </div>
-      </form>
-      <input id="switch-mode" type="checkbox" hidden @change="darkMode" />
-      <label for="switch-mode" class="switch-mode"></label>
-      <a href="#" class="notification">
-        <i class="bx bxs-bell"></i>
-        <span class="num">8</span>
-      </a>
       <a href="#" class="profile">
         <img
           src="https://media.molistar.com/original/2022/08/24/XT/630592e5b529c_1.jpg"

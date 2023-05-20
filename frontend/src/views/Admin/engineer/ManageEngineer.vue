@@ -1,9 +1,6 @@
 <template lang="">
-  <CustomTitle title="Quản lý CV user" />
-  <DataTable
-    :value="listEngineer"
-    v-if="!route.fullPath.includes('/detail-cv')"
-  >
+  <CustomTitle title="Quản lý kỹ sư" />
+  <DataTable :value="listEngineer">
     <Column field="fullname" header="Họ và tên"></Column>
     <Column field="mobile" header="Số điện thoại"></Column>
     <Column field="address" header="Địa chỉ"></Column>
@@ -44,7 +41,6 @@
       <div class="text-center">Không có dữ liệu</div>
     </template>
   </DataTable>
-  <router-view v-else></router-view>
 </template>
 <script setup>
 import DataTable from "primevue/datatable";
