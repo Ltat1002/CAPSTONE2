@@ -1,5 +1,7 @@
 <template lang="">
   <div>
+    <CustomTitle title="Quản lý người dùng" />
+
     <DataTable :value="listUser" scrollable lazy :loading="loading">
       <Column field="email" header="Email"></Column>
       <Column field="fullname" header="Họ và tên"></Column>
@@ -71,6 +73,8 @@ import Button from "primevue/button";
 import { ref } from "vue";
 import { toastMessage } from "@/helper/toastMessage.js";
 import AddUser from "./AddUser.vue";
+import CustomTitle from "@/components/CustomTitle.vue";
+
 const loading = ref(false);
 const visible = ref(false);
 const headerTitle = ref("");
@@ -97,7 +101,7 @@ function getAllUser() {
 getAllUser();
 function handleClickDetail(slot) {
   visible.value = true;
-  headerTitle.value = "Update";
+  headerTitle.value = "Cập nhật";
   adminStore.getUser(slot.data.id).then((res) => {
     detailUser.value = res.data;
   });

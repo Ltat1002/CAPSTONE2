@@ -214,6 +214,7 @@ watchEffect(async () => {
     });
 });
 watch(preview, () => {
+  console.log(preview.value.status);
   for (let key in timeline.value) {
     if (Number(key) === preview.value.status) {
       timeline.value[key] = {
@@ -242,7 +243,7 @@ watch(preview, () => {
 });
 reportStore.report.images = [];
 function base64ToFile() {
-  const data = engineer.repair.img.map((data, index) => {
+  const data = engineer.repair.img?.map((data, index) => {
     const file = dataURLtoFile(data, index);
     // await axios.get(data, { responseType: "blob" }).then((blob) => {
     //   const file = new File([blob], "File name", { type: "image/png" });
@@ -348,7 +349,7 @@ onMounted(() => {
 
 const galleria = ref();
 const images = computed(() => {
-  return preview.value.img.map((val, index) => {
+  return preview.value.img?.map((val, index) => {
     return {
       itemImageSrc: val,
       thumbnailImageSrc: val,
