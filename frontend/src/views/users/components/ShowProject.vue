@@ -11,10 +11,10 @@
           <div class="card">
             <img :src="value" alt="Nature Image" />
             <div class="info">
-              <h3>Travel round the world instantly</h3>
+              <h3>Sửa chữa nhanh</h3>
               <p>
-                Visit Italy with our services on your holiday to experience a
-                great joy and fun!
+                Ghé thăm với các dịch vụ của chúng tôi để cho ngôi nhà của bạn
+                trở nên hoàn thiện hơn
               </p>
             </div>
           </div>

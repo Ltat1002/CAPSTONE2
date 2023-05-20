@@ -49,5 +49,8 @@ export const useAdminStore = defineStore("admin", {
     getReport(id) {
       return http.get("admin/reports/" + id);
     },
+    getDashboard(url) {
+      return http.get(url);
+    },
   },
 });

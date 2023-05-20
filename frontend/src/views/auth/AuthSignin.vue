@@ -369,6 +369,7 @@ onMounted(() => {
   font-size: 12px;
   background-color: #d5e3ed;
   color: #a0a5a8;
+  height: 100vh;
 }
 
 /**/

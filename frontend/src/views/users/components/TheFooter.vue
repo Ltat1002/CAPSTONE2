@@ -7,11 +7,12 @@
       <div
         class="flex items-center justify-center border-b-2 border-neutral-200 p-6 dark:border-neutral-500 lg:justify-between wrap"
       >
-        <div class="mr-12 hidden lg:block">
+        <div class="mr-12 flex-1 hidden lg:block">
           <span>Kết nối với chúng tôi trên các mạng xã hội:</span>
         </div>
+        <div class="flex-1"></div>
         <!-- Social network icons container -->
-        <div class="flex justify-center">
+        <div class="flex flex-1">
           <a href="#!" class="mr-6 text-neutral-600 dark:text-neutral-200">
             <svg
               xmlns="http://www.w3.org/2000/svg"
