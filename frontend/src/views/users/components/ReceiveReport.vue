@@ -1,10 +1,13 @@
 <template lang="">
   <ul
     class="wrap"
-    v-if="!route.path.includes('engineer/receive-report/preview')"
+    v-if="
+      !route.path.includes('engineer/receive-report/preview') &&
+      !route.path.includes('engineer/my-report/preview')
+    "
   >
     <li v-for="receive in listReceive" :key="receive.id">
-      <router-link :to="`/engineer/receive-report/preview/${receive.id}`">
+      <router-link :to="`${route.fullPath}/preview/${receive.id}`">
         <article
           class="flex items-center space-x-6 p-6 my-[20px] rounded-lg"
           :class="
@@ -109,10 +112,10 @@
                   </dd>
                 </div>
                 <div class="flex gap-3 shrink-0">
-                  {{ receive.status }}
-                  {{ statusReport.pending }}
                   <Button
-                    :loading="loadingBtnList[0]"
+                    :loading="
+                      loadingBtnList[0] && idReportActive === receive.id
+                    "
                     icon="pi pi-send"
                     v-if="receive.status === statusReport.pending"
                     size="small"
@@ -153,7 +156,9 @@
                     severity="help"
                   />
                   <Button
-                    :loading="loadingBtnList[1]"
+                    :loading="
+                      loadingBtnList[1] && idReportActive === receive.id
+                    "
                     icon="pi pi-verified"
                     v-if="receive.status === statusReport.acceptedUser"
                     size="small"
@@ -211,7 +216,7 @@
   </Dialog>
 </template>
 <script setup>
-import { ref, watchEffect, onMounted } from "vue";
+import { ref, watchEffect, watch, onMounted } from "vue";
 import { useEngineerStore } from "@/store/engineer.js";
 import Button from "primevue/button";
 import { useRoute } from "vue-router";
@@ -230,6 +235,7 @@ const route = useRoute();
 const visible = ref(false);
 const listReceive = ref([]);
 const report = ref([]);
+const idReportActive = ref([]);
 const loadingBtnList = ref([false, false]);
 
 const profile = asyncComputed(
@@ -246,13 +252,23 @@ const profile = asyncComputed(
 );
 onMounted(() => {
   getReport(report);
-  console.log(profile.value);
 });
+
+watch(
+  () => route.fullPath,
+  () => {
+    report.value = [];
+    listReceive.value = [];
+    getReport(report);
+  }
+);
+
 watchEffect(async () => {
   getReports();
 });
 
 const handleClickSuccess = async (id, key, status, stt) => {
+  idReportActive.value = id;
   loadingBtnList.value[stt] = true;
   setTimeout(() => {
     engineerStore
@@ -278,30 +294,34 @@ const handleClickSuccess = async (id, key, status, stt) => {
   }, 2000);
 };
 async function getReports() {
-  const ReportIdList = report.value.reduce((accumulator, currenValue) => {
-    console.log(currenValue.user_receive_id);
-    console.log(profile.value.id);
+  const ReportIdList = report.value?.reduce((accumulator, currenValue) => {
     if (
+      route.fullPath.includes("engineer/my-report") &&
+      currenValue.engineer_id.split(", ").includes(String(profile.value?.id)) &&
+      String(currenValue.user_receive_id) === String(profile.value?.id) &&
+      Number(currenValue.status) > Number(statusReport.pending)
+    ) {
+      accumulator.push(currenValue.report_id);
+    }
+    if (
+      route.fullPath.includes("engineer/receive-report") &&
       currenValue.engineer_id.split(", ").includes(String(profile.value.id)) &&
-      (currenValue.status === statusReport.pending ||
-        String(currenValue.user_receive_id) === String(profile.value.id))
+      currenValue.status === statusReport.pending
     ) {
       accumulator.push(currenValue.report_id);
     }
     return accumulator;
   }, []);
-  if (ReportIdList.length > 0) {
-    const res = await engineerStore.getReportByListId(ReportIdList);
-    listReceive.value = res.data.map((item) => {
-      const newRp = report.value.find(
-        (rp) => String(rp.report_id) === String(item.id)
-      );
-      return {
-        ...item,
-        key: newRp?.key || "",
-      };
-    });
-  }
+  const res = await engineerStore.getReportByListId(ReportIdList);
+  listReceive.value = res.data.map((item) => {
+    const newRp = report.value.find(
+      (rp) => String(rp.report_id) === String(item.id)
+    );
+    return {
+      ...item,
+      key: newRp?.key || "",
+    };
+  });
 }
 const idBill = ref("");
 function handleClickProceed(id, key) {

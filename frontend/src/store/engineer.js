@@ -17,6 +17,9 @@ export const useEngineerStore = defineStore("engineer", {
     receive(data) {
       return http.put("engineer/receive", data);
     },
+    updateRPForUser(data, id) {
+      return http.put(`reports/${id}`, data);
+    },
     getReportByListId(ids) {
       console.log(ids);
       return http.post("show_all_report", {
