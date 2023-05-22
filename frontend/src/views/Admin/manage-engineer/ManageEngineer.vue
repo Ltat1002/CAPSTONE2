@@ -34,7 +34,7 @@
             icon="pi pi-trash"
             size="small"
             class="mx-2"
-            severity="success"
+            severity="danger"
             @click="handleClickDeny(slot)"
           />
         </div>

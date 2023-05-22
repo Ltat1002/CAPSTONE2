@@ -5,14 +5,23 @@
         <span class="p-float-label">
           <InputText id="name" v-model="description.name" />
           <label for="name">Tên chi tiết</label>
+          <p class="text-red-800 w-[350px] text-start">
+            {{ v$.name?.$errors[0]?.$message }}
+          </p>
         </span>
         <span class="p-float-label">
           <InputText id="mobile" v-model="description.mobile" />
           <label for="mobile">Số điện thoại</label>
+          <p class="text-red-800 w-[350px] text-start">
+            {{ v$.mobile?.$errors[0]?.$message }}
+          </p>
         </span>
         <span class="p-float-label">
           <Textarea v-model="description.description" rows="10" />
           <label>Mô tả</label>
+          <p class="text-red-800 w-[350px] text-start">
+            {{ v$.description?.$errors[0]?.$message }}
+          </p>
         </span>
       </div>
       <div class="images">
@@ -36,6 +45,9 @@
           width="200"
           preview
         />
+        <p class="text-red-800 w-[350px] text-start">
+          {{ v$.images?.$errors[0]?.$message }}
+        </p>
       </div>
     </div>
   </keep-alive>
@@ -46,10 +58,12 @@ import FileUpload from "primevue/fileupload";
 import Image from "primevue/image";
 import InputText from "primevue/inputtext";
 import { useReportStore } from "@/store/report.js";
-import { reactive, watch, watchEffect } from "vue";
+import { reactive, watch, computed, watchEffect } from "vue";
 import { useEngineerStore } from "@/store/engineer.js";
 const engineerStore = useEngineerStore();
 const reportStore = useReportStore();
+import { useVuelidate } from "@vuelidate/core";
+import { required, helpers } from "@vuelidate/validators";
 const description = reactive({
   name: "",
   mobile: "",
@@ -70,6 +84,24 @@ watchEffect(() => {
     ...description,
   });
 });
+const rule = computed(() => {
+  return {
+    name: {
+      required: helpers.withMessage(`Email Không để trống`, required),
+    },
+    mobile: {
+      required: helpers.withMessage(`Mật khẩu Không để trống`, required),
+    },
+    description: {
+      required: helpers.withMessage(`Mật khẩu Không để trống`, required),
+    },
+    images: {
+      required: helpers.withMessage(`Mật khẩu Không để trống`, required),
+    },
+  };
+});
+const v$ = useVuelidate(rule, description);
+
 function blobToBase64(blob) {
   return new Promise((resolve) => {
     const reader = new FileReader();

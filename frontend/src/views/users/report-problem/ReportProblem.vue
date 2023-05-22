@@ -18,7 +18,10 @@
         </div>
         <div>
           <Button
-            v-if="!(route.path === items[items.length - 1].to)"
+            v-if="
+              !(route.path === items[items.length - 1].to) &&
+              !(route.path === items[0].to)
+            "
             @click="handleNextByStep()"
             label="Tiếp theo"
             size="small"

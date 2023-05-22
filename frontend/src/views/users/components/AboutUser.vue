@@ -27,31 +27,13 @@
         <h2>Nên lựa chọn các dịch vụ sửa thiết bị gia dụng tại nhà?</h2>
         <p>1. Tiết kiệm thời gian</p>
         <p>2. Tiết kiệm công sức</p>
+        <p>3. Tranh thủ được thời gian rảnh của bạn</p>
         <p>
-          3. Tranh thủ được thời gian rảnh của bạn Hãy đến với website HRS của
-          chúng tôi, các bạn sẽ không phải đắn đo và ngồi mò từng cửa hàng sửa
-          chưa thiết bị gia dụng. Thay vào đó người dùng chỉ cần chọn lọc thiết
-          bị cần sửa và tự đặt cho mình một dịch vụ sửa thiết bị gia dụng tại
-          nhà
+          Hãy đến với website HRS của chúng tôi, các bạn sẽ không phải đắn đo và
+          ngồi mò từng cửa hàng sửa chưa thiết bị gia dụng. Thay vào đó người
+          dùng chỉ cần chọn lọc thiết bị cần sửa và tự đặt cho mình một dịch vụ
+          sửa thiết bị gia dụng tại nhà
         </p>
-        <div class="signature">
-          <div class="left">
-            <img
-              src="https://mehedi.asiandevelopers.com/demo/roofan-html/assets/images/about/manager-1.jpg"
-              alt=""
-            />
-            <div>
-              <h3>Sombert Joe</h3>
-              <span>Manager</span>
-            </div>
-          </div>
-          <div class="right">
-            <img
-              src="https://mehedi.asiandevelopers.com/demo/roofan-html/assets/images/about/manager-signature-1.png"
-              alt=""
-            />
-          </div>
-        </div>
       </div>
     </div>
   </div>

@@ -11,6 +11,7 @@ h1 {
   color: var(--color-title);
   margin-bottom: 20px;
   font-size: 2rem;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   font-weight: 700;
 }
 </style>

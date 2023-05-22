@@ -1,8 +1,11 @@
 <template>
   <section id="sidebar" :class="{ hide: props.sidebar }">
-    <router-link to="/" class="brand">
-      <i class="bx bxs-smile"></i>
-      <span class="text whitespace-pre">Repair service</span>
+    <router-link to="/admin/manage-users" class="brand flex items-center">
+      <img
+        class="w-[100%] h-[70%] object-contain mx-2"
+        src="https://mehedi.asiandevelopers.com/demo/roofan-html/assets/images/resources/logo-1.png"
+        alt=""
+      />
     </router-link>
     <ul class="side-menu top">
       <li :class="{ active: currentPage.includes('/manage-users') }">
@@ -13,7 +16,7 @@
       </li>
       <li :class="{ active: currentPage.includes('/manage-enginee') }">
         <router-link to="/admin/manage-engineer">
-          <i class="pi pi-briefcase"></i>
+          <i class="pi pi-pencil"></i>
           <span class="text">Quản lý CV</span>
         </router-link>
       </li>
@@ -31,16 +34,16 @@
       </li>
       <li :class="{ active: currentPage.includes('/revenue') }">
         <router-link to="/admin/revenue">
-          <i class="pi pi-briefcase"></i>
+          <i class="pi pi-sliders-h"></i>
           <span class="text">Dashboard</span>
         </router-link>
       </li>
     </ul>
     <ul class="side-menu">
       <li>
-        <router-link to="/auth" class="logout">
+        <router-link to="/auth/login" class="logout">
           <i class="bx bxs-log-out-circle"></i>
-          <span class="text">Logout</span>
+          <span class="text">Đăng xuất</span>
         </router-link>
       </li>
     </ul>

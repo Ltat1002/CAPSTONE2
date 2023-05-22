@@ -13,18 +13,23 @@
             v-if="slot.data.status === 'activate'"
             class="bg-green-600 text-white p-2 rounded-[26px] text-center"
           >
-            activate
+            Activate
           </div>
           <div
             v-else-if="slot.data.status === 'deactivate'"
             class="bg-red-600 text-white p-2 rounded-[26px] text-center"
           >
-            deactivate
+            Deactivate
           </div>
-          <div v-else class="text-red">{{ slot.data.status }}</div>
+          <div
+            v-else
+            class="text-red bg-yellow-600 text-white p-2 rounded-[26px]"
+          >
+            Pending
+          </div>
         </template>
       </Column>
-      <Column header="hành động">
+      <Column header="Hành động">
         <template #body="slot">
           <div class="flex mx-[-8px]">
             <Button

@@ -353,11 +353,11 @@ async function handleConfirm() {
       sendReport(realtimeRp);
     });
     router.push("/notify");
-    toastMessage("success", "thanh cong", "report");
+    toastMessage("success", "Thành công", "Đăng báo cáo thành công");
     loading.value = false;
     engineer.setRepair({});
   } catch (err) {
-    toastMessage("error", "Thất bại", "report");
+    toastMessage("error", "Thất bại", "Đăng báo cáo thất bại");
     loading.value = false;
   }
 }
