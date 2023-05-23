@@ -23,7 +23,7 @@
           </div>
           <div
             v-else
-            class="text-red bg-yellow-600 text-white p-2 rounded-[26px]"
+            class="text-center bg-yellow-600 text-white p-2 rounded-[26px]"
           >
             Pending
           </div>

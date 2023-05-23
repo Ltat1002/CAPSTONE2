@@ -21,6 +21,7 @@
             <h3 class="section-header">Doanh thu</h3>
             <div class="year-selector">
               <svg
+                @click="handlePrev"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
@@ -43,8 +44,9 @@
                   stroke-linejoin="round"
                 />
               </svg>
-              <span>2023</span>
+              <span>{{ year }}</span>
               <svg
+                @click="handleNext"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
@@ -165,6 +167,7 @@ import {
 } from "chart.js";
 import { onMounted, ref } from "vue";
 import { Bar } from "vue-chartjs";
+const date = new Date();
 const adminStore = useAdminStore();
 ChartJS.register(
   CategoryScale,
@@ -177,6 +180,7 @@ ChartJS.register(
 );
 const dataReport = ref([0, 0]);
 onMounted(() => {
+  DoanhThuNam();
   adminStore.getDashboard("/admin/report_counting").then((data) => {
     dataReport.value = [data.data.cancel || 0, data.data.done || 0];
   });
@@ -194,7 +198,37 @@ onMounted(() => {
     });
   });
 });
-
+const year = ref(date.getFullYear());
+const DoanhThuNam = async () => {
+  console.log(year.value);
+  adminStore
+    .getDashboard(`/admin/amount_pay_counting?year=${year.value}`)
+    .then((val) => {
+      data.value = {
+        ...data.value,
+        datasets: [
+          {
+            data: Object.values(val.data),
+            borderWidth: 2,
+            borderRadius: 30,
+            barThickness: 12,
+            backgroundColor: ["rgba(114, 92, 255, 1)"],
+            borderColor: ["rgba(114, 92, 255, 1)"],
+            hoverBackgroundColor: ["rgba(28, 30, 35, 1)"],
+            hoverBorderColor: ["rgba(28, 30, 35, 1)"],
+          },
+        ],
+      };
+    });
+};
+function handlePrev() {
+  year.value = year.value - 1;
+  DoanhThuNam();
+}
+function handleNext() {
+  year.value = year.value + 1;
+  DoanhThuNam();
+}
 const data = ref({
   labels: [
     "T1",
@@ -212,7 +246,7 @@ const data = ref({
   ],
   datasets: [
     {
-      data: [11, 3, 14, 7, 4, 15, 7, 9, 15, 13, 7, 14],
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       borderWidth: 2,
       borderRadius: 30,
       barThickness: 12,
@@ -231,7 +265,7 @@ const options = ref({
       ticks: {
         // Include a dollar sign in the ticks
         callback: function (value) {
-          return "$" + value + "k";
+          return value + "đ";
         },
         stepSize: 5,
       },
