@@ -39,7 +39,7 @@
       </div>
       <div class="content">
         <TabView>
-          <TabPanel header="Profile">
+          <TabPanel header="Hồ sơ">
             <div class="flex flex-col justify-center items-center">
               <div
                 class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:!shadow-none p-3"
@@ -60,7 +60,7 @@
                   <div
                     class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
                   >
-                    <p class="text-sm text-gray-600">Họ và tên</p>
+                    <p class="text-sm text-[#6366f1]">Họ và tên</p>
                     <p class="text-base font-medium text-navy-700">
                       {{ profile.last_name }} {{ profile.first_name }}
                     </p>
@@ -69,14 +69,14 @@
                   <div
                     class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
                   >
-                    <p class="text-sm text-gray-600">Giới tính</p>
+                    <p class="text-sm text-[#6366f1]">Giới tính</p>
                     <p class="text-base font-medium text-navy-700">Nam</p>
                   </div>
 
                   <div
                     class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
                   >
-                    <p class="text-sm text-gray-600">Địa chỉ</p>
+                    <p class="text-sm text-[#6366f1]">Địa chỉ</p>
                     <p class="text-base font-medium text-navy-700">
                       {{ profile.address }}
                     </p>
@@ -85,7 +85,7 @@
                   <div
                     class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
                   >
-                    <p class="text-sm text-gray-600">Số điện thoại</p>
+                    <p class="text-sm text-[#6366f1]">Số điện thoại</p>
                     <p class="text-base font-medium text-navy-700">
                       {{ profile.mobile }}
                     </p>
@@ -94,7 +94,7 @@
                   <div
                     class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
                   >
-                    <p class="text-sm text-gray-600">Ngày sinh</p>
+                    <p class="text-sm text-[#6366f1]">Ngày sinh</p>
                     <p class="text-base font-medium text-navy-700">
                       24/05/2001
                     </p>
@@ -103,7 +103,7 @@
                   <div
                     class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none"
                   >
-                    <p class="text-sm text-gray-600">Email</p>
+                    <p class="text-sm text-[#6366f1]">Email</p>
                     <p class="text-base font-medium text-navy-700">
                       {{ profile.email }}
                     </p>
@@ -112,16 +112,16 @@
               </div>
             </div>
           </TabPanel>
-          <TabPanel header="Messages">
-            <TheNotify />
+          <!-- <TabPanel header="Thông báo"> -->
+          <!-- <TheNotify />
             <div v-if="load" class="flex justify-center h-full items-center">
               <ProgressBar
                 mode="indeterminate"
                 style="height: 6px"
               ></ProgressBar>
-            </div>
-          </TabPanel>
-          <TabPanel header="Edit profile">
+            </div> -->
+          <!-- </TabPanel> -->
+          <TabPanel header="Cập nhật hồ sơ">
             <form @submit.prevent="handleUpdateProfile">
               <div class="relative z-0 w-full mb-6 group">
                 <input
@@ -138,6 +138,9 @@
                   class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >Email</label
                 >
+                <p class="text-red-800 w-[350px] text-start">
+                  {{ v$.email?.$errors[0]?.$message }}
+                </p>
               </div>
               <div class="grid md:grid-cols-2 md:gap-6">
                 <div class="relative z-0 w-full mb-6 group">
@@ -154,6 +157,9 @@
                     class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >Họ</label
                   >
+                  <p class="text-red-800 w-[350px] text-start">
+                    {{ v$.first_name?.$errors[0]?.$message }}
+                  </p>
                 </div>
                 <div class="relative z-0 w-full mb-6 group">
                   <input
@@ -169,6 +175,9 @@
                     class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >Tên</label
                   >
+                  <p class="text-red-800 w-[350px] text-start">
+                    {{ v$.last_name?.$errors[0]?.$message }}
+                  </p>
                 </div>
               </div>
               <div class="grid md:grid-cols-2 md:gap-6">
@@ -186,6 +195,9 @@
                     class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >Số điện thoại</label
                   >
+                  <p class="text-red-800 w-[350px] text-start">
+                    {{ v$.mobile?.$errors[0]?.$message }}
+                  </p>
                 </div>
               </div>
               <div class="grid md:grid-cols-2 md:gap-6">
@@ -203,6 +215,9 @@
                     class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >Địa chỉ</label
                   >
+                  <p class="text-red-800 w-[350px] text-start">
+                    {{ v$.address?.$errors[0]?.$message }}
+                  </p>
                 </div>
               </div>
               <div
@@ -226,6 +241,9 @@
                     class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >Mật khẩu hiện tại</label
                   >
+                  <p class="text-red-800 w-[350px] text-start">
+                    {{ v$$.current_password?.$errors[0]?.$message }}
+                  </p>
                 </div>
                 <div class="relative z-0 w-full mb-6 group">
                   <input
@@ -241,6 +259,9 @@
                     class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >Mật khẩu mới</label
                   >
+                  <p class="text-red-800 w-[350px] text-start">
+                    {{ v$$.password?.$errors[0]?.$message }}
+                  </p>
                 </div>
                 <div class="relative z-0 w-full mb-6 group">
                   <input
@@ -256,6 +277,9 @@
                     class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >Xác nhận mật khẩu mới</label
                   >
+                  <p class="text-red-800 w-[350px] text-start">
+                    {{ v$$.password_confirmation?.$errors[0]?.$message }}
+                  </p>
                 </div>
               </div>
 
@@ -283,15 +307,17 @@
 </template>
 <script setup>
 import TheAvt from "@/components/TheAvt.vue";
-import TheNotify from "@/components/TheNotify.vue";
+// import TheNotify from "@/components/TheNotify.vue";
 import TabView from "primevue/tabview";
 import UploadInformation from "@/views/engineer/UploadInformation.vue";
 import TabPanel from "primevue/tabpanel";
 import { asyncComputed } from "@vueuse/core";
 import { useRegisterStore } from "@/store/register.js";
-import { ref, watch, reactive, onMounted } from "vue";
+import { ref, watch, computed, reactive, onMounted } from "vue";
 import { toastMessage } from "@/helper/toastMessage.js";
 import ProgressBar from "primevue/progressbar";
+import { useVuelidate } from "@vuelidate/core";
+import { required, email, helpers } from "@vuelidate/validators";
 const load = ref(false);
 const registerStore = useRegisterStore();
 const password = reactive({
@@ -300,19 +326,20 @@ const password = reactive({
   password_confirmation: "",
 });
 const handleUpdateProfile = async () => {
-  if (checkPassword.value && password.current_password) {
-    await registerStore
-      .updateProfile({
-        ...editProfile.value,
-        ...password,
-      })
-      .then(() => {
-        toastMessage("success", "Thành công", "Cập nhật Hồ sơ");
-      })
-      .catch(() => {
-        toastMessage("error", "Thất bại", "Cập nhật Hồ sơ");
-      });
-  } else {
+  const result = await v$.value.$validate();
+  if (checkPassword.value) {
+    const result1 = await v$$.value.$validate();
+    if (result1) {
+      await registerStore
+        .updateProfile({ ...editProfile.value, ...password })
+        .then(() => {
+          toastMessage("success", "Thành công", "Cập nhật Hồ sơ");
+        })
+        .catch(() => {
+          toastMessage("error", "Thất bại", "Cập nhật Hồ sơ");
+        });
+    }
+  } else if (result) {
     await registerStore
       .updateProfile({
         ...editProfile.value,
@@ -332,6 +359,7 @@ onMounted(() => {
     load.value = false;
   }, 4000);
 });
+
 const profile = asyncComputed(
   async () => {
     return await registerStore.account;
@@ -351,6 +379,45 @@ const editProfile = ref({
   mobile: "",
   address: "",
 });
+const ruleProfile = computed(() => {
+  return {
+    email: {
+      required: helpers.withMessage(`Email Không để trống`, required),
+      email: helpers.withMessage(`Email Không hợp lệ`, email),
+    },
+    first_name: {
+      required: helpers.withMessage(`Họ Không để trống`, required),
+    },
+    last_name: {
+      required: helpers.withMessage(`Tên Không để trống`, required),
+    },
+    mobile: {
+      required: helpers.withMessage(`Số điện thoại Không để trống`, required),
+    },
+    address: {
+      required: helpers.withMessage(`Địa chỉ Không để trống`, required),
+    },
+  };
+});
+const rulePass = computed(() => {
+  return {
+    current_password: {
+      required: helpers.withMessage(
+        `Mật khẩu hiện tại Không để trống`,
+        required
+      ),
+    },
+    password: {
+      required: helpers.withMessage(`Mật khẩu Không để trống`, required),
+    },
+    password_confirmation: {
+      required: helpers.withMessage(`Nhập lại mật Không để trống`, required),
+    },
+  };
+});
+const v$ = useVuelidate(ruleProfile, editProfile);
+const v$$ = useVuelidate(rulePass, password);
+
 const checkPassword = ref(false);
 watch(profile, () => {
   editProfile.value = { ...profile.value };

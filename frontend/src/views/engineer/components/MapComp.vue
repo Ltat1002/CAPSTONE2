@@ -155,6 +155,7 @@ watch([map, currPos, otherPos, () => props.coor], () => {
   handleSetMarkerUpdate();
   if (
     route.fullPath.includes("engineer/receive-report/preview") ||
+    route.fullPath.includes("engineer/my-report/preview") ||
     !route.fullPath.includes("preview")
   ) {
     var origin1 = new window.google.maps.LatLng(

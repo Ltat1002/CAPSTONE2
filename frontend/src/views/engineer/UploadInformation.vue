@@ -11,11 +11,17 @@
           placeholder="Chọn thiết bị"
           class="w-full md:w-20rem mb-4"
         />
+        <p class="text-red-800 w-[350px] text-start">
+          {{ v$.selectedDevices?.$errors[0]?.$message }}
+        </p>
         <Editor
           v-model="description"
           class="flex-1"
           editorStyle="height: 350px"
         />
+        <p class="text-red-800 w-[350px] text-start">
+          {{ v$.description?.$errors[0]?.$message }}
+        </p>
       </div>
       <div class="flex-1 h-[500px]">
         <div class="h-[416px] overflow-hidden">
@@ -30,6 +36,9 @@
         >
           Địa chỉ của bạn: {{ address }}
         </div>
+        <p class="text-red-800 w-[350px] text-start">
+          {{ v$.address?.$errors[0]?.$message }}
+        </p>
       </div>
     </div>
     <div class="text-end">
@@ -54,6 +63,9 @@ import { useEquipmentsStore } from "@/store/equipments";
 import { useRegisterStore } from "@/store/register";
 import { toastMessage } from "@/helper/toastMessage";
 import { useRouter, useRoute } from "vue-router";
+import { useVuelidate } from "@vuelidate/core";
+import { required, helpers } from "@vuelidate/validators";
+
 const equipmentStore = useEquipmentsStore();
 const register = useRegisterStore();
 const router = useRouter();
@@ -65,44 +77,58 @@ const description = ref("");
 const loading = ref(false);
 const address = ref("");
 const deviceList = ref([]);
-const selectedDevices = ref([]);
+const selectedDevices = ref();
 const coor = ref({});
 let coordinates;
-
+const ruleInfo = computed(() => {
+  return {
+    description: {
+      required: helpers.withMessage(`Mô tả Không để trống`, required),
+    },
+    address: {
+      required: helpers.withMessage(`Địa chỉ Không để trống`, required),
+    },
+    selectedDevices: {
+      required: helpers.withMessage(`Thiết bị Không để trống`, required),
+    },
+  };
+});
+const v$ = useVuelidate(ruleInfo, { description, address, selectedDevices });
 function setAddress(addressProps, coor) {
-  console.log(coor);
   address.value = addressProps;
   coordinates = coor;
 }
 
-function handleRegisterEngineer() {
-  console.log(selectedDevices.value);
-  loading.value = true;
-  const data = {
-    repair_equipment_id: selectedDevices.value,
-    latitude: coordinates?.lat || "",
-    longitude: coordinates?.lng || "",
-    description: description.value,
-    role: "engineer",
-    address: address.value,
-    status: 3,
-  };
-  setTimeout(() => {
-    register
-      .updateProfile({ ...register.account, ...data })
-      .then((data) => {
-        console.log(data);
-        router.push("/");
-        register.profile();
-        toastMessage("success", "Thành công", "Đăng ký thành công");
-      })
-      .catch(() => {
-        toastMessage("error", "Thất bại", "Đăng ký thất bại");
-      })
-      .finally(() => {
-        loading.value = false;
-      });
-  }, 2000);
+async function handleRegisterEngineer() {
+  const result = await v$.value.$validate();
+  if (result) {
+    loading.value = true;
+    const data = {
+      repair_equipment_id: selectedDevices.value,
+      latitude: coordinates?.lat || "",
+      longitude: coordinates?.lng || "",
+      description: description.value,
+      role: "engineer",
+      address: address.value,
+      status: 1,
+    };
+    setTimeout(() => {
+      register
+        .updateProfile({ ...register.account, ...data })
+        .then((data) => {
+          console.log(data);
+          router.push("/");
+          register.profile();
+          toastMessage("success", "Thành công", "Đăng ký thành công");
+        })
+        .catch(() => {
+          toastMessage("error", "Thất bại", "Đăng ký thất bại");
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+    }, 2000);
+  }
 }
 
 equipmentStore.getEquipments().then((data) => {

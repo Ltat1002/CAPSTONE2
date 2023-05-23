@@ -8,7 +8,15 @@
       <Column field="repair_equipment.name" header="Tên thiết bị"></Column>
       <Column field="mobile" header="SDT"></Column>
       <Column field="address" header="Địa chỉ"></Column>
-      <Column header="hành động">
+      <Column header="Trạng thái">
+        <template #body="slot">
+          <div>
+            {{ statusReportAdmin[slot.data.status] }}
+          </div>
+        </template>
+      </Column>
+
+      <Column header="Hành động">
         <template #body="slot">
           <div class="flex mx-[-8px]">
             <Button
@@ -37,7 +45,7 @@ import { useAdminStore } from "@/store/admin";
 import Button from "primevue/button";
 import { ref } from "vue";
 import CustomTitle from "@/components/CustomTitle.vue";
-
+import { statusReportAdmin } from "@/helper/enumStatus";
 import { useRouter, useRoute } from "vue-router";
 const adminStore = useAdminStore();
 const router = useRouter();

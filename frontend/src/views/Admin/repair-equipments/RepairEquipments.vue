@@ -13,7 +13,7 @@
   <DataTable :value="listRepairEquipment">
     <Column field="id" header="Mã"></Column>
     <Column field="name" header="Tên thiết bị"></Column>
-    <Column field="description" header="mô tả"></Column>
+    <Column field="description" header="Mô tả"></Column>
     <Column field="created_at" header="Ngày tạo">
       <template #body="slot">
         <div>
@@ -40,21 +40,15 @@
         </div>
       </template>
     </Column>
-    <Column header="hành động">
+    <Column header="Hành động">
       <template #body="slot">
         <div class="flex mx-[-8px]">
           <Button
-            icon="pi pi-file-export"
+            icon="pi pi-pencil"
             size="small"
             class="mx-2"
             severity="success"
             @click="handleClickUpdate(slot)"
-          />
-          <Button
-            icon="pi pi-trash"
-            size="small"
-            class="mx-2"
-            severity="success"
           />
         </div>
       </template>

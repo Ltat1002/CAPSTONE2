@@ -11,10 +11,10 @@
   <DataTable :value="listReview">
     <Column field="id" header="Mã"></Column>
     <Column field="name" header="Tên thiết bị"></Column>
-    <Column field="description" header="mô tả"></Column>
+    <Column field="description" header="Mô tả"></Column>
     <Column field="created_at" header="Ngày tạo"></Column>
     <Column field="updated_at" header="Ngày sửa"></Column>
-    <Column header="hành động">
+    <Column header="Hành động">
       <template #body="slot">
         <div class="flex mx-[-8px]">
           <Button

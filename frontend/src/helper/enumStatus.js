@@ -15,3 +15,13 @@ export const statusReport = {
   finishUser: 5,
   rating: 6,
 };
+
+export const statusReportAdmin = [
+  "pending",
+  "acceptedEngineer",
+  "enforcementEngineer",
+  "acceptedUser",
+  "finishEngineer",
+  "finishUser",
+  "rating",
+];
