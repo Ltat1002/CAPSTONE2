@@ -14,6 +14,13 @@
           <span class="text">Quản lý người dùng</span>
         </router-link>
       </li>
+      <li :class="{ active: currentPage.includes('/all-enginee') }">
+        <router-link to="/admin/all-engineer">
+          <i class="pi pi-id-card"></i>
+          <span class="text">Quản lý Kỹ sư</span>
+        </router-link>
+      </li>
+
       <li :class="{ active: currentPage.includes('/manage-enginee') }">
         <router-link to="/admin/manage-engineer">
           <i class="pi pi-pencil"></i>

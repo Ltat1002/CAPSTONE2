@@ -265,7 +265,7 @@ const options = ref({
       ticks: {
         // Include a dollar sign in the ticks
         callback: function (value) {
-          return value + "đ";
+          return value + "VND";
         },
         stepSize: 5,
       },

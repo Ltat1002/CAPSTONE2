@@ -10,6 +10,9 @@ export const useAdminStore = defineStore("admin", {
     getAllUser() {
       return http.get("admin/users");
     },
+    getAllEngineerok() {
+      return http.get("admin/show_all_engineers");
+    },
     getUser(id) {
       return http.get(`admin/users/${id}`);
     },
