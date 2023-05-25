@@ -1,6 +1,6 @@
 <template lang="">
   <div>
-    <CustomTitle title="Quản lý người dùng" />
+    <CustomTitle title="Quản lý kỹ sư" />
 
     <DataTable :value="listUser" scrollable lazy :loading="loading">
       <Column field="email" header="Email"></Column>
@@ -10,22 +10,16 @@
       <Column field="status" header="Trạng thái">
         <template #body="slot">
           <div
-            v-if="slot.data.status === 'activate'"
-            class="bg-green-600 text-white p-2 rounded-[26px] text-center"
-          >
-            Activate
-          </div>
-          <div
-            v-else-if="slot.data.status === 'deactivate'"
+            v-if="slot.data.status === 'deactivate'"
             class="bg-red-600 text-white p-2 rounded-[26px] text-center"
           >
-            Deactivate
+            Vô hiệu hóa
           </div>
           <div
             v-else
-            class="text-center bg-yellow-600 text-white p-2 rounded-[26px]"
+            class="bg-green-600 text-white p-2 rounded-[26px] text-center"
           >
-            Pending
+            Hoạt động
           </div>
         </template>
       </Column>

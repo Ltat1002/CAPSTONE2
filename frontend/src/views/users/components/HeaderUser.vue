@@ -17,7 +17,9 @@
             >Thông báo</router-link
           >
         </li>
-        <li>
+        <li
+          v-if="checkLogin && registerStore.account.status === status.approved"
+        >
           <router-link to="/engineer/my-report" active-class="nav-link"
             >Đơn của tôi</router-link
           >

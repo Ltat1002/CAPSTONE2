@@ -8,11 +8,6 @@
     <Column field="mobile" header="Số điện thoại"></Column>
     <Column field="address" header="Địa chỉ"></Column>
     <Column field="repair_equipment.name" header="Thiết bị"></Column>
-    <Column header="Mô tả">
-      <template #body="slot">
-        <div v-html="slot.data.description.body" class="description"></div>
-      </template>
-    </Column>
     <Column header="hành động">
       <template #body="slot">
         <div class="flex mx-[-8px]">

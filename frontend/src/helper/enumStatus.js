@@ -18,10 +18,10 @@ export const statusReport = {
 
 export const statusReportAdmin = [
   "pending",
-  "acceptedEngineer",
-  "enforcementEngineer",
-  "acceptedUser",
-  "finishEngineer",
-  "finishUser",
+  "accepted Engineer",
+  "enforcement Engineer",
+  "accepted User",
+  "finish Engineer",
+  "finish User",
   "rating",
 ];
