@@ -1,4 +1,5 @@
 class Api::V1::RepairEquipmentsController < ApplicationController
+  skip_before_action :authenticate_request
   before_action :set_repair_equipment, only: :show
 
   def index

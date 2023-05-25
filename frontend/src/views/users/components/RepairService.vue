@@ -26,7 +26,7 @@ const reportStore = useReportStore();
 const dataRe = ref([]);
 onMounted(() => {
   reportStore.repairEquipments().then((data) => {
-    dataRe.value = data.data.filter((e, index) => {
+    dataRe.value = data?.data?.filter((e, index) => {
       return index < 8;
     });
   });

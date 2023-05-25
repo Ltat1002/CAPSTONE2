@@ -11,7 +11,7 @@
         ></box-icon>
       </div>
       <p>Tài khoản</p>
-      <h3 class="counter" data-count="21035">0</h3>
+      <h3 class="counter" data-count="215">0</h3>
     </div>
     <div class="social">
       <div class="social-icon">
@@ -24,7 +24,7 @@
         ></box-icon>
       </div>
       <p>Tổng số đơn</p>
-      <h3 class="counter" data-count="8025">0</h3>
+      <h3 class="counter" data-count="97">0</h3>
     </div>
     <div class="social">
       <div class="social-icon">
@@ -37,7 +37,7 @@
         ></box-icon>
       </div>
       <p>Số đơn hoàn thành</p>
-      <h3 class="counter" data-count="125312">0</h3>
+      <h3 class="counter" data-count="90">0</h3>
     </div>
     <div class="social">
       <div class="social-icon">
@@ -50,7 +50,7 @@
         ></box-icon>
       </div>
       <p>Số đơn hủy</p>
-      <h3 class="counter" data-count="625">0</h3>
+      <h3 class="counter" data-count="7">0</h3>
     </div>
   </main>
 </template>
